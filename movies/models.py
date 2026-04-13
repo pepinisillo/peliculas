@@ -54,3 +54,9 @@ class MovieReview(models.Model):
     review = models.TextField(blank=True)
     title = models.TextField(blank=False, null=False, default="Reseña")
 
+class MovieComment(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    # like = models.BooleanField(default=False)
+    comment = models.TextField(blank=True)
+

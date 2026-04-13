@@ -23,12 +23,11 @@ def add_movie(movie_id):
         "Authorization": f"Bearer {env('API_TOKEN')}"}
 
 
-
     r = requests.get(f'https://api.themoviedb.org/3/movie/{movie_id}?language=en-US', headers=headers) 
     print(r.json())
     m = r.json()
 
-    conn = psycopg2.connect(dbname='django', host=r'\tmp')
+    conn = psycopg2.connect(dbname='django', host=r'/tmp')
     cur = conn.cursor()
 
     sql = 'SELECT * FROM movies_movie WHERE title = %s'

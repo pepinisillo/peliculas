@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Movies</title>
+</head>
+<body>
+    <h2>Películas</h2>
+
+    <ul>
+        {% for movie in movies %}
+            <li>
+                <a href="{% url 'pelis' movie.id %}">{{ movie.title }}</a>
+            </li>
+        {% empty %}
+            <li>No hay películas registradas</li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
