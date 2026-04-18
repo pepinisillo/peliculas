@@ -1,16 +1,17 @@
-import os
 import environ
 import requests
 import psycopg2
-from  datetime import datetime, date, timezone 
+from datetime import datetime, date, timezone
+from pathlib import Path
 import sys
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+_env = environ.Env()
+environ.Env.read_env(BASE_DIR / '.env')
 
 
 def add_movie(movie_id):
-    env = environ.Env()
-    environ.Env.read_env('.env')
-    print('API_KEY: ', env('API_KEY'))
-    print('API_TOKEN: ', env('API_TOKEN'))
+    env = _env
 
     '''
     url --request GET \
@@ -27,7 +28,14 @@ def add_movie(movie_id):
     print(r.json())
     m = r.json()
 
-    conn = psycopg2.connect(dbname='django', host=r'/tmp')
+    db_user = env.str('DB_USER', default='').strip() or 'ubuntu'
+    conn = psycopg2.connect(
+        dbname=env.str('DB_NAME', default='django'),
+        user=db_user,
+        password=env.str('DB_PASSWORD', default=''),
+        host=env.str('DB_HOST', default='/tmp'),
+        port=env.str('DB_PORT', default='5432'),
+    )
     cur = conn.cursor()
 
     sql = 'SELECT * FROM movies_movie WHERE title = %s'

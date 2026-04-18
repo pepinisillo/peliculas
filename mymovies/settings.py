@@ -15,8 +15,7 @@ import environ
 import os
 
 env = environ.Env(
-    # set casting, default value
-    DEBUG=(bool, True)
+    DEBUG=(bool, True),
 )
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,13 +27,12 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env('SECRET_KEY') 
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = ['44.193.170.118']
-print(ALLOWED_HOSTS)
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
 
 # Application definition
@@ -84,14 +82,18 @@ WSGI_APPLICATION = 'mymovies.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
+_db_user = env.str('DB_USER', default='').strip()
+if not _db_user:
+    _db_user = 'ubuntu'
+
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "django",
-        "USER": "ubuntu",
-        "PASSWORD": "",
-        "HOST": "/tmp",
-        "PORT": "5432",
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env.str('DB_NAME', default='django'),
+        'USER': _db_user,
+        'PASSWORD': env.str('DB_PASSWORD', default=''),
+        'HOST': env.str('DB_HOST', default='/tmp'),
+        'PORT': env.str('DB_PORT', default='5432'),
     }
 }
 
@@ -132,10 +134,10 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = [
-    BASE_DIR / "static",
-    '/home/ubuntu/ProgWeb/Tutoriales/css'
-]
+STATICFILES_DIRS = [BASE_DIR / 'static']
+_extra_static = env.str('EXTRA_STATIC_DIR', default='').strip()
+if _extra_static:
+    STATICFILES_DIRS.append(Path(_extra_static))
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
