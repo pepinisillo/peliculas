@@ -8,5 +8,6 @@ urlpatterns = [
     path('add_comment/<int:movie_id>/', add_comment),
     path('movie_review/add/<int:movie_id>/', add_review),
     path('movie_reviews/<int:movie_id>/', movie_reviews, name='movie_reviews'),
+    path('favorite/<int:movie_id>/', toggle_favorite, name='toggle_favorite'),# favoritos 
     path('', index)
 ]

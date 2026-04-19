@@ -60,3 +60,9 @@ class MovieComment(models.Model):
     # like = models.BooleanField(default=False)
     comment = models.TextField(blank=True)
 
+class Favorite(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE) # usuario que da favorito
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE) # película marcada como favorita
+
+    def __str__(self):
+        return f"{self.user} - {self.movie}"
