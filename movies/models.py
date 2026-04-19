@@ -7,13 +7,13 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 class Genre(models.Model):
     name = models.CharField(max_length=80)
-    
+
     def __str__(self):
         return self.name
-    
+
 class Person(models.Model):
     name = models.CharField(max_length=128)
-    
+
     def __str__(self):
         return self.name
 
