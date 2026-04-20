@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 
 
 def index(request):
@@ -47,4 +48,46 @@ def login_view(request):
 # Vista de logout
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse('index'))
+    return HttpResponseRedirect(reverse('login'))
+
+# Vista de registro
+def register_view(request):
+    errors = {}
+    # Si el método es POST, se procesa el formulario
+    if request.method == 'POST':
+        # Obtener los datos del formulario
+        username = request.POST.get("username")
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+
+        # Validación de campos requeridos
+        if not username:
+            errors['username'] = "Por favor, ingresa un nombre de usuario"
+        if not email:
+            errors['email'] = "Por favor, ingresa tu correo electrónico"
+        if not password:
+            errors['password'] = "Por favor, ingresa tu contraseña"
+        if not confirm_password:
+            errors['confirm_password'] = "Por favor, confirma tu contraseña"
+        if password and confirm_password and password != confirm_password:
+            errors['password_confirmation'] = "Las contraseñas no coinciden"
+
+        # Si hay errores, se muestran en la plantilla
+        if errors:
+            return render(request, 'users/register.html', context={'errors':errors, 'username':username, 'email':email})
+        else:
+            # Validar que el correo electrónico no exista
+            if User.objects.filter(email=email).exists():
+                errors['email'] = "Ingresa otro correo electrónico"
+                return render(request, 'users/register.html', context={'errors':errors, 'username':username, 'email':email})
+            # Validar que el nombre de usuario no exista
+            if User.objects.filter(username=username).exists():
+                errors['username'] = "El nombre de usuario ya está en uso"
+                return render(request, 'users/register.html', context={'errors':errors, 'username':username, 'email':email})
+            # Crear el usuario
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.save()
+            return HttpResponseRedirect(reverse('login'))
+    else:
+        return render(request, 'users/register.html')
