@@ -1,42 +1,172 @@
-{% extends "movies/base.html" %}
-
 {% block content %}
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login | Cinematic</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#e98adf",
+                        "on-secondary-container": "#f3cfff",
+                        "tertiary-dim": "#e98adf",
+                        "background": "#0e0e0f",
+                        "on-secondary-fixed": "#56007c",
+                        "on-surface": "#ffffff",
+                        "secondary-dim": "#d277ff",
+                        "on-secondary": "#380052",
+                        "outline": "#767576",
+                        "on-tertiary-fixed": "#400040",
+                        "tertiary-fixed": "#f897ee",
+                        "secondary-fixed": "#eec2ff",
+                        "on-secondary-fixed-variant": "#800ab4",
+                        "inverse-surface": "#fcf8f9",
+                        "surface-container-highest": "#262627",
+                        "error-container": "#9f0519",
+                        "on-surface-variant": "#adaaab",
+                        "on-error-container": "#ffa8a3",
+                        "primary": "#85adff",
+                        "secondary-fixed-dim": "#e7afff",
+                        "on-primary-fixed": "#000000",
+                        "primary-container": "#6c9fff",
+                        "primary-dim": "#0070eb",
+                        "tertiary": "#ffaaf4",
+                        "on-primary": "#002c65",
+                        "error": "#ff716c",
+                        "inverse-primary": "#005bc2",
+                        "surface-container-high": "#201f21",
+                        "error-dim": "#d7383b",
+                        "on-tertiary-container": "#620e61",
+                        "secondary": "#d277ff",
+                        "on-primary-fixed-variant": "#002a61",
+                        "on-tertiary": "#6d1b6c",
+                        "surface-container": "#1a191b",
+                        "surface-variant": "#262627",
+                        "tertiary-container": "#f897ee",
+                        "surface-container-lowest": "#000000",
+                        "on-background": "#ffffff",
+                        "surface-dim": "#0e0e0f",
+                        "surface-bright": "#2c2c2d",
+                        "surface": "#0e0e0f",
+                        "secondary-container": "#7d01b1",
+                        "surface-tint": "#85adff",
+                        "outline-variant": "#484849",
+                        "on-error": "#490006",
+                        "inverse-on-surface": "#565556",
+                        "surface-container-low": "#131314",
+                        "on-primary-container": "#00214f",
+                        "primary-fixed-dim": "#5191ff",
+                        "primary-fixed": "#6c9fff",
+                        "on-tertiary-fixed-variant": "#6d1a6b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3 { font-family: 'Manrope', sans-serif; }
+        .glass-panel {
+            background: rgba(19, 19, 20, 0.7);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+        }
+        .cinematic-vignette {
+            background: radial-gradient(circle, transparent 20%, #0e0e0f 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background selection:bg-primary/30 min-h-screen relative overflow-hidden flex items-center justify-center p-6"></body>
+<div class="fixed inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40" data-alt="Cinematic wide shot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuOQSFhUw7vQFNva36n_CrUEXy_nfgbS-WmiVMg79BqV24THmN6vzE8LYuSr-Jhij76S00Fu2Z2-pLLj1sLelcYblQPwgdkiZ3riA5cZBlpI7dxzvEmq2L-S0AdBDj1NlyOUEOhWw9fDXBtp2vO-IQJ_SflU1_ZO-JoW-TyNh8-V45ZEWvjmpHixXY_pvqnCnPkSxco52CPeU0k9fHRTPBxwRZvQP0hgJuzU3IEnb41Sc8StL8AMpjbmnXz1PL1KD8Iwm_3i7AHL8B"/>
+<div class="absolute inset-0 cinematic-vignette"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
 
-<div class="flex min-h-full  justify-center py-10 px-4 sm:px-6 lg:px-8">
-    <div  class="border shadow-md rounded-xl px-8 pt-6 pb-8 mb-4 flex flex-col" >
-    <div class="mt-6 text-left text-3xl font-bold dark:text-white text-gray-500" > 
-    Inicia sesión
-  </div>
-    {% if errors %}  
-        <div class="mt-5 bg-orange-100 border-l-4 border-orange-500 text-orange-700 p-4" role="alert">
-          <p class="font-bold">Atención:</p>
-          <p>Inténtalo de nuevo, el usuario y contraseña no coinciden.</p>
-        </div>
-     {% endif %}
+<main class="relative z-10 w-full max-w-md">
+<!-- Titulo y descripción -->
+<div class="flex flex-col items-center mb-10">
+<span class="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#0061FF] to-[#6c9fff]">Cinematic</span>
+<p class="text-on-surface-variant font-medium tracking-widest uppercase text-[10px] mt-2">Tu catálogo personal de cine</p>
+</div>
+<!-- Login -->
+<section class="glass-panel p-10 rounded-xl shadow-[0_24px_48px_rgba(0,0,0,0.5)] flex flex-col gap-8">
+<header>
+<h1 class="text-3xl font-bold tracking-tight text-on-surface mb-2">Bienvenido de nuevo</h1>
+<p class="text-on-surface-variant text-sm">Por favor, ingresa tus credenciales para iniciar sesión.</p>
+</header>
+<!-- Formulario de login -->
 
-    <form id='login_form' class="px-8 pt-3 pb-8 mb-4" 
-    role="form" method="post" action='{% url "login" %}' xmlns="http://www.w3.org/1999/html">{% csrf_token %}
-              	<!-- Username -->
-              <div class="block  mt-3 text-gray-700 dark:text-slate-300">
-                <input type="text" name="username" placeholder='Usuario'/>
-              </div>
-              <div class="block mt-3  text-gray-700 dark:text-slate-300">
-                <input type="password" name="password" placeholder='Contraseña'/>
-              </div>
-               <div class="mt-3">
-                  <a class="font-medium text-blue-600 dark:text-blue-500 hover:underline"  href="/accounts/password_reset">¿Se te olvidó tu contraseña? </a>
-                </div>
-              <div class="mt-5 font-medium text-gray-500 dark:text-slate-300"> ¿Aún no te haz registrado? 
-                  <a href="/accounts/register" class="mt-3 font-medium text-blue-600 dark:text-blue-500 hover:underline">Regístrate</a></div>
-
-              <div>
-                <button type="submit" class="mt-6 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 
-                  font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 
-                  focus:outline-none dark:focus:ring-blue-800">Inicia Sesión</button>
-              </div>
-         </form>
-
+{% if errors.login %}
+<div class="bg-error-container/20 border border-error/30 rounded-lg p-3 flex items-center gap-3 mb-2 animate-in fade-in slide-in-from-top-1 duration-300">
+  <span class="material-symbols-outlined text-error text-[20px]">error</span>
+  <p class="text-xs font-medium text-on-error-container">{{errors.login}}</p>
+</div>
+{% endif %}
+<form id='login_form' class="px-8 pt-3 pb-8 mb-4 flex flex-col gap-6"
+role="form" method="post" action='{% url "login" %}' xmlns="http://www.w3.org/1999/html">{% csrf_token %}
+<div class="space-y-3">
+<label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant ml-1" for="username">Usuario</label>
+<div class="group relative">
+  <input name="username" class="w-full bg-surface-container-high border-0 rounded-lg px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all duration-300 placeholder:text-on-surface-variant/30" id="username" placeholder="Usuario" type="text"/>
+  {% if errors.username %}
+    <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{errors.username}}</p>
+  {% endif %}
 </div>
 </div>
+<div class="space-y-3">
+<div class="flex justify-between items-center gap-4 ml-1">
+<label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant shrink-0" for="password">Contraseña</label>
+<a class="text-xs font-medium text-primary hover:text-primary-container transition-colors duration-200 text-right" href="#">¿Olvidaste tu contraseña?</a>
+</div>
+<div class="group relative">
+<input name="password" class="w-full bg-surface-container-high border-0 rounded-lg px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all duration-300 placeholder:text-on-surface-variant/30" id="password" placeholder="Contraseña" type="password"/>
+</div>
+{% if errors.password %}
+    <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{errors.password}}</p>
+{% endif %}
+</div>
+<button class="w-full py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-bold rounded-full hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-lg shadow-primary/20" type="submit">
+                    Iniciar Sesión
+                </button>
+</form>
+
+<!-- Registro Link -->
+<footer class="text-center">
+<p class="text-sm text-on-surface-variant">
+                    ¿No tienes una cuenta? 
+                    <a class="text-primary font-bold hover:underline underline-offset-4 decoration-2" href="#">Crear Cuenta</a>
+</p>
+</footer>
+</section>
+<!-- Footer de la página --> 
+<div class="mt-12 flex justify-center gap-8 text-[11px] font-medium uppercase tracking-widest text-on-surface-variant/40">
+<a class="hover:text-on-surface transition-colors text-center" href="#">Política de Privacidad</a>
+<a class="hover:text-on-surface transition-colors text-center" href="#">Términos de Servicio</a>
+<a class="hover:text-on-surface transition-colors text-center" href="#">Centro de Ayuda</a>
+</div>
+</main>
+<!-- Decoración visual -->
+<div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="absolute -top-24 -left-24 w-96 h-96 bg-secondary/10 rounded-full blur-[120px] pointer-events-none"></div>
+</body>
+</html>    
 
 {% endblock content %}
