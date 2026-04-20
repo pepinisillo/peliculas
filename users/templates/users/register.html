@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "tertiary-fixed-dim": "#e98adf",
+              "on-secondary-container": "#f3cfff",
+              "tertiary-dim": "#e98adf",
+              background: "#0e0e0f",
+              "on-secondary-fixed": "#56007c",
+              "on-surface": "#ffffff",
+              "secondary-dim": "#d277ff",
+              "on-secondary": "#380052",
+              outline: "#767576",
+              "on-tertiary-fixed": "#400040",
+              "tertiary-fixed": "#f897ee",
+              "secondary-fixed": "#eec2ff",
+              "on-secondary-fixed-variant": "#800ab4",
+              "inverse-surface": "#fcf8f9",
+              "surface-container-highest": "#262627",
+              "error-container": "#9f0519",
+              "on-surface-variant": "#adaaab",
+              "on-error-container": "#ffa8a3",
+              primary: "#85adff",
+              "secondary-fixed-dim": "#e7afff",
+              "on-primary-fixed": "#000000",
+              "primary-container": "#6c9fff",
+              "primary-dim": "#0070eb",
+              tertiary: "#ffaaf4",
+              "on-primary": "#002c65",
+              error: "#ff716c",
+              "inverse-primary": "#005bc2",
+              "surface-container-high": "#201f21",
+              "error-dim": "#d7383b",
+              "on-tertiary-container": "#620e61",
+              secondary: "#d277ff",
+              "on-primary-fixed-variant": "#002a61",
+              "on-tertiary": "#6d1b6c",
+              "surface-container": "#1a191b",
+              "surface-variant": "#262627",
+              "tertiary-container": "#f897ee",
+              "surface-container-lowest": "#000000",
+              "on-background": "#ffffff",
+              "surface-dim": "#0e0e0f",
+              "surface-bright": "#2c2c2d",
+              surface: "#0e0e0f",
+              "secondary-container": "#7d01b1",
+              "surface-tint": "#85adff",
+              "outline-variant": "#484849",
+              "on-error": "#490006",
+              "inverse-on-surface": "#565556",
+              "surface-container-low": "#131314",
+              "on-primary-container": "#00214f",
+              "primary-fixed-dim": "#5191ff",
+              "primary-fixed": "#6c9fff",
+              "on-tertiary-fixed-variant": "#6d1a6b",
+            },
+            borderRadius: {
+              DEFAULT: "0.25rem",
+              lg: "1rem",
+              xl: "1.5rem",
+              full: "9999px",
+            },
+            fontFamily: {
+              headline: ["Manrope"],
+              body: ["Inter"],
+              label: ["Inter"],
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+      .glass-card {
+        background: rgba(26, 25, 27, 0.7);
+        backdrop-filter: blur(20px);
+      }
+    </style>
+  </head>
+  <body class="bg-background text-on-surface font-body selection:bg-primary/30">
+    <div class="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+      <!-- Fondo de la página -->
+      <div class="absolute inset-0 z-0">
+        <img
+          alt="Cinematic background"
+          class="w-full h-full object-cover opacity-40 scale-105"
+          data-alt="wide shot of an empty luxury cinema hall"
+          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzpHKw1M9-aJu0E0aoeUwGhDRP3MVDcEXnZsehKQbqIl0hm-tavt7jAR00iH5vgcRPlUlIeGgeOPnwJG2fdQKEHcfKhX_wbR0Rcxyc3Sfv7pqMwpTCFaHzvchd8AH21CmXQs6bwas4Yn27-ylD0ZYo112B-Ovg2cvBZSJv7cBzxtVoCPOxLLgZTRclewvFQfOif04Sm7ZNtFwyv8C_dXoX98RZ2ubpmmaIUeGxN1bwuUo6s9W-ji2rBVl4SKca9JRaNPaoU-VqLCve"
+        />
+        <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background/40"></div>
+      </div>
+
+      <!-- Encabezado de la página -->
+      <header class="fixed top-0 w-full z-50 flex justify-between items-center px-8 py-6 max-w-screen-2xl mx-auto">
+        <div class="flex items-center gap-2">
+          <span class="text-3xl font-headline font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#0061FF] to-[#6c9fff]">Cinematic</span>
+        </div>
+        <div class="flex gap-4">
+          <button class="material-symbols-outlined text-on-surface-variant hover:text-white transition-colors duration-300">help</button>
+        </div>
+      </header>
+
+      <!-- Contenedor principal -->
+      <main class="relative z-10 w-full max-w-md px-6 py-12">
+        <div class="glass-card rounded-xl p-8 md:p-10 shadow-[0_24px_48px_rgba(0,0,0,0.4)] border border-outline-variant/10">
+          <div class="mb-10 text-center">
+            <h1 class="text-3xl font-headline font-extrabold tracking-tight mb-2">Únete a la comunidad</h1>
+            <p class="text-on-surface-variant font-medium">Crea tu cuenta para empezar a disfrutar de nuestro catálogo de películas.</p>
+          </div>
+
+          <!-- Formulario de registro -->
+          <form class="space-y-5" method="POST" action="{% url 'register' %}">
+            {% if errors.password_confirmation %}
+              <div class="bg-error-container/20 border border-error/30 rounded-lg p-3 flex items-center gap-3 mb-2 animate-in fade-in slide-in-from-top-1 duration-300">
+                <span class="material-symbols-outlined text-error text-[20px]">error</span>
+                <p class="text-xs font-medium text-on-error-container">{{ errors.password_confirmation }}</p>
+              </div>
+            {% endif %}
+
+            {% csrf_token %}
+
+            <!-- Nombre de usuario -->
+            <div class="space-y-1">
+              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="username">Nombre de usuario</label>
+              <div class="relative group">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">person</span>
+                <input name="username" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="name" placeholder="Ingresa tu nombre de usuario" type="text" />
+              </div>
+              {% if errors.username %}
+                <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.username }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Correo electrónico -->
+            <div class="space-y-1">
+              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="email">Correo electrónico</label>
+              <div class="relative group">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">mail</span>
+                <input name="email" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="email" placeholder="you@example.com" type="email" />
+              </div>
+              {% if errors.email %}
+                <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.email }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Contraseña -->
+            <div class="space-y-1">
+              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="password">Contraseña</label>
+              <div class="relative group">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>
+                <input name="password" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="password" placeholder="Ingresa tu contraseña" type="password" />
+              </div>
+              {% if errors.password %}
+                <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.password }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Confirmar contraseña -->
+            <div class="space-y-2">
+              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="confirm-password">Confirmar contraseña</label>
+              <div class="relative group">
+                <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">verified_user</span>
+                <input name="confirm_password" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="confirm-password" placeholder="••••••••" type="password" />
+              </div>
+              {% if errors.confirm_password %}
+                <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.confirm_password }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Botón de registro -->
+            <button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-headline font-bold py-4 rounded-full shadow-lg shadow-primary/20 transform active:scale-95 transition-all duration-200" type="submit">
+              Crear cuenta
+            </button>
+          </form>
+
+          <!-- Link de inicio de sesión -->
+          <div class="mt-8 flex flex-col items-center gap-6">
+            <div class="relative w-full text-center">
+              <div class="absolute inset-0 flex items-center pointer-events-none">
+                <div class="w-full border-t border-outline-variant/20"></div>
+              </div>
+              <p class="relative z-10 text-on-surface-variant text-sm font-medium">
+                ¿Ya tienes una cuenta?
+                <a class="text-primary font-bold hover:text-white transition-colors ml-1" href="{% url 'login' %}">Iniciar sesión</a>
+              </p>
+            </div>
+          </div>
+
+          <!-- Footer de la página -->
+          <footer class="mt-8 text-center">
+            <p class="text-[10px] text-on-surface-variant/40 font-label uppercase tracking-widest">© 2026 Cinematic. Todos los derechos reservados.</p>
+          </footer>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
