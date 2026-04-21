@@ -1,6 +1,5 @@
 {% load static %}
-<!DOCTYPE html>
-<html class="dark" lang="en">
+<!DOCTYPE html><html class="dark" lang="en">
 <head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -86,20 +85,16 @@
   <nav class="flex flex-col gap-2">
     <a class="flex items-center gap-4 px-4 py-3 text-white bg-blue-600/10 rounded-lg transition-all duration-300 scale-105 active:scale-95 text-sm font-medium" href="/movies/">
       <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span>
-      Home
+      Inicio
     </a>
     <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/movies/search/">
       <span class="material-symbols-outlined">search</span>
-      Search
-    </a>
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/movies/all/">
-      <span class="material-symbols-outlined">movie</span>
-      Catalog
+      Buscar
     </a>
     {% if request.user.is_authenticated %}
     <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/profile/">
       <span class="material-symbols-outlined">person</span>
-      Profile
+      Perfil
     </a>
     {% else %}
     <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/login/">
@@ -358,7 +353,7 @@
     </div>
     {% endfor %}
   </div>
-<!--
+  -<!--
       <button
         class="flex w-48 mt-10 justify-center mx-auto rounded-full bg-primary text-on-primary px-4 py-3 text-sm font-bold hover:scale-105 active:scale-95 transition-all"
         hx-get="/movies/random"
@@ -376,7 +371,9 @@
   <a href="/movies/random/"
      class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group">
     <span class="material-symbols-outlined text-3xl">shuffle</span>
-    <span class="absolute right-20 bg-surface-container-highest px-4 py-2 rounded-lg text-sm font-bold opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">Sorpréndeme</span>
+    <span class="absolute right-20 bg-surface-container-highest px-4 py-2 rounded-lg text-sm font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+  Sorpréndeme
+</span>
   </a>
 
   {# ── FOOTER ── #}
@@ -416,21 +413,16 @@
 <nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-zinc-950/80 backdrop-blur-xl flex items-center justify-around px-4 z-50">
   <a class="flex flex-col items-center gap-1 text-primary" href="/movies/">
     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span>
-    <span class="text-[10px] font-bold">Home</span>
+    <span class="text-[10px] font-bold">Inicio</span>
   </a>
   <a class="flex flex-col items-center gap-1 text-zinc-500" href="/movies/search/">
     <span class="material-symbols-outlined">search</span>
-    <span class="text-[10px] font-medium">Search</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-zinc-500" href="/movies/all/">
-    <span class="material-symbols-outlined">movie</span>
-    <span class="text-[10px] font-medium">Catalog</span>
+    <span class="text-[10px] font-medium">Buscar</span>
   </a>
   <a class="flex flex-col items-center gap-1 text-zinc-500" href="{% if request.user.is_authenticated %}/profile/{% else %}/login/{% endif %}">
     <span class="material-symbols-outlined">person</span>
-    <span class="text-[10px] font-medium">Profile</span>
-  </a>
+    <span class="text-[10px] font-medium">Perfil</span>
+  </a> 
 </nav>
-
 </body>
 </html>

@@ -72,20 +72,16 @@
   <nav class="flex flex-col gap-2">
     <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/movies/">
       <span class="material-symbols-outlined">home</span>
-      Home
+      Inicio
     </a>
     <a class="flex items-center gap-4 px-4 py-3 text-white bg-blue-600/10 rounded-lg scale-105 text-sm font-medium" href="/movies/search/">
       <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">search</span>
-      Search
-    </a>
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/movies/all/">
-      <span class="material-symbols-outlined">movie</span>
-      Catalog
+      Buscar
     </a>
     {% if request.user.is_authenticated %}
     <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/profile/">
       <span class="material-symbols-outlined">person</span>
-      Profile
+      Perfil
     </a>
     {% else %}
     <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/login/">
@@ -112,6 +108,7 @@
   {# ── BARRA DE BÚSQUEDA STICKY ── #}
   <section class="px-8 pt-10 pb-6 sticky top-16 z-30 bg-background/90 backdrop-blur-xl border-b border-outline-variant/10">
     <form method="GET" action="/movies/search/" id="search-form" class="max-w-5xl mx-auto flex flex-col gap-6">
+      
 
       {# Input principal #}
       <div class="relative group">
@@ -192,6 +189,7 @@
       <span class="material-symbols-outlined text-6xl text-zinc-700 mb-4">search</span>
       <p class="text-zinc-500 text-lg font-medium">Escribe algo para buscar</p>
       <p class="text-zinc-600 text-sm mt-1">Puedes buscar por título de película o nombre de usuario</p>
+      <p class="text-xs text-zinc-600 italic">Escribe un usuario, busca y luego selecciona usuarios</p>
     </div>
 
     {# Resultados de USUARIOS #}
@@ -326,19 +324,15 @@
 <nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-zinc-950/80 backdrop-blur-xl flex items-center justify-around px-4 z-50">
   <a class="flex flex-col items-center gap-1 text-zinc-500" href="/movies/">
     <span class="material-symbols-outlined">home</span>
-    <span class="text-[10px] font-medium">Home</span>
+    <span class="text-[10px] font-medium">Inicio</span>
   </a>
   <a class="flex flex-col items-center gap-1 text-primary" href="/movies/search/">
     <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">search</span>
-    <span class="text-[10px] font-bold">Search</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-zinc-500" href="/movies/all/">
-    <span class="material-symbols-outlined">movie</span>
-    <span class="text-[10px] font-medium">Catalog</span>
+    <span class="text-[10px] font-bold">Buscar</span>
   </a>
   <a class="flex flex-col items-center gap-1 text-zinc-500" href="{% if request.user.is_authenticated %}/profile/{% else %}/login/{% endif %}">
     <span class="material-symbols-outlined">person</span>
-    <span class="text-[10px] font-medium">Profile</span>
+    <span class="text-[10px] font-medium">Perfil</span>
   </a>
 </nav>
 
