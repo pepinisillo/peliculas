@@ -139,7 +139,7 @@
           <div class="space-y-3">
             <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant ml-1" for="username">Usuario</label>
             <div class="group relative">
-              <input name="username" class="w-full bg-surface-container-high border-0 rounded-lg px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all duration-300 placeholder:text-on-surface-variant/30" id="username" placeholder="Usuario" type="text" />
+              <input name="username" value="{{ username }}" class="w-full bg-surface-container-high border-0 rounded-lg px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all duration-300 placeholder:text-on-surface-variant/30" id="username" placeholder="Usuario" type="text" />
               {% if errors.username %}
                 <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.username }}</p>
               {% endif %}

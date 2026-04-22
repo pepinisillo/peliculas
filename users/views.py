@@ -28,7 +28,8 @@ def login_view(request):
 
         # Si hay errores, se muestran en la plantilla
         if errors:
-            return render(request, 'users/login.html', context={'errors':errors})
+            # Se retorna el formulario de login con el nombre de usuario ingresado
+            return render(request, 'users/login.html', context={'errors':errors, 'username':username})
 
         # Autenticar el usuario
         user = authenticate(request, username=username, password=password)
@@ -40,7 +41,7 @@ def login_view(request):
         else:
             # Si el usuario no es válido, se muestra un mensaje de error
             errors['login'] = "Tu contraseña es incorrecta o esta cuenta no existe. Por favor, verifica y vuelve a intentarlo"
-            return render(request, 'users/login.html', {'errors':errors})
+            return render(request, 'users/login.html', context={'errors':errors, 'username':username})
     else:
         # Si el método es GET, se muestra el formulario de login
         return render(request, 'users/login.html')
