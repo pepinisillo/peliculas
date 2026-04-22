@@ -5,6 +5,8 @@ from movies.forms import MovieReviewForm, MovieCommentForm
 from django.db.models import Avg, Count
 from .models import Favorite, Movie, Genre
 from django.contrib.auth.models import User
+import random
+from django.shortcuts import redirect
 
 def all_movies(request):
     movies = Movie.objects.all()
@@ -29,7 +31,7 @@ def index(request):
         favorite_ids = [f.movie.id for f in favorites]
 
     # TODAS LAS PELÍCULAS
-    movies = Movie.objects.all()
+    movies = Movie.objects.all()[:8] 
 
     context = { 'movies': movies,
         'top_movies': top_movies,
@@ -125,7 +127,7 @@ def search(request):
         favorite_ids = [f.movie.id for f in Favorite.objects.filter(user=request.user)]
 
 
-    # CASCARÓN DE USERS
+    # USERS
     if search_type == 'users':
         if query:
             users = User.objects.filter(username__icontains=query)[:5]
@@ -160,3 +162,12 @@ def search(request):
         'query': query,
         'search_type': search_type
     })
+
+def random_movie(request):
+    ids = list(Movie.objects.values_list('id', flat=True))
+    
+    if not ids:
+        return redirect('/movies/')  # por si no hay pelis
+
+    random_id = random.choice(ids)
+    return redirect(f'/movies/{random_id}/')
