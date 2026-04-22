@@ -1,47 +1,36 @@
 {% load static %}
 
-{% for review in movie.moviereview_set.all %} 
+{% for review in movie.moviereview_set.all %}
+<article class="flex flex-col gap-3 py-6 border-b border-zinc-800 last:border-0">
+  
+  {# Estrellitas #}
+  <div class="flex items-center gap-1">
+    {% for i in "12345" %}
+      {% if forloop.counter <= review.rating %}
+        <span class="text-yellow-400 text-lg">★</span>
+      {% else %}
+        <span class="text-zinc-600 text-lg">★</span>
+      {% endif %}
+    {% endfor %}
+    <span class="text-zinc-500 text-xs ml-2">{{ review.rating }}/5</span>
+  </div>
 
-<article class="flex max-w-xl flex-col items-start justify-between 	pt-4 pb-6">
-          <div class="flex items-center gap-x-4 text-xs">
-            <span class="relative z-10 rounded-full 
-            {% if review.rating < 60 %}
-            bg-red-50 
-            {% else %}
-            bg-green-50
-            {% endif %}
-            px-3 py-1.5 
-            font-semibold text-base	 text-gray-900 ">{{review.rating}}</span>
-          </div>
-          <div class="group relative">
-            <h3 class="mt-2 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-              <a href="#">
-                <span class="absolute inset-0"></span>
-                {{review.title}}
-              </a>
-            </h3>
-            
-            <p class="mt-1 line-clamp-3 text-sm/6 text-gray-600">
-            {{review.review}}
-            </p>
-          
-          </div>
-          <div class="relative mt-4 flex items-center gap-x-4">
-            <img src="{% static 'movies/knightley.jpg' %}" alt="" class="size-12 rounded-full bg-gray-50">
-            <div class="text-sm/6">
-              <p class="font-semibold text-gray-900">
-                <a href="#">
-                  <span class="absolute inset-0"></span>
-                  {{review.user}}
-                </a>
-              </p>
-              <p class="text-gray-600">Usuario desde: {{review.user.date_joined|date:"M Y"}}</p>
-            </div>
-          </div>
-</article> 
+  {# Título y reseña #}
+  <h3 class="font-bold text-white text-base">{{ review.title }}</h3>
+  <p class="text-zinc-400 text-sm leading-relaxed">{{ review.review }}</p>
 
+  {# Usuario #}
+  <div class="flex items-center gap-3 mt-2">
+    <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-xl">
+      🐒
+    </div>
+    <div>
+      <p class="text-sm font-semibold text-white">{{ review.user }}</p>
+      <p class="text-xs text-zinc-500">Usuario desde: {{ review.user.date_joined|date:"M Y" }}</p>
+    </div>
+  </div>
+
+</article>
 {% empty %}
-
-   <p class="text-gray-600">No hay reseñas todavía</p>
-
-{% endfor %} 
+<p class="text-zinc-500 py-4">No hay reseñas todavía. ¡Sé el primero!</p>
+{% endfor %}
