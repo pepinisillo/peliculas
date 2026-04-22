@@ -3,8 +3,10 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-
-
+from users.models import Profile
+from movies.models import MovieReview
+from django.contrib import messages
+from django.contrib.messages import constants
 
 # Vista de login
 def login_view(request):
@@ -97,3 +99,81 @@ def register_view(request):
     else:
         # Si el método es GET, se muestra el formulario de registro
         return render(request, 'users/register.html')
+
+# Vista de perfil
+def profile_view(request):
+    # Si el usuario no está autenticado, se redirige a la página de login
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+    # Si el usuario está autenticado, se muestra el perfil
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+    sort = request.GET.get('sort', 'recent')
+    reviews = MovieReview.objects.filter(user=request.user).select_related('movie')
+    review_fields = {f.name for f in MovieReview._meta.get_fields()}
+
+    if sort == 'popular':
+        # Mientras no se tienen los likes, se ordena por rating
+        if 'likes' in review_fields:
+            reviews = reviews.order_by('-likes', '-created_at')
+        else:
+            reviews = reviews.order_by('-rating', '-created_at')
+    else:
+        sort = 'recent'
+        reviews = reviews.order_by('-created_at')
+    reviews_count = reviews.count()
+
+    context = {
+        'user': request.user,
+        'profile': profile,
+        'followers_count': profile.followers.count(),
+        'following_count': profile.following.count(),
+        'reviews_count': reviews_count,
+        'reviews': reviews,
+        'reviews_sort': sort,
+    }
+    return render(request, 'users/profile.html', context=context)
+
+# Vista de edición de perfil
+def edit_profile_view(request):
+    # Si el usuario no está autenticado, se redirige a la página de login
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+
+    profile, _ = Profile.objects.get_or_create(user=request.user)
+    errors = {}
+    success = False
+
+    # Si el método es POST, se procesa el formulario
+    if request.method == 'POST':
+        username = (request.POST.get('username') or '').strip()
+        description = (request.POST.get('description') or '').strip()
+        image = request.FILES.get('image')
+
+        if not username:
+            errors['username'] = 'El nombre de usuario es obligatorio.'
+        elif User.objects.exclude(pk=request.user.pk).filter(username=username).exists():
+            errors['username'] = 'Ese nombre de usuario ya está en uso.'
+
+        if len(description) > 500:
+            errors['description'] = 'La descripción no puede superar 500 caracteres.'
+        
+        # Si no hay errores, se actualiza el perfil
+        if not errors:
+            request.user.username = username
+            request.user.save()
+            profile.description = description
+            if image:
+                profile.image = image
+            profile.save()
+            success = True
+            messages.success(request, 'Perfil actualizado correctamente')
+            return HttpResponseRedirect(reverse('profile'))
+
+    context = {
+        'user': request.user,
+        'profile': profile,
+        'errors': errors,
+        'success': success,
+    }
+    return render(request, 'users/edit_profile.html', context=context)
+    

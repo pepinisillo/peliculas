@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Edit Profile | CINEMATIC</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#e7afff",
+                        "tertiary-dim": "#e98adf",
+                        "error": "#ff716c",
+                        "secondary-dim": "#d277ff",
+                        "inverse-surface": "#fcf8f9",
+                        "on-primary-container": "#00214f",
+                        "tertiary-container": "#f897ee",
+                        "surface-bright": "#2c2c2d",
+                        "inverse-primary": "#005bc2",
+                        "primary-fixed": "#6c9fff",
+                        "on-secondary-container": "#f3cfff",
+                        "surface-container": "#1a191b",
+                        "on-primary-fixed": "#000000",
+                        "surface": "#0e0e0f",
+                        "on-primary": "#002c65",
+                        "primary-container": "#6c9fff",
+                        "error-container": "#9f0519",
+                        "on-secondary-fixed": "#56007c",
+                        "on-tertiary-fixed": "#400040",
+                        "on-error-container": "#ffa8a3",
+                        "secondary-fixed": "#eec2ff",
+                        "on-secondary-fixed-variant": "#800ab4",
+                        "on-surface-variant": "#adaaab",
+                        "background": "#0e0e0f",
+                        "surface-container-low": "#131314",
+                        "on-error": "#490006",
+                        "tertiary": "#ffaaf4",
+                        "secondary": "#d277ff",
+                        "surface-tint": "#85adff",
+                        "primary-dim": "#0070eb",
+                        "outline-variant": "#484849",
+                        "outline": "#767576",
+                        "surface-container-high": "#201f21",
+                        "secondary-container": "#7d01b1",
+                        "surface-container-highest": "#262627",
+                        "inverse-on-surface": "#565556",
+                        "on-secondary": "#380052",
+                        "on-tertiary-fixed-variant": "#6d1a6b",
+                        "surface-container-lowest": "#000000",
+                        "on-primary-fixed-variant": "#002a61",
+                        "error-dim": "#d7383b",
+                        "surface-dim": "#0e0e0f",
+                        "primary": "#85adff",
+                        "on-tertiary": "#6d1b6c",
+                        "tertiary-fixed": "#f897ee",
+                        "on-surface": "#ffffff",
+                        "on-background": "#ffffff",
+                        "surface-variant": "#262627",
+                        "tertiary-fixed-dim": "#e98adf",
+                        "primary-fixed-dim": "#5191ff",
+                        "on-tertiary-container": "#620e61"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Manrope"],
+                        "display": ["Manrope"],
+                        "body": ["Inter"],
+                        "label": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; background-color: #0e0e0f; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .font-manrope { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
+<!-- Sidebar -->
+<aside class="h-screen w-64 fixed left-0 top-0 bg-zinc-950/80 backdrop-blur-xl shadow-2xl shadow-black/50 flex flex-col p-6 gap-8 z-50">
+<div class="flex flex-col">
+<span class="text-2xl font-bold tracking-tighter text-blue-500 font-headline">Cinematic</span>
+<span class="text-xs font-label text-zinc-500 mt-1 uppercase tracking-widest">The Canvas</span>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 font-manrope text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+                Home
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 font-manrope text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+                Search
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 font-manrope text-sm font-medium rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="movie">movie</span>
+                Catalog
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-white bg-blue-600/10 rounded-lg scale-105 font-manrope text-sm font-medium" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+                Profile
+            </a>
+<a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-red-400 hover:bg-red-400/10 transition-all duration-300 font-manrope text-sm font-medium rounded-lg mt-auto" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                Logout
+            </a></nav>
+</aside>
+<!-- Barra de navegación superior -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-40 bg-zinc-950/40 backdrop-blur-md flex items-center justify-between px-8">
+<div class="flex items-center gap-4">
+<!-- Espacio -->
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<input class="bg-surface-container-high border-none rounded-full px-5 py-2 text-sm w-64 focus:ring-1 focus:ring-primary/40 text-on-surface-variant font-body" placeholder="Search films..." type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-2 text-zinc-500 text-sm" data-icon="search">search</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-zinc-400 hover:text-white oily-smooth-transition">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-zinc-400 hover:text-white oily-smooth-transition">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center overflow-hidden">
+<img alt="User avatar" class="w-full h-full object-cover" data-alt="user avatar" src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static 'simple-user.png' %}{% endif %}"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 pt-16 min-h-screen bg-surface px-8 py-12">
+<div class="max-w-3xl mx-auto">
+{% if success %}
+<div class="mb-6 rounded-lg border border-green-600/40 bg-green-900/20 p-4 text-sm text-green-300">
+  Perfil actualizado correctamente.
+</div>
+{% endif %}
+<header class="mb-12">
+<h1 class="text-4xl font-black font-headline tracking-tight text-on-surface">Editar perfil</h1>
+<p class="text-on-surface-variant mt-2 font-body">Actualiza tu perfil y tus detalles personales.</p>
+</header>
+<!-- Profile Picture Section -->
+<section class="bg-surface-container-low rounded-xl p-8 mb-8 border border-outline-variant/10">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="relative group">
+<div class="w-32 h-32 rounded-xl overflow-hidden ring-4 ring-primary/20">
+<img id="profile-preview-image" alt="Profile Avatar" class="w-full h-full object-cover" data-alt="User profile avatar" src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static 'simple-user.png' %}{% endif %}"/>
+</div>
+<div class="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center rounded-xl cursor-pointer">
+<span class="material-symbols-outlined text-white">photo_camera</span>
+</div>
+</div>
+<div class="flex flex-col gap-3 items-center md:items-start">
+<h3 class="font-headline font-bold text-lg">Foto de perfil</h3>
+<input id="profile-image-input" name="image" form="edit-profile-form" class="hidden" type="file" accept="image/*"/>
+<label for="profile-image-input" class="bg-primary hover:bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-semibold text-sm transition-all scale-100 active:scale-95 cursor-pointer">
+  Cambiar foto
+</label>
+<p class="text-xs text-on-surface-variant mt-1">Recomendado: JPG, PNG.</p>
+</div>
+</div>
+</section>
+<!-- Form Section -->
+<form id="edit-profile-form" class="space-y-6" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="space-y-2">
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Nombre de usuario</label>
+<input name="username" class="w-full bg-surface-container-high border-none rounded-lg p-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all font-body" type="text" value="{{ user.username }}"/>
+{% if errors.username %}
+<p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.username }}</p>
+{% endif %}
+</div>
+<div class="space-y-2">
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Nombre de usuario actual</label>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">@</span>
+<input class="w-full bg-surface-container/50 border border-outline-variant/10 rounded-lg p-4 pl-8 text-zinc-500 font-body cursor-not-allowed" readonly="" type="text" value="{{ user.username }}"/>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Sobre mí</label>
+<span class="text-[10px] text-on-surface-variant">{{ profile.description|default:''|length }} / 500</span>
+</div>
+<textarea name="description" class="w-full bg-surface-container-high border-none rounded-lg p-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all font-body resize-none" rows="4">{{ profile.description|default:'' }}</textarea>
+{% if errors.description %}
+<p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.description }}</p>
+{% endif %}
+</div>
+<div class="space-y-2">
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Correo electrónico</label>
+<div class="relative group">
+<input class="w-full bg-surface-container/50 border border-outline-variant/10 rounded-lg p-4 text-zinc-500 font-body cursor-not-allowed" readonly="" type="email" value="{{ user.email }}"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 text-zinc-500">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="text-[10px] uppercase font-bold tracking-tighter"></span>
+</div>
+</div>
+</div>
+</div>
+</form>
+<!-- Spacer for sticky footer -->
+<div class="h-32"></div>
+</div>
+</main>
+<!-- Sticky Footer -->
+<footer class="fixed bottom-0 left-0 md:left-64 right-0 bg-surface-container-low/90 backdrop-blur-xl border-t border-outline-variant/10 z-40 px-8 py-6">
+<div class="max-w-3xl mx-auto flex items-center justify-end gap-6">
+<a href="{% url 'profile' %}" class="text-on-surface-variant hover:text-on-surface font-semibold text-sm transition-colors">
+  Descartar cambios
+</a>
+<button form="edit-profile-form" class="bg-primary text-on-primary-container px-10 py-3 rounded-full font-bold text-sm shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+                Guardar cambios
+            </button>
+</div>
+</footer>
+<script>
+  const imageInput = document.getElementById("profile-image-input");
+  const previewImage = document.getElementById("profile-preview-image");
+
+  if (imageInput && previewImage) {
+    imageInput.addEventListener("change", (event) => {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+      if (!file.type.startsWith("image/")) return;
+
+      const objectUrl = URL.createObjectURL(file);
+      previewImage.src = objectUrl;
+      previewImage.onload = () => URL.revokeObjectURL(objectUrl);
+    });
+  }
+</script>
+</body></html>
