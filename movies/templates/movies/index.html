@@ -97,7 +97,7 @@
       Perfil
     </a>
     {% else %}
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/login/">
+    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/users/login">
       <span class="material-symbols-outlined">login</span>
       Login
     </a>
@@ -126,7 +126,7 @@
       <span class="text-zinc-400 text-sm">{{ request.user.username }}</span>
       <a href="/logout/" class="text-zinc-400 hover:text-white transition-colors text-sm">Salir</a>
       {% else %}
-      <a href="/login/" class="text-zinc-400 hover:text-white transition-colors text-sm">Iniciar sesión</a>
+      <a href="/users/login" class="text-zinc-400 hover:text-white transition-colors text-sm">Iniciar sesión</a>
       {% endif %}
     </div>
   </header>
@@ -397,7 +397,7 @@
           <li><a class="hover:text-primary transition-colors" href="/profile/">Mi perfil</a></li>
           <li><a class="hover:text-primary transition-colors" href="/logout/">Cerrar sesión</a></li>
           {% else %}
-          <li><a class="hover:text-primary transition-colors" href="/login/">Iniciar sesión</a></li>
+          <li><a class="hover:text-primary transition-colors" href="/users/login">Iniciar sesión</a></li>
           {% endif %}
         </ul>
       </div>
@@ -419,7 +419,7 @@
     <span class="material-symbols-outlined">search</span>
     <span class="text-[10px] font-medium">Buscar</span>
   </a>
-  <a class="flex flex-col items-center gap-1 text-zinc-500" href="{% if request.user.is_authenticated %}/profile/{% else %}/login/{% endif %}">
+  <a class="flex flex-col items-center gap-1 text-zinc-500" href="{% if request.user.is_authenticated %}/profile/{% else %}/users/login{% endif %}">
     <span class="material-symbols-outlined">person</span>
     <span class="text-[10px] font-medium">Perfil</span>
   </a> 

@@ -95,7 +95,7 @@ def add_review(request, movie_id):
 def toggle_favorite(request, movie_id):
     # verificar usuario logueado
     if not request.user.is_authenticated:
-        return HttpResponseRedirect('/login/')
+        return HttpResponseRedirect('/users/login')
 
     movie = Movie.objects.get(id=movie_id)
 
