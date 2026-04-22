@@ -61,8 +61,18 @@ def add_comment(request, movie_id):
 def movie(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
     review_form = MovieReviewForm()
-    context = { 'movie':movie, 'saludo':'welcome', 'review_form':review_form }
-    return render(request,'movies/movie.html', context=context )
+    
+    favorite_ids = []
+    if request.user.is_authenticated:
+        favorite_ids = [f.movie.id for f in Favorite.objects.filter(user=request.user)]
+    
+    context = { 
+        'movie': movie, 
+        'saludo': 'welcome', 
+        'review_form': review_form,
+        'favorite_ids': favorite_ids
+    }
+    return render(request,'movies/movie.html', context=context)
 
 def movie_reviews(request, movie_id):
     movie = Movie.objects.get(id=movie_id)

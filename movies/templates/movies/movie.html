@@ -47,9 +47,9 @@
             Agregar reseña
           </button>
           <a href="{% url 'toggle_favorite' movie.id %}"
-             class="border border-purple-500/30 text-purple-400 hover:bg-purple-500/10 font-bold px-6 py-3 rounded-full flex items-center gap-2 transition-all hover:scale-105 active:scale-95">
-            <span class="material-symbols-outlined text-base">favorite</span>
-            Favorita
+            class="border {% if movie.id in favorite_ids %}border-purple-500 bg-purple-500/20 text-purple-300{% else %}border-purple-500/30 text-purple-400{% endif %} hover:bg-purple-500/10 font-bold px-6 py-3 rounded-full flex items-center gap-2 transition-all hover:scale-105 active:scale-95">
+            <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' {% if movie.id in favorite_ids %}1{% else %}0{% endif %}">favorite</span>
+            {% if movie.id in favorite_ids %}En favoritas{% else %}Favorita{% endif %}
           </a>
           {% endif %}
         </div>
@@ -92,7 +92,7 @@
       <section class="bg-zinc-900/50 rounded-xl p-6 border border-zinc-800">
         <h2 class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">Reparto</h2>
         <div class="flex flex-wrap gap-2">
-          {% for c in movie.credits.all %}
+        {% for c in movie.moviecredit_set.all %}
           <span class="text-xs bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full">{{ c.person }}</span>
           {% endfor %}
         </div>
