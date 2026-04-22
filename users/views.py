@@ -5,14 +5,12 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 
 
-def index(request):
-    if not request.user.is_authenticated:
-        return HttpResponseRedirect(reverse('login'))
-    else:
-        return render(request,'users/profile.html')
 
 # Vista de login
 def login_view(request):
+    # Si el usuario está autenticado, se redirige a la página de inicio
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
     # Validación de errores
     errors = {}
     # Si el método es POST, se procesa el formulario
@@ -28,7 +26,8 @@ def login_view(request):
 
         # Si hay errores, se muestran en la plantilla
         if errors:
-            return render(request, 'users/login.html', context={'errors':errors})
+            # Se retorna el formulario de login con el nombre de usuario ingresado
+            return render(request, 'users/login.html', context={'errors':errors, 'username':username})
 
         # Autenticar el usuario
         user = authenticate(request, username=username, password=password)
@@ -38,9 +37,9 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse('index'))
         else:
-            # Si el usuario no es válido, se muestra un mensaje de error
+            # Si el usuario no es válido, se muestra un mensaje de error y se retorna el formulario de login con el nombre de usuario ingresado
             errors['login'] = "Tu contraseña es incorrecta o esta cuenta no existe. Por favor, verifica y vuelve a intentarlo"
-            return render(request, 'users/login.html', {'errors':errors})
+            return render(request, 'users/login.html', context={'errors':errors, 'username':username})
     else:
         # Si el método es GET, se muestra el formulario de login
         return render(request, 'users/login.html')
@@ -52,6 +51,9 @@ def logout_view(request):
 
 # Vista de registro
 def register_view(request):
+    # Si el usuario está autenticado, se redirige a la página de inicio
+    if request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('index'))
     errors = {}
     # Si el método es POST, se procesa el formulario
     if request.method == 'POST':
@@ -87,7 +89,11 @@ def register_view(request):
                 return render(request, 'users/register.html', context={'errors':errors, 'username':username, 'email':email})
             # Crear el usuario
             user = User.objects.create_user(username=username, email=email, password=password)
-            user.save()
-            return HttpResponseRedirect(reverse('login'))
+            login(request, user)
+            # Si el usuario está autenticado, se redirige a la página de inicio
+            if request.user.is_authenticated:
+                return HttpResponseRedirect(reverse('index'))
+            
     else:
+        # Si el método es GET, se muestra el formulario de registro
         return render(request, 'users/register.html')

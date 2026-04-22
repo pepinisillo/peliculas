@@ -137,7 +137,7 @@
               <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="username">Nombre de usuario</label>
               <div class="relative group">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">person</span>
-                <input name="username" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="name" placeholder="Ingresa tu nombre de usuario" type="text" />
+                <input name="username" value="{{ username }}" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="username" placeholder="Ingresa tu nombre de usuario" type="text" />
               </div>
               {% if errors.username %}
                 <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.username }}</p>
@@ -149,7 +149,7 @@
               <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="email">Correo electrónico</label>
               <div class="relative group">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">mail</span>
-                <input name="email" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="email" placeholder="you@example.com" type="email" />
+                <input name="email" value="{{ email }}" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="email" placeholder="you@example.com" type="email" />
               </div>
               {% if errors.email %}
                 <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.email }}</p>
