@@ -19,6 +19,27 @@
   <h3 class="font-bold text-white text-base">{{ review.title }}</h3>
   <p class="text-zinc-400 text-sm leading-relaxed">{{ review.review }}</p>
 
+  {# Botones editar/eliminar solo para el autor #}
+{% if review.user == request.user %}
+<div class="flex gap-2 mt-2">
+  <button class="text-xs text-zinc-500 hover:text-blue-400 transition-colors flex items-center gap-1"
+    hx-get="/movies/movie_review/edit/{{ review.id }}"
+    hx-target="body"
+    hx-swap="beforeend">
+    <span class="material-symbols-outlined text-sm">edit</span>
+    Editar
+  </button>
+  <button class="text-xs text-zinc-500 hover:text-red-400 transition-colors flex items-center gap-1"
+    hx-post="/movies/movie_review/delete/{{ review.id }}/"
+    hx-confirm="¿Eliminar esta reseña?"
+    hx-target="closest article"
+    hx-swap="outerHTML">
+    <span class="material-symbols-outlined text-sm">delete</span>
+    Eliminar
+  </button>
+</div>
+{% endif %}
+
   {# Usuario #}
   <div class="flex items-center gap-3 mt-2">
     <div class="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center text-xl">
