@@ -18,9 +18,14 @@ env = environ.Env(
     DEBUG=(bool, True),
 )
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Directorio base del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Media files settings
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+# Leer el archivo .env
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
