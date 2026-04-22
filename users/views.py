@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from movies.models import Favorite, MovieReview
 
 
 def index(request):
@@ -10,6 +11,19 @@ def index(request):
         return HttpResponseRedirect(reverse('login'))
     else:
         return render(request,'users/profile.html')
+
+def profile_view(request):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/users/login')
+    
+    favorites = Favorite.objects.filter(user=request.user)
+    reviews = MovieReview.objects.filter(user=request.user)
+    
+    context = {
+        'favorites': favorites,
+        'reviews': reviews,
+    }
+    return render(request, 'users/profile.html', context)
 
 # Vista de login
 def login_view(request):
@@ -91,3 +105,5 @@ def register_view(request):
             return HttpResponseRedirect(reverse('login'))
     else:
         return render(request, 'users/register.html')
+    
+    
