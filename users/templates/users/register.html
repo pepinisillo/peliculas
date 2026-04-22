@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html class="dark" lang="en">
   <head>
@@ -93,12 +94,7 @@
     <div class="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
       <!-- Fondo de la página -->
       <div class="absolute inset-0 z-0">
-        <img
-          alt="Cinematic background"
-          class="w-full h-full object-cover opacity-40 scale-105"
-          data-alt="wide shot of an empty luxury cinema hall"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzpHKw1M9-aJu0E0aoeUwGhDRP3MVDcEXnZsehKQbqIl0hm-tavt7jAR00iH5vgcRPlUlIeGgeOPnwJG2fdQKEHcfKhX_wbR0Rcxyc3Sfv7pqMwpTCFaHzvchd8AH21CmXQs6bwas4Yn27-ylD0ZYo112B-Ovg2cvBZSJv7cBzxtVoCPOxLLgZTRclewvFQfOif04Sm7ZNtFwyv8C_dXoX98RZ2ubpmmaIUeGxN1bwuUo6s9W-ji2rBVl4SKca9JRaNPaoU-VqLCve"
-        />
+        <img alt="Cinematic background" class="w-full h-full object-cover opacity-40 scale-105" data-alt="wide shot of an empty luxury cinema hall" src="{% static 'register-background.png' %}" />
         <div class="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
         <div class="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background/40"></div>
       </div>

@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from PIL import Image
 import os
 from django.conf import settings
+from django.core.exceptions import ValidationError
 # Create your models here.
 
 # Función para guardar la imagen del perfil del usuario
@@ -18,7 +19,20 @@ class Profile(models.Model):
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    # Relación de seguidores y seguidos
+    followers = models.ManyToManyField(
+        "self",
+        symmetrical=False,
+        related_name="following",
+        blank=True,
+    )
 
+    def clean(self):
+        super().clean()
+        if self.pk and self.followers.filter(pk=self.pk).exists():
+            raise ValidationError("No puedes seguirte a ti mismo")
+    
     def __str__(self):
         return f'{self.user.username} Profile'
 
@@ -29,7 +43,8 @@ class Profile(models.Model):
         if self.image:
             img = Image.open(self.image.path)
 
-            if img.height > 300 or img.width > 300:
-                output_size = (300, 300)
+            if img.height > 500 or img.width > 500:
+                output_size = (500, 500)
                 img.thumbnail(output_size)
                 img.save(self.image.path)
+

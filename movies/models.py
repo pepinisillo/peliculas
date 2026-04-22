@@ -53,6 +53,7 @@ class MovieReview(models.Model):
     rating = models.PositiveSmallIntegerField(validators=[MinValueValidator(1), MaxValueValidator(100)])
     review = models.TextField(blank=True)
     title = models.TextField(blank=False, null=False, default="Reseña")
+    created_at = models.DateTimeField(auto_now_add=True)
 
 class MovieComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
