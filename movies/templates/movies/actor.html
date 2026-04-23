@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;500;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+	<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<script id="tailwind-config">
+	tailwind.config = {
+darkMode: "class",
+theme: {
+extend: {
+"colors": {
+"tertiary": "#ffaaf4",
+"outline": "#767576",
+"on-primary": "#002c65",
+"error": "#ff716c",
+"secondary-container": "#7d01b1",
+"on-error-container": "#ffa8a3",
+"surface-tint": "#85adff",
+"tertiary-container": "#f897ee",
+"primary-dim": "#0070eb",
+"secondary": "#d277ff",
+"on-tertiary-container": "#620e61",
+"secondary-fixed-dim": "#e7afff",
+"surface-container-low": "#131314",
+"primary-fixed-dim": "#5191ff",
+"on-secondary-fixed-variant": "#800ab4",
+"on-surface-variant": "#adaaab",
+"on-secondary-container": "#f3cfff",
+"secondary-fixed": "#eec2ff",
+"outline-variant": "#484849",
+"surface": "#0e0e0f",
+"on-tertiary-fixed": "#400040",
+"inverse-primary": "#005bc2",
+"error-container": "#9f0519",
+"on-background": "#ffffff",
+"inverse-surface": "#fcf8f9",
+"surface-container-highest": "#262627",
+"secondary-dim": "#d277ff",
+"on-primary-fixed-variant": "#002a61",
+"primary-container": "#6c9fff",
+"primary": "#85adff",
+"surface-dim": "#0e0e0f",
+"tertiary-fixed-dim": "#e98adf",
+"surface-bright": "#2c2c2d",
+"on-primary-fixed": "#000000",
+"on-primary-container": "#00214f",
+"on-secondary-fixed": "#56007c",
+"surface-container-lowest": "#000000",
+"on-tertiary": "#6d1b6c",
+"surface-container-high": "#201f21",
+"tertiary-dim": "#e98adf",
+"inverse-on-surface": "#565556",
+"error-dim": "#d7383b",
+"surface-variant": "#262627",
+"primary-fixed": "#6c9fff",
+"background": "#0e0e0f",
+"on-secondary": "#380052",
+"tertiary-fixed": "#f897ee",
+"surface-container": "#1a191b",
+"on-error": "#490006",
+"on-surface": "#ffffff",
+"on-tertiary-fixed-variant": "#6d1a6b"
+},
+"borderRadius": {
+"DEFAULT": "0.25rem",
+"lg": "1rem",
+"xl": "1.5rem",
+"full": "9999px"
+},
+"fontFamily": {
+"headline": ["Manrope", "sans-serif"],
+"body": ["Inter", "sans-serif"],
+"label": ["Inter", "sans-serif"]
+}
+},
+},
+}
+</script>
+	<style>
+	.material-symbols-outlined {
+		font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+	}
+	.oily-smooth-transition {
+		transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	.glass-panel {
+		background: rgba(38, 38, 39, 0.4);
+		backdrop-filter: blur(20px);
+	}
+	.scrim-gradient {
+		background: linear-gradient(to top, #0e0e0f 0%, rgba(14, 14, 15, 0.8) 40%, transparent 100%);
+	}
+	</style>
+</head>
+	<body class="bg-background text-on-background font-body selection:bg-primary selection:text-on-primary-container">
+		<!-- SideNavBar Anchor -->
+		{% include 'movies/partials/side.html'%}
+		<!-- Header -->
+		{% include 'movies/partials/header.html' %}
+
+		<main class="ml-64 pt-16 min-h-screen">
+			<!-- Hero Actor Section -->
+			<section class="relative w-full min-h-[580px] flex items-end overflow-hidden">
+				<!-- Background Image with Scrim -->
+				<div class="absolute inset-0 z-0">
+					<img alt="Hero Actor Background" class="w-full h-full object-cover object-top scale-110 blur-sm brightness-50"/>
+					<div class="absolute inset-0 scrim-gradient"></div>
+				</div>
+				<div class="relative z-10 w-full max-w-7xl mx-auto px-12 pb-16 flex flex-col md:flex-row gap-12 items-end">
+					<!-- Large Portrait Card -->
+					<div class="w-full md:w-80 shrink-0 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl shadow-black/80 transform translate-y-8">
+						<img alt="Actor Portrait" class="w-full h-full object-cover" src="https://image.tmdb.org/t/p/w500{{ person.profile_path }}"/>
+					</div>
+					<!-- Bio Intro -->
+					<div class="flex-1 space-y-6">
+						<div class="space-y-2">
+							<h1 class="text-7xl font-extrabold font-headline tracking-tighter text-on-surface">{{person.name}}</h1>
+							<div class="flex flex-wrap gap-3">
+								<span class="bg-primary/10 text-primary px-4 py-1 rounded-full text-xs font-semibold tracking-wider uppercase border border-primary/20">Actor</span>
+
+							</div>
+						</div>
+						<p class="text-xl text-on-surface-variant max-w-2xl font-light leading-relaxed">
+						{{person.biography|truncatewords:30}}								
+						</p>
+						<div class="flex gap-4 pt-4">
+							<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-bold px-8 py-3 rounded-full oily-smooth-transition transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
+								Watch Highlight Reel
+							</button>
+							<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold px-8 py-3 rounded-full oily-smooth-transition border border-outline-variant/20">
+								View Awards
+							</button>
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- Detailed Info & Bio Bento -->
+			<section class="max-w-7xl mx-auto px-12 py-24 grid grid-cols-1 lg:grid-cols-12 gap-8">
+				<!-- Biography Card -->
+				<div class="lg:col-span-8 bg-surface-container-low p-10 rounded-xl space-y-6">
+					<h3 class="text-2xl font-headline font-bold text-on-surface">Biography</h3>
+					<div class="space-y-4 text-on-surface-variant font-light leading-loose text-lg text-justify">
+						<p>{{person.biography}}</p>
+					</div>
+				</div>
+				<!-- Personal Info Column -->
+				<div class="lg:col-span-4 space-y-8">
+					<div class="bg-surface-container p-8 rounded-xl space-y-6 border border-outline-variant/5">
+						<h3 class="text-xl font-headline font-bold text-on-surface border-b border-outline-variant/10 pb-4">Personal Info</h3>
+						<div class="grid grid-cols-2 gap-y-6">
+							<div>
+								<span class="block text-xs font-semibold text-outline tracking-widest uppercase">Known For</span>
+								<span class="text-on-surface font-medium">Acting</span>
+							</div>
+							<div>
+								<span class="block text-xs font-semibold text-outline tracking-widest uppercase">Gender</span>
+								<span class="text-on-surface font-medium">
+									{% if person.gender == 1 %}Female
+									{% elif person.gender == 2 %}Male
+									{% else %}No specified
+									{% endif %}
+								</span>							</div>
+							<div>
+								<span class="block text-xs font-semibold text-outline tracking-widest uppercase">Birthday</span>
+								<span class="text-on-surface font-medium">{{person.birthday}}</span>
+							</div>
+							<div>
+								<span class="block text-xs font-semibold text-outline tracking-widest uppercase">Place of Birth</span>
+								<span class="text-on-surface font-medium">{{person.place_of_birth}}</span>
+							</div>
+							<div class="col-span-2">
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
+			</section>
+			<!-- Known For Grid -->
+			<section class="max-w-7xl mx-auto px-12 pb-32 space-y-10">
+				<div class="flex items-end justify-between border-b border-outline-variant/10 pb-6">
+					<div>
+						<h2 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Known For</h2>
+						<p class="text-on-surface-variant mt-2">The most iconic performances</p>
+					</div>
+				</div>
+				<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+					<!-- Movie Card 1 -->
+					<div class="group cursor-pointer space-y-4">
+						{% for credit in credits %}
+						<a href="{% url 'pelis' credit.movie.id %}">
+							<div class="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-container-low oily-smooth-transition group-hover:scale-[1.02] group-hover:shadow-2xl group-hover:shadow-primary/20">
+								<img alt="Movie 1" class="w-full h-full object-cover" src="https://image.tmdb.org/t/p/w500{{ credit.movie.poster_path }}"/>
+								<div class="absolute top-3 right-3 glass-panel px-2 py-1 rounded text-xs font-bold text-white flex items-center gap-1">
+									<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>{{avg_rating}}
+								</div>
+							</div>
+							<div>
+								<h4 class="font-bold text-lg text-on-surface group-hover:text-primary oily-smooth-transition">{{credit.movie.title}}</h4>
+							</div>
+						</a>
+						{% endfor %}
+					</div>
+			</section>
+		</main>
+		<!-- Footer Shadow -->
+		<footer class="ml-64 border-t border-outline-variant/10 py-12 px-12 bg-surface-container-low">
+			<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
+				<div class="flex flex-col gap-1">
+					<span class="text-xl font-bold tracking-tighter text-blue-500 font-headline">Cinematic</span>
+					<span class="text-xs text-zinc-500">© 2024 The Canvas Editorial. All rights reserved.</span>
+				</div>
+				<div class="flex gap-8 text-sm font-medium text-outline">
+					<a class="hover:text-on-surface oily-smooth-transition" href="#">Privacy Policy</a>
+					<a class="hover:text-on-surface oily-smooth-transition" href="#">Terms of Service</a>
+					<a class="hover:text-on-surface oily-smooth-transition" href="#">Cookie Settings</a>
+				</div>
+			</div>
+		</footer>
+	</body>
+</html>

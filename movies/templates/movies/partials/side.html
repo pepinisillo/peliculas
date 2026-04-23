@@ -1,0 +1,28 @@
+{# ── SIDEBAR ── #}
+<aside class="h-screen w-64 fixed left-0 top-0 bg-zinc-950/80 backdrop-blur-xl shadow-2xl shadow-black/50 flex flex-col p-6 gap-8 z-50 hidden md:flex">
+  <div class="flex flex-col gap-1">
+    <h1 class="text-2xl font-bold tracking-tighter text-blue-500 font-headline">Cinematic</h1>
+    <p class="text-xs font-medium text-zinc-500 tracking-widest uppercase">The Canvas</p>
+  </div>
+  <nav class="flex flex-col gap-2">
+    <a class="flex items-center gap-4 px-4 py-3 text-white bg-blue-600/10 rounded-lg transition-all duration-300 scale-105 active:scale-95 text-sm font-medium" href="/movies/">
+      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span>
+      Inicio
+    </a>
+    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/movies/search/">
+      <span class="material-symbols-outlined">search</span>
+      Buscar
+    </a>
+    {% if request.user.is_authenticated %}
+    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/profile/">
+      <span class="material-symbols-outlined">person</span>
+      Perfil
+    </a>
+    {% else %}
+    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/login/">
+      <span class="material-symbols-outlined">login</span>
+      Login
+    </a>
+    {% endif %}
+  </nav>
+</aside>

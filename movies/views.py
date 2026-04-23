@@ -1,10 +1,13 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from movies.models import Movie, MovieReview, Person, MovieComment
+from movies.models import Movie, MovieReview, Person, MovieComment, MovieCredit
 from movies.forms import MovieReviewForm, MovieCommentForm
 from django.db.models import Avg, Count
+from django.shortcuts import get_object_or_404
 from .models import Favorite, Movie, Genre
 from django.contrib.auth.models import User
+import random
+from django.shortcuts import redirect
 
 def all_movies(request):
     movies = Movie.objects.all()
@@ -37,7 +40,7 @@ def index(request):
         'favorite_ids': favorite_ids,
         'message': 'welcome'
     }
-    return render(request,'movies/index.html', context=context )
+    return render(request,'movies/index.html', context=context)
 
 def add_comment(request, movie_id):
     form = None
@@ -59,8 +62,32 @@ def add_comment(request, movie_id):
 def movie(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
     review_form = MovieReviewForm()
-    context = { 'movie':movie, 'saludo':'welcome', 'review_form':review_form }
-    return render(request,'movies/movie.html', context=context )
+
+    actors = MovieCredit.objects.filter(movie=movie, job__name='Acting')[:7]
+    director = MovieCredit.objects.filter(movie=movie, job__name='Director').first()
+    writer = MovieCredit.objects.filter(movie=movie, job__name='Writer').first()
+    avg_rating = MovieReview.objects.filter(movie=movie).aggregate(Avg('rating'))['rating__avg']
+
+    favorite_ids = []
+    if request.user.is_authenticated:
+        favorite_ids = [f.movie.id for f in Favorite.objects.filter(user=request.user)]
+
+    #Preview para reviews en pagina de pelicula
+    reviews_preview = MovieReview.objects.filter(
+        movie=movie
+    ).order_by('-id')[:3] 
+
+    context = { 'movie':movie, 
+               'actors':actors, 
+               'avg_rating':avg_rating, 
+               'favorite_ids':favorite_ids, 
+               'director':director,
+               'writer':writer,
+               'review_form':review_form, 
+               'reviews_preview':reviews_preview 
+    }
+    return render(request,'movies/movie.html', context=context)
+
 
 def movie_reviews(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
@@ -160,3 +187,21 @@ def search(request):
         'query': query,
         'search_type': search_type
     })
+
+def random_movie(request):
+    ids = list(Movie.objects.values_list('id', flat=True))
+    
+    if not ids:
+        return redirect('/movies/')  # por si no hay pelis
+
+    random_id = random.choice(ids)
+    return redirect(f'/movies/{random_id}/')
+
+def actor_detail(request, person_id):
+    person = get_object_or_404(Person, id=person_id)
+    credits = MovieCredit.objects.filter(person=person).select_related('movie')
+    
+    # Agrega avg_rating a cada película en los créditos
+    credits = credits.annotate(avg_rating=Avg('movie__moviereview__rating'))
+    
+    return render(request, 'movies/actor.html', {'person': person, 'credits': credits})
