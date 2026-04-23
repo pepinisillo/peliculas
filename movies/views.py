@@ -31,7 +31,7 @@ def index(request):
         favorite_ids = [f.movie.id for f in favorites]
 
     # TODAS LAS PELÍCULAS
-    movies = Movie.objects.all()[:8] 
+    movies = Movie.objects.all()
 
     context = { 'movies': movies,
         'top_movies': top_movies,

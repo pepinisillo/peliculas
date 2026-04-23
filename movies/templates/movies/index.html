@@ -134,7 +134,7 @@
   {# ── HERO: película #1 del Top 10 ── #}
   {% with hero=top_movies|first %}
   {% if hero %}
-<section class="relative w-full h-[300px] md:h-[400px] flex items-end">
+<section class="relative w-full h-[400px] md:h-[500px] flex items-end">
     <div class="absolute inset-0">
       <img
         alt="{{ hero.title }}"
@@ -153,12 +153,12 @@
           {{ hero.avg_rating|floatformat:1 }} Rating
         </span>
       </div>
-      <h2 class="text-6xl md:text-8xl font-headline font-extrabold tracking-tighter mb-6 leading-tight">
+      <h2 class="text-3xl md:text-5xl font-headline font-extrabold tracking-tighter mb-4 leading-tight">
         {{ hero.title|upper }}
       </h2>
       <div class="flex items-center gap-4">
         <a href="/movies/{{ hero.id }}/"
-           class="bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold px-8 py-4 rounded-full flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
+          class="bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold px-6 py-3 rounded-full flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
           <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">play_arrow</span>
           Ver película
         </a>
@@ -195,7 +195,7 @@
         {# Tarjeta grande: #1 #}
         {% with top1=top_movies.0 %}
         {% if top1 %}
-        <div class="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:scale-[1.01] cursor-pointer" style="min-height:400px;" onclick="window.location='/movies/{{ top1.id }}/'">
+        <div class="md:col-span-2 md:row-span-2 group relative overflow-hidden rounded-xl bg-surface-container-low transition-all duration-500 hover:scale-[1.01] cursor-pointer" style="min-height:280px;" onclick="window.location='/movies/{{ top1.id }}/'">
   <img
     alt="{{ top1.title }}"
     class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 absolute inset-0"
@@ -218,7 +218,7 @@
         {# Tarjetas #2 al #5 #}
         {% for movie in top_movies %}
         {% if forloop.counter > 1 and forloop.counter <= 5 %}
-        <div class="group cursor-pointer">
+        <div class="flex-none w-32 group cursor-pointer">
           <a href="/movies/{{ movie.id }}/">
             <div class="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-container-low mb-4 transition-all duration-300 hover:scale-[1.02]">
               <img
@@ -282,52 +282,60 @@
         <div class="h-1 w-12 bg-secondary rounded-full"></div>
       </div>
 
-      <div class="flex flex-nowrap gap-8 overflow-x-auto pb-8 no-scrollbar -mx-4 px-4">
-        {% for fav in favorites %}
-        <div class="flex-none w-80 group relative">
-          <div class="h-48 rounded-xl overflow-hidden bg-surface-container relative">
-            <img
-              alt="{{ fav.movie.title }}"
-              class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-              src="https://image.tmdb.org/t/p/w500/{{ fav.movie.poster_path }}"
-            />
-            <div class="absolute inset-0 bg-secondary/10 group-hover:bg-transparent transition-colors"></div>
-          </div>
-          <div class="mt-4 flex justify-between items-start">
-            <div>
-              <a href="/movies/{{ fav.movie.id }}/">
-                <h4 class="font-bold text-xl mb-1 hover:text-primary transition-colors">{{ fav.movie.title }}</h4>
-              </a>
-              <p class="text-zinc-500 text-sm">{{ fav.movie.release_date|date:"Y" }}</p>
-            </div>
-            <a href="{% url 'toggle_favorite' fav.movie.id %}" class="text-secondary hover:text-red-400 transition-colors" title="Quitar de favoritas"></a>
-              <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">favorite</span>
+     <div class="relative">
+    <button onclick="scrollCarousel('favoritas', -1)" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full w-8 h-8 flex items-center justify-center transition-all">‹</button>
+    <div id="favoritas" class="flex flex-nowrap gap-8 overflow-x-auto pb-8 no-scrollbar -mx-4 px-4 scroll-smooth">
+      {% for fav in favorites %}
+      <div class="flex-none w-80 group relative">
+        <div class="h-48 rounded-xl overflow-hidden bg-surface-container relative">
+          <img
+            alt="{{ fav.movie.title }}"
+            class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+            src="https://image.tmdb.org/t/p/w500/{{ fav.movie.poster_path }}"
+          />
+          <div class="absolute inset-0 bg-secondary/10 group-hover:bg-transparent transition-colors"></div>
+        </div>
+        <div class="mt-4 flex justify-between items-start">
+          <div>
+            <a href="/movies/{{ fav.movie.id }}/">
+              <h4 class="font-bold text-xl mb-1 hover:text-primary transition-colors">{{ fav.movie.title }}</h4>
             </a>
+            <p class="text-zinc-500 text-sm">{{ fav.movie.release_date|date:"Y" }}</p>
           </div>
+          <a href="{% url 'toggle_favorite' fav.movie.id %}" class="text-secondary hover:text-red-400 transition-colors" title="Quitar de favoritas">
+            <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">favorite</span>
+          </a>
         </div>
-        {% empty %}
-        <div class="text-zinc-500 py-8 px-4">
-          <p>No tienes favoritas aún.</p>
-          <p class="text-sm mt-1">Entra a cualquier película y agrégala con el botón ♡</p>
-        </div>
-        {% endfor %}
       </div>
+      {% empty %}
+      <div class="text-zinc-500 py-8 px-4">
+        <p>No tienes favoritas aún.</p>
+        <p class="text-sm mt-1">Entra a cualquier película y agrégala con el botón ♡</p>
+      </div>
+      {% endfor %}
+    </div>
+    <button onclick="scrollCarousel('favoritas', 1)" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-zinc-800 hover:bg-zinc-700 text-white rounded-full w-8 h-8 flex items-center justify-center transition-all">›</button>
+  </div>
     </section>
     {% endif %}
 
 
     {# ── TODAS LAS PELÍCULAS ── #}
     <section>
-  <div class="flex items-end justify-between mb-10">
+    <div class="flex items-end justify-between mb-10">
     <div>
       <h3 class="text-3xl font-headline font-bold mb-2">Todas las películas</h3>
       <div class="h-1 w-12 bg-tertiary rounded-full"></div>
     </div>
+    <div class="flex items-center gap-2">
+      <button onclick="scrollCarousel('todas', -1)" class="bg-zinc-800 hover:bg-zinc-700 text-white rounded-full w-8 h-8 flex items-center justify-center transition-all">‹</button>
+      <button onclick="scrollCarousel('todas', 1)" class="bg-zinc-800 hover:bg-zinc-700 text-white rounded-full w-8 h-8 flex items-center justify-center transition-all">›</button>
+    </div>
   </div>
 
-  <div id="artworks-container" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4">
+  <div id="todas" class="flex flex-nowrap gap-4 overflow-x-auto no-scrollbar scroll-smooth">
     {% for movie in movies %}
-    <div class="group cursor-pointer" onclick="window.location='/movies/{{ movie.id }}/'">
+    <div class="flex-none w-32 group cursor-pointer" onclick="window.location='/movies/{{ movie.id }}/'">
       <div class="relative rounded-lg overflow-hidden mb-2">
         <img
           class="w-full aspect-[2/3] object-cover transition-transform duration-300 group-hover:scale-105"
@@ -424,5 +432,11 @@
     <span class="text-[10px] font-medium">Perfil</span>
   </a> 
 </nav>
+<script>
+function scrollCarousel(id, direction) {
+  const el = document.getElementById(id);
+  el.scrollBy({ left: direction * 300, behavior: 'smooth' });
+}
+</script>
 </body>
 </html>
