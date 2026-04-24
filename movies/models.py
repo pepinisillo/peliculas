@@ -65,6 +65,10 @@ class MovieReview(models.Model):
     title = models.TextField(blank=False, null=False, default="Reseña")
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
+    class Meta:
+        # Un usuario solo puede dejar una reseña por película
+        unique_together = ('user', 'movie')
+
 class MovieReviewLike(models.Model):
     LIKE = 'like'
     DISLIKE = 'dislike'

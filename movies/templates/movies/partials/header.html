@@ -29,7 +29,7 @@
   </div>
 
   {# Desktop: search left, user right #}
-  <div class="hidden lg:flex items-center justify-between gap-6">
+  <div class="hidden lg:flex items-center justify-start gap-6">
     {% if '/movies/search' not in request.path %}
     <div class="relative w-[clamp(360px,42vw,680px)]">
       <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500">search</span>
@@ -41,7 +41,7 @@
       />
     </div>
     {% endif %}
-    <div class="flex items-center gap-5 shrink-0">
+    <div class="ml-auto flex items-center gap-5 shrink-0">
       {% if request.user.is_authenticated %}
       <span class="text-zinc-400 text-sm max-w-40 truncate">{{ request.user.username }}</span>
       <a href="/users/logout" class="text-zinc-300 hover:text-white transition-colors text-sm">Salir</a>
