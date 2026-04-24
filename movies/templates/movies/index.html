@@ -103,7 +103,7 @@
     <div class="relative z-10 px-8 pb-20 max-w-4xl">
       <div class="flex items-center gap-3 mb-4">
         <span class="bg-primary/20 text-primary px-3 py-1 rounded-md text-xs font-bold tracking-widest uppercase border border-primary/20">
-          #1 Mejor calificada
+          #1 Highest rated
         </span>
         <span class="text-on-surface-variant flex items-center gap-1 text-sm font-medium">
           <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">star</span>
@@ -117,7 +117,7 @@
         <a href="/movies/{{ hero.id }}/"
            class="bg-gradient-to-r from-primary to-primary-container text-on-primary font-bold px-8 py-4 rounded-full flex items-center gap-2 hover:scale-105 active:scale-95 transition-all">
           <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">play_arrow</span>
-          Ver película
+          Watch movie
         </a>
         {% if request.user.is_authenticated %}
         <a href="{% url 'toggle_favorite' hero.id %}"
@@ -125,7 +125,7 @@
           <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">
             favorite
           </span>
-          {% if hero.id in favorite_ids %}En favoritas{% else %}Favorita{% endif %}
+          {% if hero.id in favorite_ids %}In favorites{% else %}Favorite{% endif %}
         </a>
         {% endif %}
       </div>
@@ -159,7 +159,7 @@
   />
   <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent"></div>
   <div class="absolute bottom-0 left-0 p-8 z-20">
-    <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded mb-3 inline-block">#1 Este mes</span>
+    <span class="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded mb-3 inline-block">#1 This month</span>
     <h4 class="text-3xl font-bold font-headline mb-2 hover:text-primary transition-colors">{{ top1.title }}</h4>
     <div class="flex items-center gap-4 text-sm text-on-surface-variant">
       <span>{{ top1.release_date|date:"Y" }}</span>
@@ -234,7 +234,7 @@
     {% if request.user.is_authenticated %}
     <section>
       <div class="mb-10">
-        <h3 class="text-3xl font-headline font-bold mb-2">Mis Favoritas</h3>
+        <h3 class="text-3xl font-headline font-bold mb-2">My Favorites</h3>
         <div class="h-1 w-12 bg-secondary rounded-full"></div>
       </div>
 
@@ -256,15 +256,15 @@
               </a>
               <p class="text-zinc-500 text-sm">{{ fav.movie.release_date|date:"Y" }}</p>
             </div>
-            <a href="{% url 'toggle_favorite' fav.movie.id %}" class="text-secondary hover:text-red-400 transition-colors" title="Quitar de favoritas"></a>
+            <a href="{% url 'toggle_favorite' fav.movie.id %}" class="text-secondary hover:text-red-400 transition-colors" title="Remove from favorites"></a>
               <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">favorite</span>
             </a>
           </div>
         </div>
         {% empty %}
         <div class="text-zinc-500 py-8 px-4">
-          <p>No tienes favoritas aún.</p>
-          <p class="text-sm mt-1">Entra a cualquier película y agrégala con el botón ♡</p>
+          <p>You do not have favorites yet.</p>
+          <p class="text-sm mt-1">Open any movie and add it with the ♡ button</p>
         </div>
         {% endfor %}
       </div>
@@ -276,7 +276,7 @@
     <section>
   <div class="flex items-end justify-between mb-10">
     <div>
-      <h3 class="text-3xl font-headline font-bold mb-2">Todas las películas</h3>
+      <h3 class="text-3xl font-headline font-bold mb-2">All movies</h3>
       <div class="h-1 w-12 bg-tertiary rounded-full"></div>
     </div>
   </div>
@@ -295,7 +295,7 @@
      class="fixed bottom-24 md:bottom-8 right-4 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group">
     <span class="material-symbols-outlined text-3xl">shuffle</span>
     <span class="absolute right-20 bg-surface-container-highest px-4 py-2 rounded-lg text-sm font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-  Sorpréndeme
+  Surprise me
 </span>
   </a>
 </div>

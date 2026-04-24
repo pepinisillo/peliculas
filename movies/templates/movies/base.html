@@ -2,26 +2,26 @@
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     <div>
       <h2 class="text-xl font-bold text-blue-500 mb-2">Cinematic</h2>
-      <p class="text-zinc-500 text-sm">Tu catálogo personal de cine.</p>
+      <p class="text-zinc-500 text-sm">Your personal movie catalog.</p>
     </div>
     <div>
-      <h5 class="font-bold text-zinc-400 text-sm uppercase tracking-widest mb-3">Explorar</h5>
+      <h5 class="font-bold text-zinc-400 text-sm uppercase tracking-widest mb-3">Explore</h5>
       <ul class="space-y-2 text-zinc-500 text-sm">
-        <li><a href="/movies/search/" class="hover:text-white transition-colors">Buscar</a></li>
+        <li><a href="/movies/search/" class="hover:text-white transition-colors">Search</a></li>
       </ul>
     </div>
     <div>
       <h5 class="font-bold text-zinc-400 text-sm uppercase tracking-widest mb-3">Cuenta</h5>
       <ul class="space-y-2 text-zinc-500 text-sm">
         {% if user.is_authenticated %}
-        <li><a href="/users/logout" class="hover:text-white transition-colors">Cerrar sesión</a></li>
+        <li><a href="/users/logout" class="hover:text-white transition-colors">Log out</a></li>
         {% else %}
-        <li><a href="/users/login" class="hover:text-white transition-colors">Iniciar sesión</a></li>
+        <li><a href="/users/login" class="hover:text-white transition-colors">Log in</a></li>
         {% endif %}
       </ul>
     </div>
   </div>
   <div class="mt-8 pt-6 border-t border-zinc-800/50 text-center text-xs text-zinc-600">
-    © 2026 Cinematic. Todos los derechos reservados.
+    © 2026 Cinematic. All rights reserved.
   </div>
 </footer>

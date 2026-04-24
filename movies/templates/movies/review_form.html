@@ -3,7 +3,7 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>{% if review %}Editar reseña{% else %}Nueva reseña{% endif %} | {{ movie.title }}</title>
+<title>{% if review %}Edit Review{% else %}New Review{% endif %} | {{ movie.title }}</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -122,9 +122,9 @@
       <div class="p-6 rounded-lg bg-surface-container-low space-y-4">
         <p class="text-on-surface-variant text-sm leading-relaxed italic">
           {% if review %}
-          "Estás editando tu reseña de esta película. Tu opinión ayuda a la comunidad."
+          "You are editing your review for this movie. Your opinion helps the community."
           {% else %}
-          "Comparte tu experiencia y ayuda a otros usuarios a decidir qué ver."
+          "Share your experience and help other users decide what to watch."
           {% endif %}
         </p>
       </div>
@@ -139,13 +139,13 @@
             {% csrf_token %}
             <button type="submit" class="bg-error/20 text-error hover:bg-error/30 oily-motion flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold">
               <span class="material-symbols-outlined text-lg">delete</span>
-              <span>Eliminar reseña</span>
+              <span>Delete review</span>
             </button>
           </form>
           {% else %}
           <a href="{% if next_page == 'profile' %}{% url 'profile' %}{% else %}{% url 'movie_reviews' movie.id %}{% endif %}" class="text-on-surface-variant hover:text-white oily-motion flex items-center gap-2">
             <span class="material-symbols-outlined text-lg">close</span>
-            <span class="text-sm font-medium">Cerrar editor</span>
+            <span class="text-sm font-medium">Close editor</span>
           </a>
           {% endif %}
         </div>

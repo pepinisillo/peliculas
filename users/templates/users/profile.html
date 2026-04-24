@@ -121,27 +121,27 @@
 <!-- Información de identidad -->
 <div class="flex-1 min-w-0">
 <h1 class="text-3xl sm:text-4xl xl:text-5xl font-headline font-extrabold tracking-tighter text-on-surface mb-2 break-words">{{ user.username }}</h1>
-<p class="text-on-surface-variant font-body text-base sm:text-lg leading-relaxed mb-6 break-words whitespace-pre-line">{% if profile.description %}{{ profile.description }}{% else %}Aún no has agregado descripción a tu perfil.{% endif %}
+<p class="text-on-surface-variant font-body text-base sm:text-lg leading-relaxed mb-6 break-words whitespace-pre-line">{% if profile.description %}{{ profile.description }}{% else %}You have not added a profile description yet.{% endif %}
                         </p>
 <div class="flex flex-wrap gap-x-8 gap-y-4">
 <div class="flex flex-col">
 <span class="text-2xl font-headline font-bold text-primary">{{ followers_count }}</span>
-<span class="text-xs uppercase tracking-widest font-label text-outline">Seguidores</span>
+<span class="text-xs uppercase tracking-widest font-label text-outline">Followers</span>
 </div>
 <div class="flex flex-col">
 <span class="text-2xl font-headline font-bold text-on-surface">{{ following_count }}</span>
-<span class="text-xs uppercase tracking-widest font-label text-outline">Seguidos</span>
+<span class="text-xs uppercase tracking-widest font-label text-outline">Following</span>
 </div>
 <div class="flex flex-col">
 <span class="text-2xl font-headline font-bold text-on-surface">{{ reviews_count }}</span>
-<span class="text-xs uppercase tracking-widest font-label text-outline">Reseñas</span>
+<span class="text-xs uppercase tracking-widest font-label text-outline">Reviews</span>
 </div>
 </div>
 </div>
 <!-- Acciones -->
 <div class="pt-2 w-full lg:w-auto">
 <a href="{% url 'edit_profile' %}" class="inline-flex items-center justify-center bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-8 py-3 rounded-full font-headline font-bold leading-none oily-smooth-transition hover:scale-105 shadow-xl shadow-primary/20">
-  Editar perfil
+  Edit Profile
 </a>
 </div>
 </div>
@@ -149,7 +149,7 @@
 <!-- Sección de reseñas -->
 <section>
 <div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-10 md:mb-12">
-<h2 class="text-3xl font-headline font-bold tracking-tight">Mis reseñas</h2>
+<h2 class="text-3xl font-headline font-bold tracking-tight">My Reviews</h2>
 <div class="flex gap-4">
 <a href="{% url 'profile' %}?sort=recent" class="{% if reviews_sort == 'recent' %}text-primary border-b border-primary/30{% else %}text-on-surface-variant hover:text-on-surface{% endif %} text-sm font-label font-bold tracking-wide uppercase pb-1">
   Recent
@@ -165,7 +165,7 @@
 <a href="{% url 'edit_review' review.id %}?next=profile" class="group bg-surface-container rounded-xl overflow-hidden flex flex-col 2xl:flex-row oily-smooth-transition hover:scale-[1.01] hover:bg-surface-container-high hover:shadow-2xl hover:shadow-primary/15 relative">
 <span class="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full border border-outline-variant/40 bg-surface/70 px-2 py-1 text-[11px] font-label text-on-surface-variant opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 oily-smooth-transition z-10">
   <span class="material-symbols-outlined text-sm">edit</span>
-  Editar
+  Edit
 </span>
 <div class="w-full 2xl:w-40 h-64 2xl:h-auto shrink-0 relative overflow-hidden">
 <img alt="Movie poster" class="w-full h-full object-cover" src="{% if review.movie.poster_path %}{% if 'http' in review.movie.poster_path %}{{ review.movie.poster_path }}{% else %}https://image.tmdb.org/t/p/w500{{ review.movie.poster_path }}{% endif %}{% else %}https://placehold.co/600x900/1f2937/ffffff?text=No+Poster{% endif %}"/>
@@ -181,7 +181,7 @@
 </div>
 <p class="text-sm text-on-surface mb-2 font-semibold break-words">{{ review.title }}</p>
 <p class="text-on-surface-variant font-body leading-relaxed italic break-words whitespace-pre-line">
-  {% if review.review %}"{{ review.review }}"{% else %}Sin comentario adicional.{% endif %}
+  {% if review.review %}"{{ review.review }}"{% else %}No additional comment.{% endif %}
 </p>
 </div>
 <div class="flex items-center justify-between mt-8 border-t border-outline-variant/10 pt-6">
@@ -196,14 +196,14 @@
 </div>
 </div>
 <span class="text-[10px] uppercase tracking-widest font-label text-outline">
-  {% if review.created_at %}{{ review.created_at|date:"M d, Y" }}{% else %}Sin fecha{% endif %}
+  {% if review.created_at %}{{ review.created_at|date:"M d, Y" }}{% else %}No date{% endif %}
 </span>
 </div>
 </div>
 </a>
 {% empty %}
 <div class="2xl:col-span-2 bg-surface-container rounded-xl p-10 text-center text-on-surface-variant">
-  Aún no has publicado reseñas.
+  You have not posted any reviews yet.
 </div>
 {% endfor %}
 </div>

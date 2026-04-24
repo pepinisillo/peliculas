@@ -111,14 +111,14 @@
       <!-- Titulo y descripcion -->
       <div class="flex flex-col items-center mb-10">
         <span class="text-4xl font-black tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-[#0061FF] to-[#6c9fff]">Cinematic</span>
-        <p class="text-on-surface-variant font-medium tracking-widest uppercase text-[10px] mt-2">Tu catalogo personal de cine</p>
+        <p class="text-on-surface-variant font-medium tracking-widest uppercase text-[10px] mt-2">Your personal movie catalog</p>
       </div>
 
       <!-- Login -->
       <section class="glass-panel p-10 rounded-xl shadow-[0_24px_48px_rgba(0,0,0,0.5)] flex flex-col gap-8">
         <header>
-          <h1 class="text-3xl font-bold tracking-tight text-on-surface mb-2">Bienvenido de nuevo</h1>
-          <p class="text-on-surface-variant text-sm">Por favor, ingresa tus credenciales para iniciar sesion.</p>
+          <h1 class="text-3xl font-bold tracking-tight text-on-surface mb-2">Welcome back</h1>
+          <p class="text-on-surface-variant text-sm">Please enter your credentials to log in.</p>
         </header>
 
         <!-- Formulario de login -->
@@ -134,9 +134,9 @@
 
           <!-- Nombre de usuario -->
           <div class="space-y-3">
-            <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant ml-1" for="username">Usuario</label>
+            <label class="block text-xs font-semibold uppercase tracking-wider text-on-surface-variant ml-1" for="username">Username</label>
             <div class="group relative">
-              <input name="username" value="{{ username }}" class="w-full bg-surface-container-high border-0 rounded-lg px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all duration-300 placeholder:text-on-surface-variant/30" id="username" placeholder="Usuario" type="text" />
+              <input name="username" value="{{ username }}" class="w-full bg-surface-container-high border-0 rounded-lg px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all duration-300 placeholder:text-on-surface-variant/30" id="username" placeholder="Username" type="text" />
               {% if errors.username %}
                 <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.username }}</p>
               {% endif %}
@@ -146,10 +146,10 @@
           <!-- Contraseña -->
           <div class="space-y-3">
             <div class="flex justify-between items-center gap-4 ml-1">
-              <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant shrink-0" for="password">Contrasena</label>
+              <label class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant shrink-0" for="password">Password</label>
             </div>
             <div class="group relative">
-              <input name="password" class="w-full bg-surface-container-high border-0 rounded-lg px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all duration-300 placeholder:text-on-surface-variant/30" id="password" placeholder="Contrasena" type="password" />
+              <input name="password" class="w-full bg-surface-container-high border-0 rounded-lg px-4 py-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all duration-300 placeholder:text-on-surface-variant/30" id="password" placeholder="Password" type="password" />
             </div>
             {% if errors.password %}
               <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.password }}</p>
@@ -157,15 +157,15 @@
           </div>
 
           <button class="w-full py-3 bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-bold rounded-full hover:scale-[1.02] active:scale-95 transition-all duration-300 shadow-lg shadow-primary/20" type="submit">
-            Iniciar Sesion
+            Log in
           </button>
         </form>
 
         <!-- Registro Link -->
         <footer class="text-center">
           <p class="text-on-surface-variant text-sm font-medium">
-            No tienes una cuenta?
-            <a class="text-primary font-bold hover:text-white transition-colors ml-1" href="{% url 'register' %}">Crear Cuenta</a>
+            Don't have an account?
+            <a class="text-primary font-bold hover:text-white transition-colors ml-1" href="{% url 'register' %}">Create account</a>
           </p>
         </footer>
       </section>

@@ -12,7 +12,7 @@
       <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-bold text-white flex items-center gap-2">
           <span class="material-symbols-outlined text-purple-400">rate_review</span>
-          Agregar Reseña
+          Add Review
         </h2>
         <button type="button" _="on click trigger closeModal"
           class="text-zinc-500 hover:text-white transition-colors">
@@ -24,7 +24,7 @@
         
         {# Calificación con estrellitas #}
         <div class="mb-5">
-          <label class="block text-sm font-medium text-zinc-400 mb-2">Calificación</label>
+          <label class="block text-sm font-medium text-zinc-400 mb-2">Rating</label>
           <div class="flex gap-2" id="star-rating">
             {% for i in "12345" %}
             <button type="button" onclick="setRating({{ forloop.counter }})"
@@ -37,29 +37,29 @@
 
         {# Título #}
         <div class="mb-4">
-          <label class="block text-sm font-medium text-zinc-400 mb-2">Título</label>
+          <label class="block text-sm font-medium text-zinc-400 mb-2">Title</label>
           <input type="text" name="title"
             class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="Dale un título a tu reseña"/>
+            placeholder="Give your review a title"/>
         </div>
 
         {# Reseña #}
         <div class="mb-6">
-          <label class="block text-sm font-medium text-zinc-400 mb-2">Reseña</label>
+          <label class="block text-sm font-medium text-zinc-400 mb-2">Review</label>
           <textarea name="review" rows="4"
             class="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-4 py-2 text-white text-sm focus:outline-none focus:ring-1 focus:ring-blue-500 resize-none"
-            placeholder="¿Qué te pareció la película?"></textarea>
+            placeholder="What did you think about the movie?"></textarea>
         </div>
 
         {# Botones #}
         <div class="flex justify-end gap-3">
           <button type="button" _="on click trigger closeModal"
             class="px-5 py-2 text-sm font-medium text-zinc-400 hover:text-white transition-colors">
-            Cancelar
+            Cancel
           </button>
           <button type="submit"
             class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-full transition-all hover:scale-105 active:scale-95">
-            Guardar
+            Save
           </button>
         </div>
 

@@ -60,7 +60,7 @@
         <section class="relative mb-12 rounded-xl overflow-hidden min-h-[320px] md:min-h-[400px] flex items-end p-6 md:p-10">
             <a href="{% url 'pelis' movie.id %}"
                class="absolute top-4 left-4 z-20 inline-flex w-10 h-10 rounded-full bg-surface-container/40 backdrop-blur-xl border border-white/10 text-white items-center justify-center hover:bg-surface-container/60 transition-all active:scale-95"
-               aria-label="Volver a la película">
+               aria-label="Back to movie">
                 <span class="material-symbols-outlined text-xl">arrow_back</span>
             </a>
             <div class="absolute inset-0 z-0">
@@ -91,11 +91,11 @@
             <div class="flex items-center gap-3 ml-auto">
                 <a href="{% url 'movie_reviews' movie.id %}?sort=date"
                    class="inline-flex items-center justify-center w-28 h-10 px-5 rounded-full text-sm font-bold leading-none whitespace-nowrap border border-outline-variant/30 transition-colors {% if sort == 'date' %}bg-primary text-on-primary border-primary/60{% else %}bg-surface-container text-on-surface-variant hover:text-white{% endif %}">
-                    Por fecha
+                    By date
                 </a>
                 <a href="{% url 'movie_reviews' movie.id %}?sort=likes"
                    class="inline-flex items-center justify-center w-28 h-10 px-5 rounded-full text-sm font-bold leading-none whitespace-nowrap border border-outline-variant/30 transition-colors {% if sort == 'likes' %}bg-primary text-on-primary border-primary/60{% else %}bg-surface-container text-on-surface-variant hover:text-white{% endif %}">
-                    Más likes
+                    Most likes
                 </a>
             </div>
         </section>
@@ -147,7 +147,7 @@
                     </div>
                 </article>
                 {% empty %}
-                <div class="bg-surface-container-low p-8 rounded-xl text-on-surface-variant">No hay reseñas todavía.</div>
+                <div class="bg-surface-container-low p-8 rounded-xl text-on-surface-variant">There are no reviews yet.</div>
                 {% endfor %}
             </div>
 
@@ -169,7 +169,7 @@
 
                 {% if user_review %}
                 <div class="bg-surface-container-low p-6 rounded-xl border-l-4 border-primary/40">
-                    <h4 class="text-lg font-bold font-headline mb-4">Tu reseña</h4>
+                    <h4 class="text-lg font-bold font-headline mb-4">Your review</h4>
                     {% if critics_choice %}
                     <div class="flex text-primary mb-3">
                         <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
@@ -178,14 +178,14 @@
                     <p class="text-sm italic text-on-surface-variant mb-4">"{{ critics_choice.review|truncatewords:28 }}"</p>
                     <div class="text-xs">
                         <div class="font-bold text-white">{{ critics_choice.user.username }}</div>
-                        <div class="text-on-surface-variant">Tu reseña publicada para esta película</div>
+                        <div class="text-on-surface-variant">Your published review for this movie</div>
                     </div>
                     {% else %}
-                    <p class="text-sm italic text-on-surface-variant">Aún no has publicado tu reseña para esta película.</p>
+                    <p class="text-sm italic text-on-surface-variant">You have not published your review for this movie yet.</p>
                     {% endif %}
                 </div>
                 <a href="{% url 'create_review' movie.id %}" class="inline-block px-5 py-2 rounded-full bg-primary text-on-primary font-bold text-sm transition-all active:scale-95">
-                    Editar tu reseña
+                    Edit your review
                 </a>
                 {% endif %}
 

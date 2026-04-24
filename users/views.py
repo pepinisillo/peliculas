@@ -23,9 +23,9 @@ def login_view(request):
         password = request.POST.get("password")
         # Validación de campos requeridos
         if not username:
-            errors['username'] = "Por favor, ingresa un usuario válido"
+            errors['username'] = "Please enter a valid username"
         if not password:
-            errors['password'] = "Por favor, ingresa una contraseña válida"
+            errors['password'] = "Please enter a valid password"
 
         # Si hay errores, se muestran en la plantilla
         if errors:
@@ -41,7 +41,7 @@ def login_view(request):
             return HttpResponseRedirect(reverse('index'))
         else:
             # Si el usuario no es válido, se muestra un mensaje de error y se retorna el formulario de login con el nombre de usuario ingresado
-            errors['login'] = "Tu contraseña es incorrecta o esta cuenta no existe. Por favor, verifica y vuelve a intentarlo"
+            errors['login'] = "Your password is incorrect or this account does not exist. Please verify and try again."
             return render(request, 'users/login.html', context={'errors':errors, 'username':username})
     else:
         # Si el método es GET, se muestra el formulario de login
@@ -68,15 +68,15 @@ def register_view(request):
 
         # Validación de campos requeridos
         if not username:
-            errors['username'] = "Por favor, ingresa un nombre de usuario"
+            errors['username'] = "Please enter a username"
         if not email:
-            errors['email'] = "Por favor, ingresa tu correo electrónico"
+            errors['email'] = "Please enter your email"
         if not password:
-            errors['password'] = "Por favor, ingresa tu contraseña"
+            errors['password'] = "Please enter your password"
         if not confirm_password:
-            errors['confirm_password'] = "Por favor, confirma tu contraseña"
+            errors['confirm_password'] = "Please confirm your password"
         if password and confirm_password and password != confirm_password:
-            errors['password_confirmation'] = "Las contraseñas no coinciden"
+            errors['password_confirmation'] = "Passwords do not match"
 
         # Si hay errores, se muestran en la plantilla
         if errors:
@@ -84,11 +84,11 @@ def register_view(request):
         else:
             # Validar que el correo electrónico no exista
             if User.objects.filter(email=email).exists():
-                errors['email'] = "Ingresa otro correo electrónico"
+                errors['email'] = "Please use a different email"
                 return render(request, 'users/register.html', context={'errors':errors, 'username':username, 'email':email})
             # Validar que el nombre de usuario no exista
             if User.objects.filter(username=username).exists():
-                errors['username'] = "El nombre de usuario ya está en uso"
+                errors['username'] = "This username is already in use"
                 return render(request, 'users/register.html', context={'errors':errors, 'username':username, 'email':email})
             # Crear el usuario
             user = User.objects.create_user(username=username, email=email, password=password)
@@ -153,12 +153,12 @@ def edit_profile_view(request):
         image = request.FILES.get('image')
 
         if not username:
-            errors['username'] = 'El nombre de usuario es obligatorio.'
+            errors['username'] = 'Username is required.'
         elif User.objects.exclude(pk=request.user.pk).filter(username=username).exists():
-            errors['username'] = 'Ese nombre de usuario ya está en uso.'
+            errors['username'] = 'That username is already in use.'
 
         if len(description) > 500:
-            errors['description'] = 'La descripción no puede superar 500 caracteres.'
+            errors['description'] = 'Description cannot exceed 500 characters.'
         
         # Si no hay errores, se actualiza el perfil
         if not errors:
@@ -169,7 +169,7 @@ def edit_profile_view(request):
                 profile.image = image
             profile.save()
             success = True
-            messages.success(request, 'Perfil actualizado correctamente')
+            messages.success(request, 'Profile updated successfully')
             return HttpResponseRedirect(reverse('profile'))
 
     context = {

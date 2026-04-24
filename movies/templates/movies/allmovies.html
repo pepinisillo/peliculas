@@ -5,7 +5,7 @@
     <title>All Movies</title>
 </head>
 <body>
-    <h2>Películas</h2>
+    <h2>Movies</h2>
 
     <ul>
         {% for movie in movies %}
@@ -13,7 +13,7 @@
                 <a href="{% url 'pelis' movie.id %}">{{ movie.title }}</a>
             </li>
         {% empty %}
-            <li>No hay películas registradas</li>
+            <li>No movies registered</li>
         {% endfor %}
     </ul>
 
