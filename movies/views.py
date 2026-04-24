@@ -172,22 +172,28 @@ def movie_reviews(request, movie_id):
 
     total_reviews = len(reviews)
     stars_breakdown = []
-    if total_reviews:
-        for star in range(5, 0, -1):
-            count = reviews_qs.filter(rating=star).count()
-            percent = round((count * 100) / total_reviews)
-            stars_breakdown.append({
-                'star': star,
-                'percent': percent,
-                'count': count,
-            })
-    else:
-        for star in range(5, 0, -1):
-            stars_breakdown.append({
-                'star': star,
-                'percent': 0,
-                'count': 0,
-            })
+    star_counts = {star: 0 for star in range(1, 6)}
+
+    # Compatibilidad: soporta ratings históricos en escala 1-5
+    # y ratings nuevos en escala 1-100.
+    for raw_rating in reviews_qs.values_list('rating', flat=True):
+        if raw_rating <= 5:
+            star_value = raw_rating
+        else:
+            # Mapeo por rangos:
+            # 1-20 -> 1 estrella, ..., 81-100 -> 5 estrellas.
+            star_value = ((raw_rating - 1) // 20) + 1
+        star_value = max(1, min(5, int(star_value)))
+        star_counts[star_value] += 1
+
+    for star in range(5, 0, -1):
+        count = star_counts[star]
+        percent = round((count * 100) / total_reviews) if total_reviews else 0
+        stars_breakdown.append({
+            'star': star,
+            'percent': percent,
+            'count': count,
+        })
 
     user_review = None
     critics_choice = None
@@ -382,6 +388,18 @@ def search(request):
     if search_type == 'users':
         if query:
             users = User.objects.filter(username__icontains=query)[:5]
+            if request.user.is_authenticated:
+                my_profile, _ = Profile.objects.get_or_create(user=request.user)
+                for found_user in users:
+                    found_user.show_follow = found_user.id != request.user.id
+                    found_user.is_following = False
+                    if found_user.show_follow:
+                        target_profile, _ = Profile.objects.get_or_create(user=found_user)
+                        found_user.is_following = target_profile.followers.filter(id=my_profile.id).exists()
+            else:
+                for found_user in users:
+                    found_user.show_follow = False
+                    found_user.is_following = False
         return render(request, 'movies/search.html', {
             'users': users,
             'movies': [],

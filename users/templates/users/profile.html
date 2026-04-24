@@ -124,14 +124,14 @@
 <p class="text-on-surface-variant font-body text-base sm:text-lg leading-relaxed mb-6 break-words whitespace-pre-line">{% if profile.description %}{{ profile.description }}{% else %}You have not added a profile description yet.{% endif %}
                         </p>
 <div class="flex flex-wrap gap-x-8 gap-y-4">
-<div class="flex flex-col">
+<button type="button" data-open-modal="followers-modal" class="flex flex-col text-left group">
 <span class="text-2xl font-headline font-bold text-primary">{{ followers_count }}</span>
-<span class="text-xs uppercase tracking-widest font-label text-outline">Followers</span>
-</div>
-<div class="flex flex-col">
+<span class="text-xs uppercase tracking-widest font-label text-outline group-hover:text-on-surface oily-smooth-transition">Followers</span>
+</button>
+<button type="button" data-open-modal="following-modal" class="flex flex-col text-left group">
 <span class="text-2xl font-headline font-bold text-on-surface">{{ following_count }}</span>
-<span class="text-xs uppercase tracking-widest font-label text-outline">Following</span>
-</div>
+<span class="text-xs uppercase tracking-widest font-label text-outline group-hover:text-on-surface oily-smooth-transition">Following</span>
+</button>
 <div class="flex flex-col">
 <span class="text-2xl font-headline font-bold text-on-surface">{{ reviews_count }}</span>
 <span class="text-xs uppercase tracking-widest font-label text-outline">Reviews</span>
@@ -176,7 +176,7 @@
 <h3 class="text-xl font-headline font-bold text-on-surface break-words">{{ review.movie.title }}</h3>
 <span class="inline-flex items-center gap-1 text-primary font-bold text-sm">
   <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
-  {{ review.rating }}/5
+  {% if review.rating <= 5 %}{% widthratio review.rating 1 20 %}{% else %}{{ review.rating }}{% endif %}/100
 </span>
 </div>
 <p class="text-sm text-on-surface mb-2 font-semibold break-words">{{ review.title }}</p>
@@ -211,6 +211,47 @@
 </div>
 </main>
 </div>
+<div id="followers-modal" class="fixed inset-0 z-[9998] hidden">
+  <div class="absolute inset-0 bg-black/70" data-close-modal></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="w-full max-w-md rounded-xl border border-outline-variant/30 bg-surface-container shadow-2xl">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-outline-variant/20">
+        <h3 class="text-lg font-headline font-bold">Followers</h3>
+        <button type="button" class="text-on-surface-variant hover:text-on-surface" data-close-modal>
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="max-h-[55vh] overflow-auto p-4 space-y-2">
+        {% for follower in follower_profiles %}
+        <div class="rounded-lg bg-surface-container-high px-3 py-2 text-sm font-medium">@{{ follower.user.username }}</div>
+        {% empty %}
+        <p class="text-sm text-on-surface-variant">No followers yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="following-modal" class="fixed inset-0 z-[9998] hidden">
+  <div class="absolute inset-0 bg-black/70" data-close-modal></div>
+  <div class="absolute inset-0 flex items-center justify-center p-4">
+    <div class="w-full max-w-md rounded-xl border border-outline-variant/30 bg-surface-container shadow-2xl">
+      <div class="flex items-center justify-between px-5 py-4 border-b border-outline-variant/20">
+        <h3 class="text-lg font-headline font-bold">Following</h3>
+        <button type="button" class="text-on-surface-variant hover:text-on-surface" data-close-modal>
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="max-h-[55vh] overflow-auto p-4 space-y-2">
+        {% for followed in following_profiles %}
+        <div class="rounded-lg bg-surface-container-high px-3 py-2 text-sm font-medium">@{{ followed.user.username }}</div>
+        {% empty %}
+        <p class="text-sm text-on-surface-variant">You are not following anyone yet.</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
 <script>
     const flash = document.getElementById("flash-message");
     if (flash) {
@@ -219,6 +260,34 @@
         setTimeout(() => flash.remove(), 500); // espera a que termine la transición
       }, 1500); // 1500ms = 1.5 segundos
     }
+
+    const openButtons = document.querySelectorAll("[data-open-modal]");
+    const closeButtons = document.querySelectorAll("[data-close-modal]");
+    const closeAllModals = () => {
+      document.querySelectorAll("#followers-modal, #following-modal").forEach((modal) => {
+        modal.classList.add("hidden");
+      });
+      document.body.classList.remove("overflow-hidden");
+    };
+
+    openButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetId = btn.getAttribute("data-open-modal");
+        const modal = document.getElementById(targetId);
+        if (!modal) return;
+        closeAllModals();
+        modal.classList.remove("hidden");
+        document.body.classList.add("overflow-hidden");
+      });
+    });
+
+    closeButtons.forEach((btn) => {
+      btn.addEventListener("click", closeAllModals);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") closeAllModals();
+    });
   </script>
 {% include 'movies/base.html' %}
 </body>

@@ -124,12 +124,16 @@ def profile_view(request):
         sort = 'recent'
         reviews = reviews.order_by('-created_at')
     reviews_count = reviews.count()
+    follower_profiles = profile.followers.select_related('user').order_by('user__username')
+    following_profiles = profile.following.select_related('user').order_by('user__username')
 
     context = {
         'user': request.user,
         'profile': profile,
         'followers_count': profile.followers.count(),
         'following_count': profile.following.count(),
+        'follower_profiles': follower_profiles,
+        'following_profiles': following_profiles,
         'reviews_count': reviews_count,
         'reviews': reviews,
         'reviews_sort': sort,

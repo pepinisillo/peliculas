@@ -173,6 +173,14 @@
         </div>
         <h4 class="font-headline font-bold text-base mb-1">{{ user.username }}</h4>
         <p class="text-xs text-on-surface-variant mb-4">User</p>
+        {% if request.user.is_authenticated and user.show_follow %}
+        <form method="POST" action="{% url 'toggle_follow' user.id %}">
+          {% csrf_token %}
+          <button type="submit" class="text-[10px] px-3 py-1 rounded-full font-semibold transition-colors {% if user.is_following %}bg-primary/20 text-primary hover:bg-primary/30{% else %}bg-surface-container-high text-on-surface-variant hover:text-on-surface{% endif %}">
+            {% if user.is_following %}Following{% else %}Follow{% endif %}
+          </button>
+        </form>
+        {% endif %}
       </div>
       {% endfor %}
     </div>
