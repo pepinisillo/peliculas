@@ -19,24 +19,45 @@
 	.text-shadow-hero { text-shadow: 0 4px 12px rgba(0,0,0,0.8); }
 	</style>
 </head>
-<body class="bg-surface text-on-surface font-body">
-	{% include 'movies/partials/side.html' %}
-	{% include 'movies/partials/header.html' %}
-	<main class="ml-64 pt-0 min-h-screen">
-		<section class="relative min-h-[780px] w-full flex items-end">
-			<div class="absolute top-0 left-0 w-full h-[70vh] z-0">
-				<img class="w-full h-full object-cover" src="https://image.tmdb.org/t/p/original/{{movie.backdrops}}" alt="{{movie.title}}"/>
-				<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
-				<div class="absolute inset-0 bg-gradient-to-r from-surface/80 via-transparent to-transparent"></div>
-			</div>
-			<div class="relative z-10 px-12 pb-20 max-w-4xl">
-				<div class="flex items-center gap-4 mb-6">
-					{% for g in movie.genres.all %}
-					<span class="bg-primary/20 text-primary px-3 py-1 rounded text-xs font-bold uppercase tracking-widest border border-primary/30">{{g}}</span>
-					{% endfor %}
-					<div class="flex items-center text-yellow-400 ml-4">
-						<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
-						<span class="font-bold ml-1">{{avg_rating}}</span>
+	<body class="bg-surface text-on-surface font-body selection:bg-primary-container selection:text-on-primary-container">
+		<!-- Side Navigation Shell (Shared Component) -->
+		{% include 'movies/partials/side.html'%}
+		<!-- Top App Bar Shell (Shared Component) -->
+		{% include 'movies/partials/header.html' %}
+
+		<!-- Main Content Canvas -->
+		<main class="ml-64 pt-0 min-h-screen">
+			<!-- Hero Section -->
+			<section class="relative min-h-[780px] w-full flex items-end">
+				<!-- Backdrop Image with Gradient Scrim -->
+				<div class="absolute top-0 left-0 w-full h-[70vh] z-0">
+					<img class=" w-full h-full object-cover"  src="https://image.tmdb.org/t/p/original/{{movie.backdrops}}" alt="{{movie.title}}"/>
+					<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+					<div class="absolute inset-0 bg-gradient-to-r from-surface/80 via-transparent to-transparent"></div>
+				</div>
+				<!-- Hero Content -->
+				<div class="relative z-10 px-12 pb-20 max-w-4xl">
+					<div class="flex items-center gap-4 mb-6">
+						<!--Generos-->
+						{% for g in movie.genres.all %} 
+						<span class="bg-primary/20 text-primary px-3 py-1 rounded text-xs font-bold uppercase tracking-widest border border-primary/30">{{g}}</span> 
+						{%endfor%} 
+
+						<div class="flex items-center text-yellow-400 ml-4">
+							<span class="material-symbols-outlined" data-icon="star" style="font-variation-settings: 'FILL' 1;">star</span>
+							<span class="font-bold ml-1">{{avg_rating}}</span>
+						</div>
+					</div>
+					<h1 class="font-headline font-extrabold text-7xl mb-4 tracking-tighter text-shadow-hero">{{movie.title}}</h1>
+
+					<div class="flex gap-4">
+						<a href="{% url 'toggle_favorite' movie.id %}"
+							class="bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-8 py-4 rounded-full font-bold flex items-center gap-2 hover:scale-105 transition-transform active:scale-95 shadow-lg shadow-primary/20">
+							<span class="material-symbols-outlined" style="font-variation-settings:'FILL' {% if movie.id in favorite_ids %}1{% else %}0{% endif %};">
+								favorite
+							</span>
+							{% if movie.id in favorite_ids %}En favoritas{% else %}Añadir a favoritos{% endif %}
+						</a>
 					</div>
 				</div>
 				<h1 class="font-headline font-extrabold text-7xl mb-4 tracking-tighter text-shadow-hero">{{movie.title}}</h1>
