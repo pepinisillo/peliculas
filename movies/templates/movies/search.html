@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html class="dark" lang="en">
 <head>
@@ -45,6 +46,7 @@
     },
   }
 </script>
+
 <style>
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
@@ -60,50 +62,13 @@
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 </style>
 </head>
-
 <body class="bg-background text-on-background">
 
-{# ── SIDEBAR ── #}
-<aside class="h-screen w-64 fixed left-0 top-0 bg-zinc-950/80 backdrop-blur-xl shadow-2xl shadow-black/50 flex flex-col p-6 gap-8 z-50 hidden md:flex">
-  <div class="flex flex-col gap-1">
-    <span class="text-2xl font-bold tracking-tighter text-blue-500 font-headline">Cinematic</span>
-    <span class="text-xs font-medium text-zinc-500 tracking-widest uppercase">The Canvas</span>
-  </div>
-  <nav class="flex flex-col gap-2">
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/movies/">
-      <span class="material-symbols-outlined">home</span>
-      Inicio
-    </a>
-    <a class="flex items-center gap-4 px-4 py-3 text-white bg-blue-600/10 rounded-lg scale-105 text-sm font-medium" href="/movies/search/">
-      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">search</span>
-      Buscar
-    </a>
-    {% if request.user.is_authenticated %}
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/profile/">
-      <span class="material-symbols-outlined">person</span>
-      Perfil
-    </a>
-    {% else %}
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/users/login">
-      <span class="material-symbols-outlined">login</span>
-      Login
-    </a>
-    {% endif %}
-  </nav>
-</aside>
-
-{# ── TOP BAR ── #}
-<header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 z-40 bg-zinc-950/40 backdrop-blur-md flex items-center justify-end px-8 gap-6">
-  {% if request.user.is_authenticated %}
-  <span class="text-zinc-400 text-sm">{{ request.user.username }}</span>
-  <a href="/logout/" class="text-zinc-400 hover:text-white text-sm transition-colors">Salir</a>
-  {% else %}
-  <a href="/users/login" class="text-zinc-400 hover:text-white text-sm transition-colors">Iniciar sesión</a>
-  {% endif %}
-</header>
-
+<div class="selection:bg-primary selection:text-on-primary">
+{% include 'movies/partials/side.html' %}
 {# ── MAIN ── #}
-<main class="md:ml-64 pt-16 min-h-screen">
+<main class="lg:ml-64 min-h-screen pt-32 lg:pt-24 pb-28 lg:pb-0">
+  {% include 'movies/partials/header.html' %}
 
   {# ── BARRA DE BÚSQUEDA STICKY ── #}
   <section class="px-8 pt-10 pb-6 sticky top-16 z-30 bg-background/90 backdrop-blur-xl border-b border-outline-variant/10">
@@ -117,7 +82,7 @@
           name="q"
           value="{{ query|default:'' }}"
           class="w-full bg-surface-container-high border-none rounded-full py-5 pl-16 pr-8 text-lg placeholder:text-on-surface-variant/50 focus:ring-1 focus:ring-primary/40 transition-all outline-none"
-          placeholder="Buscar películas o usuarios..."
+          placeholder="Search movies or users..."
           type="text"
           id="main-search-input"
         />
@@ -133,7 +98,7 @@
             {% if search_type == 'movies' or not search_type %}bg-primary text-on-primary{% else %}bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface{% endif %}"
         >
           <span class="material-symbols-outlined text-sm align-middle mr-1">movie</span>
-          Películas
+          Movies
         </button>
         <button
           type="submit"
@@ -143,14 +108,14 @@
             {% if search_type == 'users' %}bg-primary text-on-primary{% else %}bg-surface-container-high text-on-surface-variant hover:bg-surface-container-highest hover:text-on-surface{% endif %}"
         >
           <span class="material-symbols-outlined text-sm align-middle mr-1">person</span>
-          Usuarios
+          Users
         </button>
       </div>
 
       {# Filtro de géneros — solo visible en modo movies #}
       {% if search_type != 'users' and genres %}
       <div class="flex items-center gap-2 flex-wrap">
-        <span class="text-xs text-on-surface-variant font-medium mr-1">Género:</span>
+        <span class="text-xs text-on-surface-variant font-medium mr-1">Genre:</span>
         {% for genre in genres %}
         <label class="cursor-pointer">
           <input
@@ -172,7 +137,7 @@
           value="movies"
           class="ml-2 px-4 py-1.5 rounded-full bg-primary/20 text-primary border border-primary/20 text-xs font-bold hover:bg-primary/30 transition-all"
         >
-          Aplicar filtros
+          Apply filters
         </button>
       </div>
       {% endif %}
@@ -187,15 +152,15 @@
     {% if not query and not selected_genres %}
     <div class="flex flex-col items-center justify-center py-32 text-center">
       <span class="material-symbols-outlined text-6xl text-zinc-700 mb-4">search</span>
-      <p class="text-zinc-500 text-lg font-medium">Escribe algo para buscar</p>
-      <p class="text-zinc-600 text-sm mt-1">Puedes buscar por título de película o nombre de usuario</p>
-      <p class="text-xs text-zinc-600 italic">Escribe un usuario, busca y luego selecciona usuarios</p>
+      <p class="text-zinc-500 text-lg font-medium">Type something to search</p>
+      <p class="text-zinc-600 text-sm mt-1">You can search by movie title or username</p>
+      <p class="text-xs text-zinc-600 italic">Type a username, search, then select users</p>
     </div>
 
     {# Resultados de USUARIOS #}
     {% elif search_type == 'users' %}
     <div class="mb-4">
-      <h2 class="text-2xl font-headline font-bold mb-1">Usuarios</h2>
+      <h2 class="text-2xl font-headline font-bold mb-1">Users</h2>
       <div class="h-1 w-10 bg-secondary rounded-full"></div>
     </div>
 
@@ -207,14 +172,14 @@
           <span class="material-symbols-outlined text-4xl text-zinc-500">person</span>
         </div>
         <h4 class="font-headline font-bold text-base mb-1">{{ user.username }}</h4>
-        <p class="text-xs text-on-surface-variant mb-4">Usuario</p>
+        <p class="text-xs text-on-surface-variant mb-4">User</p>
       </div>
       {% endfor %}
     </div>
     {% else %}
     <div class="flex flex-col items-center py-20 text-center">
       <span class="material-symbols-outlined text-5xl text-zinc-700 mb-3">person_search</span>
-      <p class="text-zinc-500">No se encontraron usuarios con "{{ query }}"</p>
+      <p class="text-zinc-500">No users found for "{{ query }}"</p>
     </div>
     {% endif %}
 
@@ -223,12 +188,12 @@
     <div class="flex items-end justify-between mb-8">
       <div>
         <h2 class="text-2xl font-headline font-bold mb-1">
-          {% if query %}Resultados para "{{ query }}"{% else %}Todas las películas{% endif %}
+          {% if query %}Results for "{{ query }}"{% else %}All movies{% endif %}
         </h2>
         <div class="h-1 w-10 bg-primary rounded-full mt-1"></div>
       </div>
       {% if movies %}
-      <span class="text-sm text-on-surface-variant">{{ movies|length }} resultado{{ movies|length|pluralize:"s" }}</span>
+      <span class="text-sm text-on-surface-variant">{{ movies|length }} result{{ movies|length|pluralize:"s" }}</span>
       {% endif %}
     </div>
 
@@ -245,7 +210,7 @@
   <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
   <div class="absolute bottom-0 left-0 p-8 z-10">
     <span class="px-3 py-1 bg-primary/20 text-primary text-xs font-bold tracking-widest uppercase rounded mb-4 inline-block border border-primary/20">
-      Mejor resultado
+      Top result
     </span>
     <h3 class="font-headline text-4xl md:text-5xl font-extrabold tracking-tighter mb-3">{{ top.title }}</h3>
     <div class="flex items-center gap-4 text-sm text-on-surface-variant mb-6">
@@ -257,12 +222,12 @@
     <div class="flex gap-3" onclick="event.stopPropagation()">
       <a href="/movies/{{ top.id }}/"
          class="px-8 py-3 bg-white text-black font-bold rounded-full hover:scale-105 active:scale-95 transition-all">
-        Ver detalles
+        View details
       </a>
       {% if request.user.is_authenticated %}
       <a href="{% url 'toggle_favorite' top.id %}"
          class="w-12 h-12 flex items-center justify-center rounded-full bg-surface-variant/40 backdrop-blur-md text-secondary hover:bg-surface-variant/60 transition-colors"
-         title="Agregar a favoritas">
+         title="Add to favorites">
         <span class="material-symbols-outlined"
   style="font-variation-settings:'FILL' {% if top.id in favorite_ids %}1{% else %}0{% endif %};">
   favorite
@@ -309,8 +274,8 @@
     {% else %}
     <div class="flex flex-col items-center py-20 text-center">
       <span class="material-symbols-outlined text-5xl text-zinc-700 mb-3">movie_off</span>
-      <p class="text-zinc-500 text-lg">No se encontraron películas</p>
-      {% if query %}<p class="text-zinc-600 text-sm mt-1">Intenta con otro título o quita los filtros de género</p>{% endif %}
+      <p class="text-zinc-500 text-lg">No movies found</p>
+      {% if query %}<p class="text-zinc-600 text-sm mt-1">Try a different title or remove genre filters</p>{% endif %}
     </div>
     {% endif %}
 
@@ -319,22 +284,7 @@
   </div>
 
 </main>
-
-{# ── NAV MÓVIL ── #}
-<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-zinc-950/80 backdrop-blur-xl flex items-center justify-around px-4 z-50">
-  <a class="flex flex-col items-center gap-1 text-zinc-500" href="/movies/">
-    <span class="material-symbols-outlined">home</span>
-    <span class="text-[10px] font-medium">Inicio</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-primary" href="/movies/search/">
-    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">search</span>
-    <span class="text-[10px] font-bold">Buscar</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-zinc-500" href="{% if request.user.is_authenticated %}/profile/{% else %}/users/login{% endif %}">
-    <span class="material-symbols-outlined">person</span>
-    <span class="text-[10px] font-medium">Perfil</span>
-  </a>
-</nav>
-
+</div>
+{% include 'movies/base.html' %}
 </body>
 </html>

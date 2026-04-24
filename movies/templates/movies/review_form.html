@@ -1,148 +1,270 @@
 <!DOCTYPE html>
-<html class="dark" lang="en">
-<head>
-    <meta charset="utf-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Nueva Reseña - {{ movie.title }}</title>
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
-
-    <!-- Colores y tipografía del proyecto -->
-    <script id="tailwind-config">
-    tailwind.config = {
-        darkMode: "class",
-        theme: { extend: { "colors": { "surface": "#0e0e0f", "surface-container": "#1a191b", "surface-container-low": "#131314", "surface-container-lowest": "#000000", "on-surface": "#ffffff", "on-surface-variant": "#adaaab", "outline-variant": "#484849", "primary": "#85adff", "primary-container": "#6c9fff", "on-primary-container": "#00214f", "error": "#ff716c" } } }
-    }
-    </script>
+{% load static %}
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>{% if review %}Edit Review{% else %}New Review{% endif %} | {{ movie.title }}</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          "surface-variant": "#262627",
+          "primary": "#85adff",
+          "error-container": "#9f0519",
+          "surface-container-low": "#131314",
+          "on-tertiary-fixed-variant": "#6d1a6b",
+          "surface-bright": "#2c2c2d",
+          "on-tertiary-container": "#620e61",
+          "secondary-container": "#7d01b1",
+          "on-primary-container": "#00214f",
+          "on-tertiary-fixed": "#400040",
+          "tertiary": "#ffaaf4",
+          "primary-fixed-dim": "#5191ff",
+          "tertiary-fixed-dim": "#e98adf",
+          "on-error": "#490006",
+          "surface-container-high": "#201f21",
+          "on-primary-fixed-variant": "#002a61",
+          "inverse-on-surface": "#565556",
+          "on-secondary-fixed": "#56007c",
+          "inverse-surface": "#fcf8f9",
+          "surface-container": "#1a191b",
+          "secondary-fixed-dim": "#e7afff",
+          "outline": "#767576",
+          "on-surface-variant": "#adaaab",
+          "on-secondary-container": "#f3cfff",
+          "error": "#ff716c",
+          "tertiary-container": "#f897ee",
+          "surface-dim": "#0e0e0f",
+          "inverse-primary": "#005bc2",
+          "on-tertiary": "#6d1b6c",
+          "on-error-container": "#ffa8a3",
+          "on-primary": "#002c65",
+          "on-secondary": "#380052",
+          "secondary": "#d277ff",
+          "outline-variant": "#484849",
+          "secondary-dim": "#d277ff",
+          "surface-container-highest": "#262627",
+          "surface": "#0e0e0f",
+          "surface-container-lowest": "#000000",
+          "tertiary-fixed": "#f897ee",
+          "primary-fixed": "#6c9fff",
+          "primary-dim": "#0070eb",
+          "on-primary-fixed": "#000000",
+          "background": "#0e0e0f",
+          "secondary-fixed": "#eec2ff",
+          "tertiary-dim": "#e98adf",
+          "primary-container": "#6c9fff",
+          "on-surface": "#ffffff",
+          "error-dim": "#d7383b",
+          "on-background": "#ffffff",
+          "surface-tint": "#85adff",
+          "on-secondary-fixed-variant": "#800ab4"
+        },
+        borderRadius: {
+          "DEFAULT": "0.25rem",
+          "lg": "1rem",
+          "xl": "1.5rem",
+          "full": "9999px"
+        },
+        fontFamily: {
+          "headline": ["Manrope"],
+          "display": ["Manrope"],
+          "body": ["Inter"],
+          "label": ["Inter"]
+        }
+      },
+    },
+  }
+</script>
+<style>
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+  .glass-panel {
+    background: rgba(26, 25, 27, 0.7);
+    backdrop-filter: blur(20px);
+  }
+  .oily-motion {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>
 </head>
-<body class="bg-surface text-on-surface">
-    {% include 'movies/partials/side.html' %}
-    {% include 'movies/partials/header.html' %}
+<body class="bg-surface text-on-surface font-body min-h-screen selection:bg-primary/30">
+<main class="relative min-h-screen flex items-center justify-center p-4 md:p-8 overflow-hidden">
+  <div class="absolute inset-0 z-0">
+    <img class="w-full h-full object-cover opacity-30 scale-110 blur-xl"
+         src="https://image.tmdb.org/t/p/original/{{ movie.backdrops|default:movie.poster_path }}"
+         alt="{{ movie.title }} background"/>
+    <div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/80 to-surface/20"></div>
+  </div>
 
-    <main class="ml-64 pt-16 min-h-screen px-12 py-12">
+  <div class="relative z-10 w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
+    <div class="lg:col-span-4 space-y-8 lg:sticky lg:top-12">
+      <div class="relative group">
+        <div class="absolute -inset-4 bg-primary/10 blur-3xl rounded-full opacity-0 group-hover:opacity-100 oily-motion"></div>
+        <img class="relative rounded-lg shadow-2xl w-full aspect-[2/3] object-cover"
+             src="https://image.tmdb.org/t/p/w780/{{ movie.poster_path }}"
+             alt="{{ movie.title }} poster"/>
+      </div>
+      <div class="space-y-2">
+        <h1 class="font-display text-4xl font-extrabold tracking-tighter text-white">{{ movie.title }}</h1>
+        <div class="flex items-center gap-3 text-on-surface-variant font-medium">
+          <span class="label-md">{{ movie.release_date|date:"Y" }}</span>
+          <span class="w-1 h-1 rounded-full bg-outline-variant"></span>
+          <span class="label-md">{{ movie.running_time }}m</span>
+        </div>
+      </div>
+      <div class="p-6 rounded-lg bg-surface-container-low space-y-4">
+        <p class="text-on-surface-variant text-sm leading-relaxed italic">
+          {% if review %}
+          "You are editing your review for this movie. Your opinion helps the community."
+          {% else %}
+          "Share your experience and help other users decide what to watch."
+          {% endif %}
+        </p>
+      </div>
+    </div>
 
-        <!-- Encabezado con botón de regreso -->
-        <div class="mb-10">
-            <a href="{% url 'movie_reviews' movie.id %}" class="text-on-surface-variant text-sm flex items-center gap-1 mb-2 hover:text-white transition-colors w-fit">
-                <span class="material-symbols-outlined text-base">arrow_back</span>
-                Volver a reseñas de {{ movie.title }}
-            </a>
-            <h1 class="font-headline font-extrabold text-4xl">
-                {% if review %}Editar reseña{% else %}Nueva reseña{% endif %}
-            </h1>
-            <p class="text-on-surface-variant mt-1">{{ movie.title }}</p>
+    <div class="lg:col-span-8 glass-panel p-8 lg:p-12 rounded-xl border border-white/5 shadow-2xl">
+      <header class="mb-10">
+        <div class="flex items-center justify-between mb-2">
+          <span class="text-primary font-bold tracking-widest text-xs uppercase">Editor Mode</span>
+          {% if review %}
+          <form method="POST" action="{% url 'delete_review' review.id %}">
+            {% csrf_token %}
+            <button type="submit" class="bg-error/20 text-error hover:bg-error/30 oily-motion flex items-center gap-2 px-4 py-2 rounded-full text-sm font-semibold">
+              <span class="material-symbols-outlined text-lg">delete</span>
+              <span>Delete review</span>
+            </button>
+          </form>
+          {% else %}
+          <a href="{% if next_page == 'profile' %}{% url 'profile' %}{% else %}{% url 'movie_reviews' movie.id %}{% endif %}" class="text-on-surface-variant hover:text-white oily-motion flex items-center gap-2">
+            <span class="material-symbols-outlined text-lg">close</span>
+            <span class="text-sm font-medium">Close editor</span>
+          </a>
+          {% endif %}
+        </div>
+        <h2 class="font-display text-3xl font-bold text-white">
+          {% if review %}Update your experience{% else %}Write your experience{% endif %}
+        </h2>
+      </header>
+
+      <form class="space-y-8" method="post">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next_page|default:'reviews' }}">
+
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-on-surface-variant uppercase tracking-widest">Global Rating</label>
+          <input type="hidden" name="rating" id="rating-input" value="{{ form.rating.value|default:'' }}">
+          <div class="flex flex-wrap items-center gap-2" id="stars-container">
+            {% for i in "1234567890" %}
+            <button class="text-outline-variant oily-motion scale-110 sm:scale-125 hover:scale-125 sm:hover:scale-150 star-button" type="button" data-value="{{ forloop.counter }}0">
+              <span class="material-symbols-outlined star-icon text-2xl sm:text-[28px]">star</span>
+            </button>
+            {% endfor %}
+            <span class="w-full sm:w-auto sm:ml-4 text-white font-display text-lg sm:text-xl font-bold mt-2 sm:mt-0" id="rating-label">0 / 100</span>
+          </div>
+          {% if form.rating.errors %}
+          <p class="text-error text-xs mt-1">{{ form.rating.errors|join:", " }}</p>
+          {% endif %}
         </div>
 
-        <!-- Formulario -->
-        <div class="max-w-2xl">
-            <form method="POST" class="space-y-6">
-                {% csrf_token %}
-
-                <!-- Título de la reseña -->
-                <div>
-                    <label class="block text-sm font-semibold text-on-surface-variant mb-2">Título</label>
-                    <input type="text" name="title" required
-                        value="{{ form.title.value|default:'' }}"
-                        class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary transition-colors"
-                        placeholder="Dale un título a tu reseña">
-                    <!-- Error de validación -->
-                    {% if form.title.errors %}
-                    <p class="text-error text-xs mt-1">{{ form.title.errors|join:", " }}</p>
-                    {% endif %}
-                </div>
-
-                <!-- Calificación con estrellas interactivas -->
-                <div>
-                    <label class="block text-sm font-semibold text-on-surface-variant mb-2">Calificación</label>
-                    
-                    <!-- Input oculto que guarda el valor real del 1-100 que se manda al servidor -->
-                    <input type="hidden" name="rating" id="rating-input" value="{{ form.rating.value|default:'' }}">
-                    
-                    <!-- Estrellas clickeables -->
-                    <div class="flex gap-2 mb-2" id="stars-container">
-                        {% for i in "1234567890" %}
-                        <span class="material-symbols-outlined text-4xl cursor-pointer text-outline-variant transition-colors star"
-                            data-value="{{ forloop.counter }}0">
-                            star
-                        </span>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Muestra el número seleccionado -->
-                    <p class="text-on-surface-variant text-sm" id="rating-label">Sin calificación</p>
-
-                    {% if form.rating.errors %}
-                    <p class="text-error text-xs mt-1">{{ form.rating.errors|join:", " }}</p>
-                    {% endif %}
-                </div>
-
-                <!-- Texto de la reseña -->
-                <div>
-                    <label class="block text-sm font-semibold text-on-surface-variant mb-2">Reseña</label>
-                    <textarea name="review" rows="6" required minlength="20"
-                        class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary transition-colors resize-none"
-                        placeholder="Escribe tu reseña aquí...">{{ form.review.value|default:'' }}</textarea>
-                    {% if form.review.errors %}
-                    <p class="text-error text-xs mt-1">{{ form.review.errors|join:", " }}</p>
-                    {% endif %}
-                </div>
-
-                <!-- Botones de acción -->
-                <div class="flex gap-4 pt-2">
-                    <button type="submit"
-                        class="flex items-center gap-2 bg-primary/20 text-primary px-8 py-3 rounded-full font-bold hover:bg-primary/30 transition-colors">
-                        <span class="material-symbols-outlined text-base">send</span>
-                        {% if review %}Guardar cambios{% else %}Publicar reseña{% endif %}
-                    </button>
-                    <a href="{% url 'movie_reviews' movie.id %}"
-                        class="flex items-center gap-2 text-on-surface-variant px-8 py-3 rounded-full font-bold hover:text-white transition-colors border border-outline-variant/30">
-                        Cancelar
-                    </a>
-                </div>
-            </form>
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-on-surface-variant uppercase tracking-widest" for="review-title">Review Headline</label>
+          <input class="w-full bg-surface-container-high border-none rounded-lg p-5 text-on-surface font-display text-xl font-semibold focus:ring-2 focus:ring-primary/40 oily-motion placeholder:text-outline-variant"
+                 id="review-title"
+                 name="title"
+                 type="text"
+                 required
+                 value="{{ form.title.value|default:'' }}"
+                 placeholder="Catchy headline for your review..."/>
+          {% if form.title.errors %}
+          <p class="text-error text-xs mt-1">{{ form.title.errors|join:", " }}</p>
+          {% endif %}
         </div>
-    </main>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const stars = document.querySelectorAll('.star');
-    const ratingInput = document.getElementById('rating-input');
-    const ratingLabel = document.getElementById('rating-label');
 
-    function paintStars(count) {
-        stars.forEach((star, index) => {
-            if (index < count) {
-                star.style.fontVariationSettings = "'FILL' 1";
-                star.classList.add('text-primary');
-                star.classList.remove('text-outline-variant');
-            } else {
-                star.style.fontVariationSettings = "'FILL' 0";
-                star.classList.remove('text-primary');
-                star.classList.add('text-outline-variant');
-            }
-        });
-    }
+        <div class="space-y-4">
+          <label class="block text-sm font-semibold text-on-surface-variant uppercase tracking-widest" for="review-content">Detailed Critique</label>
+          <textarea class="w-full bg-surface-container-high border-none rounded-lg p-5 text-on-surface font-body leading-relaxed focus:ring-2 focus:ring-primary/40 oily-motion placeholder:text-outline-variant resize-none"
+                    id="review-content"
+                    name="review"
+                    rows="8"
+                    required
+                    minlength="20"
+                    placeholder="Write your thoughts here...">{{ form.review.value|default:'' }}</textarea>
+          {% if form.review.errors %}
+          <p class="text-error text-xs mt-1">{{ form.review.errors|join:", " }}</p>
+          {% endif %}
+        </div>
 
-    stars.forEach((star, index) => {
-        star.addEventListener('mouseover', () => paintStars(index + 1));
-        star.addEventListener('mouseleave', () => {
-            const current = ratingInput.value ? Math.ceil(parseInt(ratingInput.value) / 10) : 0;
-            paintStars(current);
-        });
-        star.addEventListener('click', () => {
-            const value = star.getAttribute('data-value');
-            ratingInput.value = value;
-            ratingLabel.textContent = `${value}/100`;
-            paintStars(index + 1);
-        });
+        <div class="pt-6 flex flex-col sm:flex-row items-center justify-end gap-6">
+          <a href="{% if next_page == 'profile' %}{% url 'profile' %}{% else %}{% url 'movie_reviews' movie.id %}{% endif %}" class="w-full sm:w-auto px-8 py-4 rounded-full text-on-surface font-semibold hover:bg-white/5 oily-motion border border-transparent hover:border-white/10 text-center">
+            Discard Changes
+          </a>
+          <button class="w-full sm:w-auto px-10 py-4 rounded-full bg-gradient-to-r from-primary to-primary-fixed shadow-[0_8px_32px_rgba(133,173,255,0.3)] text-on-primary-container font-extrabold tracking-tight hover:scale-105 active:scale-95 oily-motion"
+                  type="submit">
+            {% if review %}Save Review{% else %}Publish Review{% endif %}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</main>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const starButtons = document.querySelectorAll('.star-button');
+  const ratingInput = document.getElementById('rating-input');
+  const ratingLabel = document.getElementById('rating-label');
+
+  function toHundredScale(rawValue) {
+    const n = parseInt(rawValue || '0', 10);
+    if (!n) return 0;
+    // Compat: si llega en escala 1-5 desde datos viejos, mapear a /100
+    if (n <= 5) return Math.max(10, Math.min(100, n * 20));
+    return Math.max(10, Math.min(100, n));
+  }
+
+  function paintStars(count) {
+    starButtons.forEach((btn, idx) => {
+      const icon = btn.querySelector('.star-icon');
+      if (idx < count) {
+        btn.classList.add('text-primary');
+        btn.classList.remove('text-outline-variant');
+        icon.style.fontVariationSettings = "'FILL' 1";
+      } else {
+        btn.classList.remove('text-primary');
+        btn.classList.add('text-outline-variant');
+        icon.style.fontVariationSettings = "'FILL' 0";
+      }
     });
+  }
 
-    const initialValue = ratingInput.value;
-    if (initialValue) {
-        paintStars(Math.ceil(parseInt(initialValue) / 10));
-        ratingLabel.textContent = `${initialValue}/100`;
-    }
+  function setRating(value) {
+    ratingInput.value = String(value);
+    ratingLabel.textContent = `${value}/100`;
+    paintStars(Math.ceil(value / 10));
+  }
+
+  starButtons.forEach((btn) => {
+    const value = parseInt(btn.dataset.value, 10);
+    btn.addEventListener('click', () => setRating(value));
+    btn.addEventListener('mouseover', () => paintStars(Math.ceil(value / 10)));
+    btn.addEventListener('mouseleave', () => paintStars(Math.ceil(toHundredScale(ratingInput.value) / 10)));
+  });
+
+  const initialHundred = toHundredScale(ratingInput.value);
+  if (initialHundred) {
+    setRating(initialHundred);
+  } else {
+    paintStars(0);
+    ratingLabel.textContent = '0 / 100';
+  }
 });
 </script>
-</body>
-</body>
-</html>
+</body></html>

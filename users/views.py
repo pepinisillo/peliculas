@@ -7,6 +7,7 @@ from users.models import Profile
 from movies.models import MovieReview
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.db.models import Count, Q
 
 # Vista de login
 def login_view(request):
@@ -22,9 +23,9 @@ def login_view(request):
         password = request.POST.get("password")
         # Validación de campos requeridos
         if not username:
-            errors['username'] = "Por favor, ingresa un usuario válido"
+            errors['username'] = "Please enter a valid username"
         if not password:
-            errors['password'] = "Por favor, ingresa una contraseña válida"
+            errors['password'] = "Please enter a valid password"
 
         # Si hay errores, se muestran en la plantilla
         if errors:
@@ -40,7 +41,7 @@ def login_view(request):
             return HttpResponseRedirect(reverse('index'))
         else:
             # Si el usuario no es válido, se muestra un mensaje de error y se retorna el formulario de login con el nombre de usuario ingresado
-            errors['login'] = "Tu contraseña es incorrecta o esta cuenta no existe. Por favor, verifica y vuelve a intentarlo"
+            errors['login'] = "Your password is incorrect or this account does not exist. Please verify and try again."
             return render(request, 'users/login.html', context={'errors':errors, 'username':username})
     else:
         # Si el método es GET, se muestra el formulario de login
@@ -67,15 +68,15 @@ def register_view(request):
 
         # Validación de campos requeridos
         if not username:
-            errors['username'] = "Por favor, ingresa un nombre de usuario"
+            errors['username'] = "Please enter a username"
         if not email:
-            errors['email'] = "Por favor, ingresa tu correo electrónico"
+            errors['email'] = "Please enter your email"
         if not password:
-            errors['password'] = "Por favor, ingresa tu contraseña"
+            errors['password'] = "Please enter your password"
         if not confirm_password:
-            errors['confirm_password'] = "Por favor, confirma tu contraseña"
+            errors['confirm_password'] = "Please confirm your password"
         if password and confirm_password and password != confirm_password:
-            errors['password_confirmation'] = "Las contraseñas no coinciden"
+            errors['password_confirmation'] = "Passwords do not match"
 
         # Si hay errores, se muestran en la plantilla
         if errors:
@@ -83,11 +84,11 @@ def register_view(request):
         else:
             # Validar que el correo electrónico no exista
             if User.objects.filter(email=email).exists():
-                errors['email'] = "Ingresa otro correo electrónico"
+                errors['email'] = "Please use a different email"
                 return render(request, 'users/register.html', context={'errors':errors, 'username':username, 'email':email})
             # Validar que el nombre de usuario no exista
             if User.objects.filter(username=username).exists():
-                errors['username'] = "El nombre de usuario ya está en uso"
+                errors['username'] = "This username is already in use"
                 return render(request, 'users/register.html', context={'errors':errors, 'username':username, 'email':email})
             # Crear el usuario
             user = User.objects.create_user(username=username, email=email, password=password)
@@ -108,15 +109,17 @@ def profile_view(request):
     # Si el usuario está autenticado, se muestra el perfil
     profile, _ = Profile.objects.get_or_create(user=request.user)
     sort = request.GET.get('sort', 'recent')
-    reviews = MovieReview.objects.filter(user=request.user).select_related('movie')
-    review_fields = {f.name for f in MovieReview._meta.get_fields()}
-
+    reviews = (
+        MovieReview.objects
+        .filter(user=request.user)
+        .select_related('movie')
+        .annotate(
+            like_count=Count('likes', filter=Q(likes__vote='like')),
+            dislike_count=Count('likes', filter=Q(likes__vote='dislike')),
+        )
+    )
     if sort == 'popular':
-        # Mientras no se tienen los likes, se ordena por rating
-        if 'likes' in review_fields:
-            reviews = reviews.order_by('-likes', '-created_at')
-        else:
-            reviews = reviews.order_by('-rating', '-created_at')
+        reviews = reviews.order_by('-like_count', '-created_at')
     else:
         sort = 'recent'
         reviews = reviews.order_by('-created_at')
@@ -150,12 +153,12 @@ def edit_profile_view(request):
         image = request.FILES.get('image')
 
         if not username:
-            errors['username'] = 'El nombre de usuario es obligatorio.'
+            errors['username'] = 'Username is required.'
         elif User.objects.exclude(pk=request.user.pk).filter(username=username).exists():
-            errors['username'] = 'Ese nombre de usuario ya está en uso.'
+            errors['username'] = 'That username is already in use.'
 
         if len(description) > 500:
-            errors['description'] = 'La descripción no puede superar 500 caracteres.'
+            errors['description'] = 'Description cannot exceed 500 characters.'
         
         # Si no hay errores, se actualiza el perfil
         if not errors:
@@ -166,7 +169,7 @@ def edit_profile_view(request):
                 profile.image = image
             profile.save()
             success = True
-            messages.success(request, 'Perfil actualizado correctamente')
+            messages.success(request, 'Profile updated successfully')
             return HttpResponseRedirect(reverse('profile'))
 
     context = {
@@ -176,4 +179,27 @@ def edit_profile_view(request):
         'success': success,
     }
     return render(request, 'users/edit_profile.html', context=context)
+
+
+def toggle_follow_view(request, user_id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+    if request.method != 'POST':
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('index')))
+
+    target_user = User.objects.filter(id=user_id).first()
+    if not target_user:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('index')))
+    if target_user.id == request.user.id:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('index')))
+
+    my_profile, _ = Profile.objects.get_or_create(user=request.user)
+    target_profile, _ = Profile.objects.get_or_create(user=target_user)
+
+    if target_profile.followers.filter(id=my_profile.id).exists():
+        target_profile.followers.remove(my_profile)
+    else:
+        target_profile.followers.add(my_profile)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('index')))
     

@@ -1,87 +1,27 @@
-{% load static %}
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
-    <link href="{% static 'output.css' %}" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    {% block head %}
-
-    {% endblock head %}
-    <title> My Movies </title>
-
-      <script>
-      /*to prevent Firefox FOUC, this must be here*/
-        let FF_FOUC_FIX;
-      </script>
-     <style>
-        .material-symbols-outlined {
-          font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-          display: inline-block;
-          line-height: 1;
-        }
-
-         {% block style %}
-
-         {% endblock style %}
-      </style>
-  </head>
-
-    <body class="bg-[#0e0e0f]" hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>    
-    {% block header %}
-      {% include "movies/header.html" %} 
-    {% endblock header %}
-
-
-    {% block content %}
-
-
-
-    {% endblock content %}
-
-   
-
-
-    {% block footer %}
-<footer class="px-8 py-12 bg-zinc-950 border-t border-zinc-800/50 mt-20">
+<footer class="lg:ml-64 px-8 py-12 bg-zinc-950 border-t border-zinc-800/50 mt-20">
   <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     <div>
       <h2 class="text-xl font-bold text-blue-500 mb-2">Cinematic</h2>
-      <p class="text-zinc-500 text-sm">Tu catálogo personal de cine.</p>
+      <p class="text-zinc-500 text-sm">Your personal movie catalog.</p>
     </div>
     <div>
-      <h5 class="font-bold text-zinc-400 text-sm uppercase tracking-widest mb-3">Explorar</h5>
+      <h5 class="font-bold text-zinc-400 text-sm uppercase tracking-widest mb-3">Explore</h5>
       <ul class="space-y-2 text-zinc-500 text-sm">
-        <li><a href="/movies/search/" class="hover:text-white transition-colors">Buscar</a></li>
-        <li><a href="/movies/all/" class="hover:text-white transition-colors">Catálogo completo</a></li>
+        <li><a href="/movies/search/" class="hover:text-white transition-colors">Search</a></li>
       </ul>
     </div>
     <div>
       <h5 class="font-bold text-zinc-400 text-sm uppercase tracking-widest mb-3">Cuenta</h5>
       <ul class="space-y-2 text-zinc-500 text-sm">
         {% if user.is_authenticated %}
-        <li><a href="/users/logout" class="hover:text-white transition-colors">Cerrar sesión</a></li>
+        <li><a href="/users/logout" class="hover:text-white transition-colors">Log out</a></li>
         {% else %}
-        <li><a href="/users/login" class="hover:text-white transition-colors">Iniciar sesión</a></li>
+        <li><a href="/users/login" class="hover:text-white transition-colors">Log in</a></li>
         {% endif %}
       </ul>
     </div>
   </div>
   <div class="mt-8 pt-6 border-t border-zinc-800/50 text-center text-xs text-zinc-600">
-    © 2024 Cinematic. Todos los derechos reservados.
+    © 2026 Cinematic. All rights reserved.
   </div>
 </footer>
-{% endblock footer %}
-
-  <script src="https://unpkg.com/hyperscript.org@0.9.7"></script>
-  <script src="https://unpkg.com/htmx.org@1.8.5" integrity="sha384-7aHh9lqPYGYZ7sTHvzP1t3BAfLhYSTy9ArHdP3Xsr9/3TlGurYgcPBoFmXX2TX/w" crossorigin="anonymous"></script>
-
-  {% block scripts %}
-
-  {% endblock scripts %}
-
-</body>
-</html>

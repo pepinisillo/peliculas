@@ -113,8 +113,8 @@
       <main class="relative z-10 w-full max-w-md px-6 py-12">
         <div class="glass-card rounded-xl p-8 md:p-10 shadow-[0_24px_48px_rgba(0,0,0,0.4)] border border-outline-variant/10">
           <div class="mb-10 text-center">
-            <h1 class="text-3xl font-headline font-extrabold tracking-tight mb-2">Únete a la comunidad</h1>
-            <p class="text-on-surface-variant font-medium">Crea tu cuenta para empezar a disfrutar de nuestro catálogo de películas.</p>
+            <h1 class="text-3xl font-headline font-extrabold tracking-tight mb-2">Join the community</h1>
+            <p class="text-on-surface-variant font-medium">Create your account to start enjoying our movie catalog.</p>
           </div>
 
           <!-- Formulario de registro -->
@@ -130,10 +130,10 @@
 
             <!-- Nombre de usuario -->
             <div class="space-y-1">
-              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="username">Nombre de usuario</label>
+              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="username">Username</label>
               <div class="relative group">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">person</span>
-                <input name="username" value="{{ username }}" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="username" placeholder="Ingresa tu nombre de usuario" type="text" />
+                <input name="username" value="{{ username }}" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="username" placeholder="Enter your username" type="text" />
               </div>
               {% if errors.username %}
                 <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.username }}</p>
@@ -142,7 +142,7 @@
 
             <!-- Correo electrónico -->
             <div class="space-y-1">
-              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="email">Correo electrónico</label>
+              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="email">Email</label>
               <div class="relative group">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">mail</span>
                 <input name="email" value="{{ email }}" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="email" placeholder="you@example.com" type="email" />
@@ -154,10 +154,10 @@
 
             <!-- Contraseña -->
             <div class="space-y-1">
-              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="password">Contraseña</label>
+              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="password">Password</label>
               <div class="relative group">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">lock</span>
-                <input name="password" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="password" placeholder="Ingresa tu contraseña" type="password" />
+                <input name="password" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="password" placeholder="Enter your password" type="password" />
               </div>
               {% if errors.password %}
                 <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.password }}</p>
@@ -166,7 +166,7 @@
 
             <!-- Confirmar contraseña -->
             <div class="space-y-2">
-              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="confirm-password">Confirmar contraseña</label>
+              <label class="block text-xs font-label font-medium uppercase tracking-widest text-on-surface-variant" for="confirm-password">Confirm password</label>
               <div class="relative group">
                 <span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant group-focus-within:text-primary transition-colors">verified_user</span>
                 <input name="confirm_password" class="w-full bg-surface-container-high border-none rounded-lg py-4 pl-12 pr-4 text-on-surface focus:ring-1 focus:ring-primary/40 placeholder:text-outline/50 transition-all" id="confirm-password" placeholder="••••••••" type="password" />
@@ -178,7 +178,7 @@
 
             <!-- Botón de registro -->
             <button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-headline font-bold py-4 rounded-full shadow-lg shadow-primary/20 transform active:scale-95 transition-all duration-200" type="submit">
-              Crear cuenta
+              Create account
             </button>
           </form>
 
@@ -189,15 +189,15 @@
                 <div class="w-full border-t border-outline-variant/20"></div>
               </div>
               <p class="relative z-10 text-on-surface-variant text-sm font-medium">
-                ¿Ya tienes una cuenta?
-                <a class="text-primary font-bold hover:text-white transition-colors ml-1" href="{% url 'login' %}">Iniciar sesión</a>
+                Already have an account?
+                <a class="text-primary font-bold hover:text-white transition-colors ml-1" href="{% url 'login' %}">Log in</a>
               </p>
             </div>
           </div>
 
           <!-- Footer de la página -->
           <footer class="mt-8 text-center">
-            <p class="text-[10px] text-on-surface-variant/40 font-label uppercase tracking-widest">© 2026 Cinematic. Todos los derechos reservados.</p>
+            <p class="text-[10px] text-on-surface-variant/40 font-label uppercase tracking-widest">© 2026 Cinematic. All rights reserved.</p>
           </footer>
         </div>
       </main>

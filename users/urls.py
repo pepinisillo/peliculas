@@ -8,4 +8,5 @@ urlpatterns = [
     path('register', register_view, name='register'),
     path('profile', profile_view, name='profile'),
     path('edit_profile', edit_profile_view, name='edit_profile'),
+    path('toggle_follow/<int:user_id>', toggle_follow_view, name='toggle_follow'),
 ]

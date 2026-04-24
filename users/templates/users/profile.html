@@ -1,151 +1,101 @@
-<!DOCTYPE html>
 {% load static %}
 
-<html class="dark" lang="en"><head>
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>Cinematic - User Profile</title>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script id="tailwind-config">
-        tailwind.config = {
-            darkMode: "class",
-            theme: {
-                extend: {
-                    "colors": {
-                        "tertiary": "#ffaaf4",
-                        "outline": "#767576",
-                        "on-primary": "#002c65",
-                        "error": "#ff716c",
-                        "secondary-container": "#7d01b1",
-                        "on-error-container": "#ffa8a3",
-                        "surface-tint": "#85adff",
-                        "tertiary-container": "#f897ee",
-                        "primary-dim": "#0070eb",
-                        "secondary": "#d277ff",
-                        "on-tertiary-container": "#620e61",
-                        "secondary-fixed-dim": "#e7afff",
-                        "surface-container-low": "#131314",
-                        "primary-fixed-dim": "#5191ff",
-                        "on-secondary-fixed-variant": "#800ab4",
-                        "on-surface-variant": "#adaaab",
-                        "on-secondary-container": "#f3cfff",
-                        "secondary-fixed": "#eec2ff",
-                        "outline-variant": "#484849",
-                        "surface": "#0e0e0f",
-                        "on-tertiary-fixed": "#400040",
-                        "inverse-primary": "#005bc2",
-                        "error-container": "#9f0519",
-                        "on-background": "#ffffff",
-                        "inverse-surface": "#fcf8f9",
-                        "surface-container-highest": "#262627",
-                        "secondary-dim": "#d277ff",
-                        "on-primary-fixed-variant": "#002a61",
-                        "primary-container": "#6c9fff",
-                        "primary": "#85adff",
-                        "surface-dim": "#0e0e0f",
-                        "tertiary-fixed-dim": "#e98adf",
-                        "surface-bright": "#2c2c2d",
-                        "on-primary-fixed": "#000000",
-                        "on-primary-container": "#00214f",
-                        "on-secondary-fixed": "#56007c",
-                        "surface-container-lowest": "#000000",
-                        "on-tertiary": "#6d1b6c",
-                        "surface-container-high": "#201f21",
-                        "tertiary-dim": "#e98adf",
-                        "inverse-on-surface": "#565556",
-                        "error-dim": "#d7383b",
-                        "surface-variant": "#262627",
-                        "primary-fixed": "#6c9fff",
-                        "background": "#0e0e0f",
-                        "on-secondary": "#380052",
-                        "tertiary-fixed": "#f897ee",
-                        "surface-container": "#1a191b",
-                        "on-error": "#490006",
-                        "on-surface": "#ffffff",
-                        "on-tertiary-fixed-variant": "#6d1a6b"
-                    },
-                    "borderRadius": {
-                        "DEFAULT": "0.25rem",
-                        "lg": "1rem",
-                        "xl": "1.5rem",
-                        "full": "9999px"
-                    },
-                    "fontFamily": {
-                        "headline": ["Manrope"],
-                        "body": ["Inter"],
-                        "label": ["Inter"]
-                    }
-                },
-            },
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        colors: {
+          tertiary: "#ffaaf4",
+          outline: "#767576",
+          "on-primary": "#002c65",
+          error: "#ff716c",
+          "secondary-container": "#7d01b1",
+          "on-error-container": "#ffa8a3",
+          "surface-tint": "#85adff",
+          "tertiary-container": "#f897ee",
+          "primary-dim": "#0070eb",
+          secondary: "#d277ff",
+          "on-tertiary-container": "#620e61",
+          "secondary-fixed-dim": "#e7afff",
+          "surface-container-low": "#131314",
+          "primary-fixed-dim": "#5191ff",
+          "on-secondary-fixed-variant": "#800ab4",
+          "on-surface-variant": "#adaaab",
+          "on-secondary-container": "#f3cfff",
+          "secondary-fixed": "#eec2ff",
+          "outline-variant": "#484849",
+          surface: "#0e0e0f",
+          "on-tertiary-fixed": "#400040",
+          "inverse-primary": "#005bc2",
+          "error-container": "#9f0519",
+          "on-background": "#ffffff",
+          "inverse-surface": "#fcf8f9",
+          "surface-container-highest": "#262627",
+          "secondary-dim": "#d277ff",
+          "on-primary-fixed-variant": "#002a61",
+          "primary-container": "#6c9fff",
+          primary: "#85adff",
+          "surface-dim": "#0e0e0f",
+          "tertiary-fixed-dim": "#e98adf",
+          "surface-bright": "#2c2c2d",
+          "on-primary-fixed": "#000000",
+          "on-primary-container": "#00214f",
+          "on-secondary-fixed": "#56007c",
+          "surface-container-lowest": "#000000",
+          "on-tertiary": "#6d1b6c",
+          "surface-container-high": "#201f21",
+          "tertiary-dim": "#e98adf",
+          "inverse-on-surface": "#565556",
+          "error-dim": "#d7383b",
+          "surface-variant": "#262627",
+          "primary-fixed": "#6c9fff",
+          background: "#0e0e0f",
+          "on-secondary": "#380052",
+          "tertiary-fixed": "#f897ee",
+          "surface-container": "#1a191b",
+          "on-error": "#490006",
+          "on-surface": "#ffffff",
+          "on-tertiary-fixed-variant": "#6d1a6b"
+        },
+        borderRadius: {
+          DEFAULT: "0.25rem",
+          lg: "1rem",
+          xl: "1.5rem",
+          full: "9999px"
+        },
+        fontFamily: {
+          headline: ["Manrope"],
+          body: ["Inter"],
+          label: ["Inter"]
         }
-    </script>
+      }
+    }
+  };
+</script>
+
 <style>
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-        }
-        .oily-smooth-transition {
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-    </style>
+.oily-smooth-transition {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+</style>
 </head>
 <body class="bg-surface text-on-surface font-body selection:bg-primary/30">
-<!-- Sidebar -->
-<aside class="h-screen w-64 fixed left-0 top-0 bg-zinc-950/80 backdrop-blur-xl shadow-2xl shadow-black/50 flex flex-col p-6 gap-8 z-50">
-<div class="flex flex-col">
-<span class="text-2xl font-bold tracking-tighter text-blue-500 font-headline">Cinematic</span>
-<span class="text-xs font-label text-zinc-500 mt-1 uppercase tracking-widest">The Canvas</span>
-</div>
-<nav class="flex flex-col gap-2">
-<a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 font-manrope text-sm font-medium rounded-lg" href="#">
-<span class="material-symbols-outlined" data-icon="home">home</span>
-                Home
-            </a>
-<a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 font-manrope text-sm font-medium rounded-lg" href="#">
-<span class="material-symbols-outlined" data-icon="search">search</span>
-                Search
-            </a>
-<a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 font-manrope text-sm font-medium rounded-lg" href="#">
-<span class="material-symbols-outlined" data-icon="movie">movie</span>
-                Catalog
-            </a>
-<a class="flex items-center gap-4 px-4 py-3 text-white bg-blue-600/10 rounded-lg scale-105 font-manrope text-sm font-medium" href="#">
-<span class="material-symbols-outlined" data-icon="person">person</span>
-                Profile
-            </a>
-<a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-red-400 hover:bg-red-400/10 transition-all duration-300 font-manrope text-sm font-medium rounded-lg mt-auto" href="#">
-<span class="material-symbols-outlined" data-icon="logout">logout</span>
-                Logout
-            </a></nav>
-</aside>
-<!-- Barra de navegación superior -->
-<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-40 bg-zinc-950/40 backdrop-blur-md flex items-center justify-between px-8">
-<div class="flex items-center gap-4">
-<!-- Espacio -->
-</div>
-<div class="flex items-center gap-6">
-<div class="relative">
-<input class="bg-surface-container-high border-none rounded-full px-5 py-2 text-sm w-64 focus:ring-1 focus:ring-primary/40 text-on-surface-variant font-body" placeholder="Search films..." type="text"/>
-<span class="material-symbols-outlined absolute right-4 top-2 text-zinc-500 text-sm" data-icon="search">search</span>
-</div>
-<div class="flex items-center gap-4">
-<button class="text-zinc-400 hover:text-white oily-smooth-transition">
-<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
-</button>
-<button class="text-zinc-400 hover:text-white oily-smooth-transition">
-<span class="material-symbols-outlined" data-icon="settings">settings</span>
-</button>
-<div class="w-8 h-8 rounded-full bg-transparent flex items-center justify-center overflow-hidden">
-<img alt="User avatar" class="w-full h-full object-cover" data-alt="user avatar" src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static 'simple-user.png' %}{% endif %}"/>
-</div>
-</div>
-</div>
-</header>
-<!-- Contenido principal -->
-<main class="ml-64 pt-16 min-h-screen bg-surface">
-<div class="max-w-7xl mx-auto px-12 py-12">
+
+<div class="selection:bg-primary/30">
+{% include 'movies/partials/side.html' %}
+<main class="lg:ml-64 min-h-screen pt-32 lg:pt-24 pb-28 lg:pb-0 bg-surface">
+{% include 'movies/partials/header.html' %}
+<div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 xl:px-12 py-8 md:py-10 xl:py-12">
     {% if messages %}
     <div id="flash-message"
          class="fixed top-6 left-1/2 transform -translate-x-1/2 z-[9999] max-w-sm w-[90vw] sm:w-auto transition-opacity duration-500">
@@ -161,45 +111,45 @@
 <!-- Elemento de fondo asimétrico -->
 <div class="absolute -top-12 -right-12 w-96 h-96 bg-primary/10 rounded-full blur-[120px] pointer-events-none"></div>
 <div class="absolute top-1/2 -left-20 w-64 h-64 bg-secondary/5 rounded-full blur-[80px] pointer-events-none"></div>
-<div class="flex flex-col md:flex-row items-start gap-8 relative z-10">
+<div class="flex flex-col lg:flex-row items-start gap-6 lg:gap-8 relative z-10">
 <!-- Avatar con profundidad -->
 <div class="relative group">
-<div class="w-48 h-48 min-h-48 rounded-xl bg-transparent p-0 relative overflow-hidden shrink-0">
+<div class="w-36 h-36 sm:w-44 sm:h-44 lg:w-48 lg:h-48 rounded-xl bg-transparent p-0 relative overflow-hidden shrink-0">
 <img alt="User profile photo" class="w-full h-full object-cover rounded-lg" data-alt="user profile photo" src="{% if profile.image %}{{ profile.image.url }}{% else %}{% static 'simple-user.png' %}{% endif %}"/>
 </div>
 </div>
 <!-- Información de identidad -->
 <div class="flex-1 min-w-0">
-<h1 class="text-5xl font-headline font-extrabold tracking-tighter text-on-surface mb-2 break-words">{{ user.username }}</h1>
-<p class="text-on-surface-variant font-body text-lg leading-relaxed mb-6 break-words whitespace-pre-line">                            {% if profile.description %}{{ profile.description }}{% else %}Aún no has agregado descripción a tu perfil.{% endif %}
+<h1 class="text-3xl sm:text-4xl xl:text-5xl font-headline font-extrabold tracking-tighter text-on-surface mb-2 break-words">{{ user.username }}</h1>
+<p class="text-on-surface-variant font-body text-base sm:text-lg leading-relaxed mb-6 break-words whitespace-pre-line">{% if profile.description %}{{ profile.description }}{% else %}You have not added a profile description yet.{% endif %}
                         </p>
-<div class="flex gap-8">
+<div class="flex flex-wrap gap-x-8 gap-y-4">
 <div class="flex flex-col">
 <span class="text-2xl font-headline font-bold text-primary">{{ followers_count }}</span>
-<span class="text-xs uppercase tracking-widest font-label text-outline">Seguidores</span>
+<span class="text-xs uppercase tracking-widest font-label text-outline">Followers</span>
 </div>
 <div class="flex flex-col">
 <span class="text-2xl font-headline font-bold text-on-surface">{{ following_count }}</span>
-<span class="text-xs uppercase tracking-widest font-label text-outline">Seguidos</span>
+<span class="text-xs uppercase tracking-widest font-label text-outline">Following</span>
 </div>
 <div class="flex flex-col">
 <span class="text-2xl font-headline font-bold text-on-surface">{{ reviews_count }}</span>
-<span class="text-xs uppercase tracking-widest font-label text-outline">Reseñas</span>
+<span class="text-xs uppercase tracking-widest font-label text-outline">Reviews</span>
 </div>
 </div>
 </div>
 <!-- Acciones -->
-<div class="pt-2">
+<div class="pt-2 w-full lg:w-auto">
 <a href="{% url 'edit_profile' %}" class="inline-flex items-center justify-center bg-gradient-to-r from-primary to-primary-container text-on-primary-container px-8 py-3 rounded-full font-headline font-bold leading-none oily-smooth-transition hover:scale-105 shadow-xl shadow-primary/20">
-  Editar perfil
+  Edit Profile
 </a>
 </div>
 </div>
 </section>
 <!-- Sección de reseñas -->
 <section>
-<div class="flex items-baseline justify-between mb-12">
-<h2 class="text-3xl font-headline font-bold tracking-tight">Mis reseñas</h2>
+<div class="flex flex-col sm:flex-row sm:items-baseline sm:justify-between gap-4 mb-10 md:mb-12">
+<h2 class="text-3xl font-headline font-bold tracking-tight">My Reviews</h2>
 <div class="flex gap-4">
 <a href="{% url 'profile' %}?sort=recent" class="{% if reviews_sort == 'recent' %}text-primary border-b border-primary/30{% else %}text-on-surface-variant hover:text-on-surface{% endif %} text-sm font-label font-bold tracking-wide uppercase pb-1">
   Recent
@@ -210,49 +160,57 @@
 </div>
 </div>
 <!-- Review Grid -->
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="grid grid-cols-1 2xl:grid-cols-2 gap-6 xl:gap-8">
 {% for review in reviews %}
-<div class="group bg-surface-container rounded-xl overflow-hidden flex flex-col md:flex-row oily-smooth-transition hover:scale-[1.01] hover:bg-surface-container-high relative">
-<div class="w-full md:w-40 h-64 md:h-auto shrink-0 relative overflow-hidden">
+<a href="{% url 'edit_review' review.id %}?next=profile" class="group bg-surface-container rounded-xl overflow-hidden flex flex-col 2xl:flex-row oily-smooth-transition hover:scale-[1.01] hover:bg-surface-container-high hover:shadow-2xl hover:shadow-primary/15 relative">
+<span class="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full border border-outline-variant/40 bg-surface/70 px-2 py-1 text-[11px] font-label text-on-surface-variant opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 oily-smooth-transition z-10">
+  <span class="material-symbols-outlined text-sm">edit</span>
+  Edit
+</span>
+<div class="w-full 2xl:w-40 h-64 2xl:h-auto shrink-0 relative overflow-hidden">
 <img alt="Movie poster" class="w-full h-full object-cover" src="{% if review.movie.poster_path %}{% if 'http' in review.movie.poster_path %}{{ review.movie.poster_path }}{% else %}https://image.tmdb.org/t/p/w500{{ review.movie.poster_path }}{% endif %}{% else %}https://placehold.co/600x900/1f2937/ffffff?text=No+Poster{% endif %}"/>
 </div>
-<div class="p-8 flex flex-col justify-between flex-1">
+<div class="p-5 md:p-6 xl:p-8 flex flex-col justify-between flex-1">
 <div>
-<div class="flex justify-between items-start mb-4 gap-4">
+<div class="flex justify-between items-start mb-4 gap-3 md:gap-4">
 <h3 class="text-xl font-headline font-bold text-on-surface break-words">{{ review.movie.title }}</h3>
-<span class="text-primary font-bold text-sm">{{ review.rating }}/100</span>
+<span class="inline-flex items-center gap-1 text-primary font-bold text-sm">
+  <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+  {{ review.rating }}/5
+</span>
 </div>
 <p class="text-sm text-on-surface mb-2 font-semibold break-words">{{ review.title }}</p>
 <p class="text-on-surface-variant font-body leading-relaxed italic break-words whitespace-pre-line">
-  {% if review.review %}"{{ review.review }}"{% else %}Sin comentario adicional.{% endif %}
+  {% if review.review %}"{{ review.review }}"{% else %}No additional comment.{% endif %}
 </p>
 </div>
 <div class="flex items-center justify-between mt-8 border-t border-outline-variant/10 pt-6">
 <div class="flex items-center gap-4 text-on-surface-variant">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-base" data-icon="thumb_up">thumb_up</span>
-<span class="text-xs font-label">{{ review.likes|default:0 }}</span>
+<span class="text-xs font-label">{{ review.like_count|default:0 }}</span>
 </div>
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-base" data-icon="thumb_down">thumb_down</span>
-<span class="text-xs font-label">{{ review.dislikes|default:0 }}</span>
+<span class="text-xs font-label">{{ review.dislike_count|default:0 }}</span>
 </div>
 </div>
 <span class="text-[10px] uppercase tracking-widest font-label text-outline">
-  {% if review.created_at %}{{ review.created_at|date:"M d, Y" }}{% else %}Sin fecha{% endif %}
+  {% if review.created_at %}{{ review.created_at|date:"M d, Y" }}{% else %}No date{% endif %}
 </span>
 </div>
 </div>
-</div>
+</a>
 {% empty %}
-<div class="lg:col-span-2 bg-surface-container rounded-xl p-10 text-center text-on-surface-variant">
-  Aún no has publicado reseñas.
+<div class="2xl:col-span-2 bg-surface-container rounded-xl p-10 text-center text-on-surface-variant">
+  You have not posted any reviews yet.
 </div>
 {% endfor %}
 </div>
 </section>
 </div>
 </main>
+</div>
 <script>
     const flash = document.getElementById("flash-message");
     if (flash) {
@@ -262,4 +220,6 @@
       }, 1500); // 1500ms = 1.5 segundos
     }
   </script>
-</body></html>
+{% include 'movies/base.html' %}
+</body>
+</html>

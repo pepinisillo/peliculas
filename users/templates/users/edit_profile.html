@@ -148,12 +148,12 @@
 <div class="max-w-3xl mx-auto">
 {% if success %}
 <div class="mb-6 rounded-lg border border-green-600/40 bg-green-900/20 p-4 text-sm text-green-300">
-  Perfil actualizado correctamente.
+  Profile updated successfully.
 </div>
 {% endif %}
 <header class="mb-12">
-<h1 class="text-4xl font-black font-headline tracking-tight text-on-surface">Editar perfil</h1>
-<p class="text-on-surface-variant mt-2 font-body">Actualiza tu perfil y tus detalles personales.</p>
+<h1 class="text-4xl font-black font-headline tracking-tight text-on-surface">Edit profile</h1>
+<p class="text-on-surface-variant mt-2 font-body">Update your profile and personal details.</p>
 </header>
 <!-- Profile Picture Section -->
 <section class="bg-surface-container-low rounded-xl p-8 mb-8 border border-outline-variant/10">
@@ -167,12 +167,12 @@
 </div>
 </div>
 <div class="flex flex-col gap-3 items-center md:items-start">
-<h3 class="font-headline font-bold text-lg">Foto de perfil</h3>
+<h3 class="font-headline font-bold text-lg">Profile photo</h3>
 <input id="profile-image-input" name="image" form="edit-profile-form" class="hidden" type="file" accept="image/*"/>
 <label for="profile-image-input" class="bg-primary hover:bg-primary-container text-on-primary-container px-6 py-2 rounded-full font-semibold text-sm transition-all scale-100 active:scale-95 cursor-pointer">
-  Cambiar foto
+  Change photo
 </label>
-<p class="text-xs text-on-surface-variant mt-1">Recomendado: JPG, PNG.</p>
+<p class="text-xs text-on-surface-variant mt-1">Recommended: JPG, PNG.</p>
 </div>
 </div>
 </section>
@@ -182,14 +182,14 @@
 <div class="space-y-6">
 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 <div class="space-y-2">
-<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Nombre de usuario</label>
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Username</label>
 <input name="username" class="w-full bg-surface-container-high border-none rounded-lg p-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all font-body" type="text" value="{{ user.username }}"/>
 {% if errors.username %}
 <p class="text-[10px] text-error font-medium mt-1.5 ml-1">{{ errors.username }}</p>
 {% endif %}
 </div>
 <div class="space-y-2">
-<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Nombre de usuario actual</label>
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Current username</label>
 <div class="relative">
 <span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant">@</span>
 <input class="w-full bg-surface-container/50 border border-outline-variant/10 rounded-lg p-4 pl-8 text-zinc-500 font-body cursor-not-allowed" readonly="" type="text" value="{{ user.username }}"/>
@@ -198,7 +198,7 @@
 </div>
 <div class="space-y-2">
 <div class="flex justify-between items-center">
-<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Sobre mí</label>
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">About me</label>
 <span class="text-[10px] text-on-surface-variant">{{ profile.description|default:''|length }} / 500</span>
 </div>
 <textarea name="description" class="w-full bg-surface-container-high border-none rounded-lg p-4 text-on-surface focus:ring-1 focus:ring-primary/40 transition-all font-body resize-none" rows="4">{{ profile.description|default:'' }}</textarea>
@@ -207,7 +207,7 @@
 {% endif %}
 </div>
 <div class="space-y-2">
-<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Correo electrónico</label>
+<label class="block text-xs font-bold tracking-widest text-on-surface-variant uppercase font-label">Email</label>
 <div class="relative group">
 <input class="w-full bg-surface-container/50 border border-outline-variant/10 rounded-lg p-4 text-zinc-500 font-body cursor-not-allowed" readonly="" type="email" value="{{ user.email }}"/>
 <div class="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 text-zinc-500">
@@ -226,10 +226,10 @@
 <footer class="fixed bottom-0 left-0 md:left-64 right-0 bg-surface-container-low/90 backdrop-blur-xl border-t border-outline-variant/10 z-40 px-8 py-6">
 <div class="max-w-3xl mx-auto flex items-center justify-end gap-6">
 <a href="{% url 'profile' %}" class="text-on-surface-variant hover:text-on-surface font-semibold text-sm transition-colors">
-  Descartar cambios
+  Discard changes
 </a>
 <button form="edit-profile-form" class="bg-primary text-on-primary-container px-10 py-3 rounded-full font-bold text-sm shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
-                Guardar cambios
+                Save changes
             </button>
 </div>
 </footer>

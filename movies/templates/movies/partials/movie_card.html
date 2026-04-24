@@ -11,7 +11,7 @@
         <a href="{% url 'toggle_favorite' movie.id %}"
            onclick="event.stopPropagation()"
            class="absolute top-1 right-1 bg-black/50 rounded-full p-1 opacity-0 group-hover:opacity-100 transition-opacity hover:text-red-400"
-           title="{% if movie.id in favorite_ids %}Quitar de favoritas{% else %}Agregar a favoritas{% endif %}">
+           title="{% if movie.id in favorite_ids %}Remove from favorites{% else %}Add to favorites{% endif %}">
             <span class="material-symbols-outlined text-base"
                 style="font-variation-settings:'FILL' {% if movie.id in favorite_ids %}1{% else %}0{% endif %}; color: {% if movie.id in favorite_ids %}#d277ff{% else %}white{% endif %};">
                 favorite
@@ -34,7 +34,7 @@
     hx-target="this"
     hx-swap="outerHTML">
     <div class="flex justify-center py-4">
-        <span class="text-on-surface-variant text-sm">Cargando más películas...</span>
+        <span class="text-on-surface-variant text-sm">Loading more movies...</span>
     </div>
 </div>
 </div>

@@ -4,9 +4,11 @@ from movies.models import Movie, MovieReview, Person, MovieComment, MovieCredit,
 from movies.models import Movie, MovieReview, Person, MovieComment, MovieReviewLike
 from movies.forms import MovieReviewForm, MovieCommentForm
 from django.db.models import Avg, Count
+from django.db import IntegrityError
 from django.shortcuts import get_object_or_404
 from .models import Favorite, Movie, Genre
 from django.contrib.auth.models import User
+from users.models import Profile
 import random
 from django.shortcuts import redirect
 
@@ -112,6 +114,23 @@ def movie(request, movie_id):
         movie=movie
     ).order_by('-id')[:3]
 
+    # Conteos y voto actual del usuario para mostrar controles en preview
+    for review in reviews_preview:
+        review.like_count = review.likes.filter(vote='like').count()
+        review.dislike_count = review.likes.filter(vote='dislike').count()
+        review.user_vote = None
+        review.show_follow = False
+        review.is_following = False
+        if request.user.is_authenticated:
+            vote = review.likes.filter(user=request.user).first()
+            if vote:
+                review.user_vote = vote.vote
+            if review.user_id != request.user.id:
+                my_profile, _ = Profile.objects.get_or_create(user=request.user)
+                target_profile, _ = Profile.objects.get_or_create(user=review.user)
+                review.show_follow = True
+                review.is_following = target_profile.followers.filter(id=my_profile.id).exists()
+
     context = { 'movie':movie, 
                'actors':actors, 
                'avg_rating':avg_rating, 
@@ -125,35 +144,97 @@ def movie(request, movie_id):
 
 def movie_reviews(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
-    reviews = movie.moviereview_set.all()
+    sort = request.GET.get('sort', 'date')
+    reviews_qs = movie.moviereview_set.select_related('user').all()
+    reviews = list(reviews_qs)
+    global_avg = movie.moviereview_set.aggregate(avg=Avg('rating'))['avg']
 
+    my_profile = None
+    if request.user.is_authenticated:
+        my_profile, _ = Profile.objects.get_or_create(user=request.user)
 
-    # conteos de likes y dislikes a cada reseña
+    # Conteos de likes/dislikes por reseña y estado follow
     for review in reviews:
         review.like_count = review.likes.filter(vote='like').count()
         review.dislike_count = review.likes.filter(vote='dislike').count()
+        review.show_follow = False
+        review.is_following = False
+        if my_profile and review.user_id != request.user.id:
+            target_profile, _ = Profile.objects.get_or_create(user=review.user)
+            review.show_follow = True
+            review.is_following = target_profile.followers.filter(id=my_profile.id).exists()
+
+    if sort == 'likes':
+        reviews = sorted(reviews, key=lambda r: (r.like_count, r.created_at or 0), reverse=True)
+    else:
+        sort = 'date'
+        reviews = sorted(reviews, key=lambda r: (r.created_at or 0, r.id), reverse=True)
+
+    total_reviews = len(reviews)
+    stars_breakdown = []
+    if total_reviews:
+        for star in range(5, 0, -1):
+            count = reviews_qs.filter(rating=star).count()
+            percent = round((count * 100) / total_reviews)
+            stars_breakdown.append({
+                'star': star,
+                'percent': percent,
+                'count': count,
+            })
+    else:
+        for star in range(5, 0, -1):
+            stars_breakdown.append({
+                'star': star,
+                'percent': 0,
+                'count': 0,
+            })
+
+    user_review = None
+    critics_choice = None
+    if request.user.is_authenticated:
+        user_review = reviews_qs.filter(user=request.user).order_by('-rating', '-created_at').first()
+        critics_choice = user_review
+
     return render(request, 'movies/reviews.html', {
         'movie': movie,
-        'reviews': reviews
+        'reviews': reviews,
+        'total_reviews': total_reviews,
+        'global_avg': global_avg,
+        'stars_breakdown': stars_breakdown,
+        'user_review': user_review,
+        'critics_choice': critics_choice,
+        'sort': sort,
     })
 
 
 def add_review(request, movie_id):
     form = None
     movie = Movie.objects.get(id=movie_id)
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/users/login')
+
+    existing_review = MovieReview.objects.filter(movie=movie, user=request.user).first()
+    if existing_review:
+        return redirect(f'/movies/edit_review/{existing_review.id}/')
+
     if request.method == 'POST':
         form = MovieReviewForm(request.POST)
         if form.is_valid():
             rating = form.cleaned_data['rating']
             title  = form.cleaned_data['title']
             review = form.cleaned_data['review']
-            movie_review = MovieReview(
-                    movie=movie,
-                    rating=rating,
-                    title=title,
-                    review=review,
-                    user=request.user)
-            movie_review.save()
+            try:
+                movie_review = MovieReview(
+                        movie=movie,
+                        rating=rating,
+                        title=title,
+                        review=review,
+                        user=request.user)
+                movie_review.save()
+            except IntegrityError:
+                existing_review = MovieReview.objects.filter(movie=movie, user=request.user).first()
+                if existing_review:
+                    return redirect(f'/movies/edit_review/{existing_review.id}/')
             return HttpResponse(status=204,
                                 headers={'HX-Trigger': 'listChanged'})
     else:
@@ -173,14 +254,18 @@ def delete_review(request, review_id):
 def edit_review(request, review_id):
     review = MovieReview.objects.get(id=review_id)
     if request.method == 'POST':
+        next_page = request.POST.get('next', 'reviews')
         form = MovieReviewForm(request.POST)
         if form.is_valid():
             review.rating = form.cleaned_data['rating']
             review.title = form.cleaned_data['title']
             review.review = form.cleaned_data['review']
             review.save()
+            if next_page == 'profile':
+                return redirect('/users/profile')
             return redirect(f'/movies/movie_reviews/{review.movie.id}/')
     else:
+        next_page = request.GET.get('next', 'reviews')
         form = MovieReviewForm(initial={
             'rating': review.rating,
             'title': review.title,
@@ -189,24 +274,36 @@ def edit_review(request, review_id):
         return render(request, 'movies/review_form.html', {
             'form': form,
             'movie': review.movie,
-            'review': review
+            'review': review,
+            'next_page': next_page
         })
     
 # Vista propia para crear reseña desde la página de reseñas (distinta al modal de movie.html)
 def create_review(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/users/login')
+
+    existing_review = MovieReview.objects.filter(movie=movie, user=request.user).first()
+    if existing_review:
+        return redirect(f'/movies/edit_review/{existing_review.id}/')
     
     if request.method == 'POST':
         form = MovieReviewForm(request.POST)
         if form.is_valid():
             # Guarda la reseña y redirige a la página de reseñas
-            MovieReview.objects.create(
-                movie=movie,
-                user=request.user,
-                rating=form.cleaned_data['rating'],
-                title=form.cleaned_data['title'],
-                review=form.cleaned_data['review']
-            )
+            try:
+                MovieReview.objects.create(
+                    movie=movie,
+                    user=request.user,
+                    rating=form.cleaned_data['rating'],
+                    title=form.cleaned_data['title'],
+                    review=form.cleaned_data['review']
+                )
+            except IntegrityError:
+                existing_review = MovieReview.objects.filter(movie=movie, user=request.user).first()
+                if existing_review:
+                    return redirect(f'/movies/edit_review/{existing_review.id}/')
             return redirect(f'/movies/movie_reviews/{movie_id}/')
     else:
         form = MovieReviewForm()

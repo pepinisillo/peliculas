@@ -102,7 +102,7 @@ extend: {
 		<!-- Header -->
 		{% include 'movies/partials/header.html' %}
 
-		<main class="ml-64 pt-16 min-h-screen">
+		<main class="lg:ml-64 pt-32 lg:pt-24 pb-28 lg:pb-0 min-h-screen">
 			<!-- Hero Actor Section -->
 			<section class="relative w-full min-h-[580px] flex items-end overflow-hidden">
 				<!-- Background Image with Scrim -->
@@ -110,36 +110,28 @@ extend: {
 					<img alt="Hero Actor Background" class="w-full h-full object-cover object-top scale-110 blur-sm brightness-50"/>
 					<div class="absolute inset-0 scrim-gradient"></div>
 				</div>
-				<div class="relative z-10 w-full max-w-7xl mx-auto px-12 pb-16 flex flex-col md:flex-row gap-12 items-end">
+				<div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pb-10 lg:pb-16 flex flex-col lg:flex-row gap-8 lg:gap-12 items-end">
 					<!-- Large Portrait Card -->
-					<div class="w-full md:w-80 shrink-0 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl shadow-black/80 transform translate-y-8">
+					<div class="w-full sm:w-80 shrink-0 aspect-[2/3] rounded-xl overflow-hidden shadow-2xl shadow-black/80 transform translate-y-4 lg:translate-y-8">
 						<img alt="Actor Portrait" class="w-full h-full object-cover" src="https://image.tmdb.org/t/p/w500{{ person.profile_path }}"/>
 					</div>
 					<!-- Bio Intro -->
 					<div class="flex-1 space-y-6">
 						<div class="space-y-2">
-							<h1 class="text-7xl font-extrabold font-headline tracking-tighter text-on-surface">{{person.name}}</h1>
+							<h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-headline tracking-tighter text-on-surface">{{person.name}}</h1>
 							<div class="flex flex-wrap gap-3">
 								<span class="bg-primary/10 text-primary px-4 py-1 rounded-full text-xs font-semibold tracking-wider uppercase border border-primary/20">Actor</span>
 
 							</div>
 						</div>
-						<p class="text-xl text-on-surface-variant max-w-2xl font-light leading-relaxed">
+						<p class="text-base sm:text-lg lg:text-xl text-on-surface-variant max-w-2xl font-light leading-relaxed">
 						{{person.biography|truncatewords:30}}								
 						</p>
-						<div class="flex gap-4 pt-4">
-							<button class="bg-gradient-to-r from-primary to-primary-container text-on-primary-container font-bold px-8 py-3 rounded-full oily-smooth-transition transform hover:scale-105 active:scale-95 shadow-lg shadow-primary/20">
-								Watch Highlight Reel
-							</button>
-							<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface font-semibold px-8 py-3 rounded-full oily-smooth-transition border border-outline-variant/20">
-								View Awards
-							</button>
-						</div>
 					</div>
 				</div>
 			</section>
 			<!-- Detailed Info & Bio Bento -->
-			<section class="max-w-7xl mx-auto px-12 py-24 grid grid-cols-1 lg:grid-cols-12 gap-8">
+			<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-12 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-8">
 				<!-- Biography Card -->
 				<div class="lg:col-span-8 bg-surface-container-low p-10 rounded-xl space-y-6">
 					<h3 class="text-2xl font-headline font-bold text-on-surface">Biography</h3>
@@ -180,14 +172,14 @@ extend: {
 				</div>
 			</section>
 			<!-- Known For Grid -->
-			<section class="max-w-7xl mx-auto px-12 pb-32 space-y-10">
+			<section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 pb-24 lg:pb-32 space-y-10">
 				<div class="flex items-end justify-between border-b border-outline-variant/10 pb-6">
 					<div>
 						<h2 class="text-4xl font-headline font-extrabold tracking-tight text-on-surface">Known For</h2>
 						<p class="text-on-surface-variant mt-2">The most iconic performances</p>
 					</div>
 				</div>
-				<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+				<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6 lg:gap-8">
 					<!-- Movie Card 1 -->
 					<div class="group cursor-pointer space-y-4">
 						{% for credit in credits %}
@@ -195,7 +187,7 @@ extend: {
 							<div class="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-container-low oily-smooth-transition group-hover:scale-[1.02] group-hover:shadow-2xl group-hover:shadow-primary/20">
 								<img alt="Movie 1" class="w-full h-full object-cover" src="https://image.tmdb.org/t/p/w500{{ credit.movie.poster_path }}"/>
 								<div class="absolute top-3 right-3 glass-panel px-2 py-1 rounded text-xs font-bold text-white flex items-center gap-1">
-									<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>{{avg_rating}}
+									<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>{{ credit.avg_rating|floatformat:1 }}
 								</div>
 							</div>
 							<div>
@@ -206,19 +198,6 @@ extend: {
 					</div>
 			</section>
 		</main>
-		<!-- Footer Shadow -->
-		<footer class="ml-64 border-t border-outline-variant/10 py-12 px-12 bg-surface-container-low">
-			<div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
-				<div class="flex flex-col gap-1">
-					<span class="text-xl font-bold tracking-tighter text-blue-500 font-headline">Cinematic</span>
-					<span class="text-xs text-zinc-500">© 2024 The Canvas Editorial. All rights reserved.</span>
-				</div>
-				<div class="flex gap-8 text-sm font-medium text-outline">
-					<a class="hover:text-on-surface oily-smooth-transition" href="#">Privacy Policy</a>
-					<a class="hover:text-on-surface oily-smooth-transition" href="#">Terms of Service</a>
-					<a class="hover:text-on-surface oily-smooth-transition" href="#">Cookie Settings</a>
-				</div>
-			</div>
-		</footer>
+		{% include 'movies/base.html' %}
 	</body>
 </html>
