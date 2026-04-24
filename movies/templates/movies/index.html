@@ -1,9 +1,7 @@
+{% extends 'movies/base.html' %}
 {% load static %}
-<!DOCTYPE html><html class="dark" lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Cinematic - Home</title>
+
+{% block head %}
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -55,7 +53,9 @@
     },
   }
 </script>
-<style>
+{% endblock head %}
+
+{% block style %}
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     display: inline-block;
@@ -71,39 +71,19 @@
   }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-</style>
-</head>
+{% endblock style %}
 
-<body class="selection:bg-primary selection:text-on-primary">
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="selection:bg-primary selection:text-on-primary">
 
 {# Barra lateral extraída como componente reutilizable #}
 {% include 'movies/partials/side.html' %}
 
 {# ── MAIN ── #}
-<main class="md:ml-64 min-h-screen">
+<main class="md:ml-64 min-h-screen pt-28 md:pt-24 pb-28 md:pb-0">
 
-  {# ── TOP BAR ── #}
-  <header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 z-40 bg-zinc-950/40 backdrop-blur-md flex items-center justify-between px-8">
-    <div class="flex-1 max-w-md hidden md:block">
-      <div class="relative group">
-        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 group-focus-within:text-blue-500 transition-colors">search</span>
-        <input
-          class="w-full bg-surface-container-high border-none rounded-full py-2 pl-10 pr-4 text-sm focus:ring-1 focus:ring-primary/40 transition-all"
-          placeholder="Buscar peliculas y usuarios..."
-          type="text"
-          onkeydown="if(event.key==='Enter') window.location='/movies/search/?q='+this.value"
-        />
-      </div>
-    </div>
-    <div class="flex items-center gap-6">
-      {% if request.user.is_authenticated %}
-      <span class="text-zinc-400 text-sm">{{ request.user.username }}</span>
-      <a href="/logout/" class="text-zinc-400 hover:text-white transition-colors text-sm">Salir</a>
-      {% else %}
-      <a href="/users/login" class="text-zinc-400 hover:text-white transition-colors text-sm">Iniciar sesión</a>
-      {% endif %}
-    </div>
-  </header>
+  {% include 'movies/partials/header.html' %}
 
   {# ── HERO: película #1 del Top 10 ── #}
   {% with hero=top_movies|first %}
@@ -139,11 +119,10 @@
         {% if request.user.is_authenticated %}
         <a href="{% url 'toggle_favorite' hero.id %}"
            class="px-8 py-4 rounded-full border border-primary/20 text-primary font-bold hover:bg-primary/10 transition-all flex items-center gap-2">
-          <span class="material-symbols-outlined"  style="font-variation-settings:'FILL'{% if hero.id in favorite_ids %}1{% else %}0{% endif %};">
+          <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">
             favorite
           </span>
           {% if hero.id in favorite_ids %}En favoritas{% else %}Favorita{% endif %}
-</a>
         </a>
         {% endif %}
       </div>
@@ -310,14 +289,11 @@
 
   {# ── FAB ── #}
   <a href="/movies/random/"
-     class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group">
+     class="fixed bottom-24 md:bottom-8 right-4 md:right-8 w-14 h-14 md:w-16 md:h-16 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50 group">
     <span class="material-symbols-outlined text-3xl">shuffle</span>
     <span class="absolute right-20 bg-surface-container-highest px-4 py-2 rounded-lg text-sm font-bold text-white opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
   Sorpréndeme
 </span>
   </a>
-
-  {# Header extraído como componente reutilizable #}
-{% include 'movies/partials/header.html' %}
-</body>
-</html>
+</div>
+{% endblock content %}
