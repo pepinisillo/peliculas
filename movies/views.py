@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from movies.models import Movie, MovieReview, Person, MovieComment, MovieCredit
+from movies.models import Movie, MovieReview, Person, MovieComment, MovieCredit, MovieReviewLike
+from movies.models import Movie, MovieReview, Person, MovieComment, MovieReviewLike
 from movies.forms import MovieReviewForm, MovieCommentForm
 from django.db.models import Avg, Count
 from django.shortcuts import get_object_or_404
@@ -58,7 +59,6 @@ def add_comment(request, movie_id):
         return render(request,
                   'movies/movie_comment_form.html',
                   {'movie_comment_form': form, 'movie':movie})
-
 def movie(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
     review_form = MovieReviewForm()
@@ -72,10 +72,9 @@ def movie(request, movie_id):
     if request.user.is_authenticated:
         favorite_ids = [f.movie.id for f in Favorite.objects.filter(user=request.user)]
 
-    #Preview para reviews en pagina de pelicula
     reviews_preview = MovieReview.objects.filter(
         movie=movie
-    ).order_by('-id')[:3] 
+    ).order_by('-id')[:3]
 
     context = { 'movie':movie, 
                'actors':actors, 
@@ -88,10 +87,20 @@ def movie(request, movie_id):
     }
     return render(request,'movies/movie.html', context=context)
 
-
 def movie_reviews(request, movie_id):
     movie = Movie.objects.get(id=movie_id)
-    return render(request,'movies/reviews.html', context={'movie':movie } )
+    reviews = movie.moviereview_set.all()
+
+
+    # conteos de likes y dislikes a cada reseña
+    for review in reviews:
+        review.like_count = review.likes.filter(vote='like').count()
+        review.dislike_count = review.likes.filter(vote='dislike').count()
+    return render(request, 'movies/reviews.html', {
+        'movie': movie,
+        'reviews': reviews
+    })
+
 
 def add_review(request, movie_id):
     form = None
@@ -116,11 +125,95 @@ def add_review(request, movie_id):
         return render(request,
                   'movies/movie_review_form.html',
                   {'movie_review_form': form, 'movie':movie})
+    
+def delete_review(request, review_id):
+    review = MovieReview.objects.get(id=review_id)
+    movie_id = review.movie.id
+    if review.user == request.user:
+        review.delete()
+    # Regresa a la página de reseñas de esa película
+    return redirect(f'/movies/movie_reviews/{movie_id}/')
 
+def edit_review(request, review_id):
+    review = MovieReview.objects.get(id=review_id)
+    if request.method == 'POST':
+        form = MovieReviewForm(request.POST)
+        if form.is_valid():
+            review.rating = form.cleaned_data['rating']
+            review.title = form.cleaned_data['title']
+            review.review = form.cleaned_data['review']
+            review.save()
+            return HttpResponse(status=204, headers={'HX-Trigger': 'listChanged'})
+    else:
+        form = MovieReviewForm(initial={
+            'rating': review.rating,
+            'title': review.title,
+            'review': review.review
+        })
+        return render(request, 'movies/movie_review_form.html', {
+            'movie_review_form': form,
+            'movie': review.movie,
+            'review': review
+        })
+    
+# Vista propia para crear reseña desde la página de reseñas (distinta al modal de movie.html)
+def create_review(request, movie_id):
+    movie = Movie.objects.get(id=movie_id)
+    
+    if request.method == 'POST':
+        form = MovieReviewForm(request.POST)
+        if form.is_valid():
+            # Guarda la reseña y redirige a la página de reseñas
+            MovieReview.objects.create(
+                movie=movie,
+                user=request.user,
+                rating=form.cleaned_data['rating'],
+                title=form.cleaned_data['title'],
+                review=form.cleaned_data['review']
+            )
+            return redirect(f'/movies/movie_reviews/{movie_id}/')
+    else:
+        form = MovieReviewForm()
+
+    return render(request, 'movies/review_form.html', {
+        'movie': movie,
+        'form': form
+    })
+    
+def toggle_like(request, review_id):
+    # Solo usuarios logueados pueden votar
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect('/users/login')
+
+    review = MovieReview.objects.get(id=review_id)
+    vote_type = request.POST.get('vote')  # 'like' o 'dislike'
+
+    existing_vote = MovieReviewLike.objects.filter(
+        user=request.user,
+        review=review
+    ).first()
+
+    if existing_vote:
+        if existing_vote.vote == vote_type:
+            # Si vota igual, cancela el voto
+            existing_vote.delete()
+        else:
+            # Si vota diferente, actualiza
+            existing_vote.vote = vote_type
+            existing_vote.save()
+    else:
+        # Voto nuevo
+        MovieReviewLike.objects.create(
+            user=request.user,
+            review=review,
+            vote=vote_type
+        )
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/movies/'))
 def toggle_favorite(request, movie_id):
     # verificar usuario logueado
     if not request.user.is_authenticated:
-        return HttpResponseRedirect('/login/')
+        return HttpResponseRedirect('/users/login')
 
     movie = Movie.objects.get(id=movie_id)
 

@@ -65,6 +65,25 @@ class MovieReview(models.Model):
     title = models.TextField(blank=False, null=False, default="Reseña")
     created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
 
+class MovieReviewLike(models.Model):
+    LIKE = 'like'
+    DISLIKE = 'dislike'
+    VOTE_CHOICES = [(LIKE, 'Like'), (DISLIKE, 'Dislike')]
+
+    # Relaciones con el usuario y la reseña que recibe el voto
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    review = models.ForeignKey(MovieReview, on_delete=models.CASCADE, related_name='likes')
+    
+    # Almacena si el voto es like o dislike
+    vote = models.CharField(max_length=7, choices=VOTE_CHOICES)
+
+    class Meta:
+        # Evita que un usuario vote más de una vez en la misma reseña
+        unique_together = ('user', 'review')
+
+    def __str__(self):
+        return f"{self.user} - {self.vote} - {self.review.id}"
+
 class MovieComment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
