@@ -1,7 +1,11 @@
-{% extends 'movies/base.html' %}
 {% load static %}
 
-{% block head %}
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cinematic - User Profile</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -78,16 +82,15 @@
     }
   };
 </script>
-{% endblock head %}
 
-{% block style %}
+<style>
 .oily-smooth-transition {
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
-{% endblock style %}
+</style>
+</head>
+<body class="bg-surface text-on-surface font-body selection:bg-primary/30">
 
-{% block header %}{% endblock header %}
-{% block content %}
 <div class="selection:bg-primary/30">
 {% include 'movies/partials/side.html' %}
 <main class="lg:ml-64 min-h-screen pt-32 lg:pt-24 pb-28 lg:pb-0 bg-surface">
@@ -201,9 +204,6 @@
 </div>
 </main>
 </div>
-{% endblock content %}
-
-{% block scripts %}
 <script>
     const flash = document.getElementById("flash-message");
     if (flash) {
@@ -213,4 +213,6 @@
       }, 1500); // 1500ms = 1.5 segundos
     }
   </script>
-{% endblock scripts %}
+{% include 'movies/base.html' %}
+</body>
+</html>

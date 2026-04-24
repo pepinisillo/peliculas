@@ -1,7 +1,11 @@
-{% extends 'movies/base.html' %}
 {% load static %}
 
-{% block head %}
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cinematic - Home</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
@@ -53,9 +57,8 @@
     },
   }
 </script>
-{% endblock head %}
 
-{% block style %}
+<style>
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     display: inline-block;
@@ -71,10 +74,10 @@
   }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-{% endblock style %}
+</style>
+</head>
+<body class="bg-background text-on-background">
 
-{% block header %}{% endblock header %}
-{% block content %}
 <div class="selection:bg-primary selection:text-on-primary">
 
 {# Barra lateral extraída como componente reutilizable #}
@@ -296,4 +299,6 @@
 </span>
   </a>
 </div>
-{% endblock content %}
+{% include 'movies/base.html' %}
+</body>
+</html>

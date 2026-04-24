@@ -195,7 +195,7 @@ extend: {
 							<div class="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-container-low oily-smooth-transition group-hover:scale-[1.02] group-hover:shadow-2xl group-hover:shadow-primary/20">
 								<img alt="Movie 1" class="w-full h-full object-cover" src="https://image.tmdb.org/t/p/w500{{ credit.movie.poster_path }}"/>
 								<div class="absolute top-3 right-3 glass-panel px-2 py-1 rounded text-xs font-bold text-white flex items-center gap-1">
-									<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>{{avg_rating}}
+									<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">star</span>{{ credit.avg_rating|floatformat:1 }}
 								</div>
 							</div>
 							<div>
