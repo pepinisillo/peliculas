@@ -1,10 +1,7 @@
+{% extends 'movies/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html class="dark" lang="en">
-<head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Cinematic - Search</title>
+
+{% block head %}
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
@@ -45,7 +42,9 @@
     },
   }
 </script>
-<style>
+{% endblock head %}
+
+{% block style %}
   .material-symbols-outlined {
     font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
     display: inline-block;
@@ -58,52 +57,15 @@
   }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-</style>
-</head>
+{% endblock style %}
 
-<body class="bg-background text-on-background">
-
-{# ── SIDEBAR ── #}
-<aside class="h-screen w-64 fixed left-0 top-0 bg-zinc-950/80 backdrop-blur-xl shadow-2xl shadow-black/50 flex flex-col p-6 gap-8 z-50 hidden md:flex">
-  <div class="flex flex-col gap-1">
-    <span class="text-2xl font-bold tracking-tighter text-blue-500 font-headline">Cinematic</span>
-    <span class="text-xs font-medium text-zinc-500 tracking-widest uppercase">The Canvas</span>
-  </div>
-  <nav class="flex flex-col gap-2">
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/movies/">
-      <span class="material-symbols-outlined">home</span>
-      Inicio
-    </a>
-    <a class="flex items-center gap-4 px-4 py-3 text-white bg-blue-600/10 rounded-lg scale-105 text-sm font-medium" href="/movies/search/">
-      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">search</span>
-      Buscar
-    </a>
-    {% if request.user.is_authenticated %}
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/profile/">
-      <span class="material-symbols-outlined">person</span>
-      Perfil
-    </a>
-    {% else %}
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 rounded-lg text-sm font-medium" href="/users/login">
-      <span class="material-symbols-outlined">login</span>
-      Login
-    </a>
-    {% endif %}
-  </nav>
-</aside>
-
-{# ── TOP BAR ── #}
-<header class="fixed top-0 right-0 w-full md:w-[calc(100%-16rem)] h-16 z-40 bg-zinc-950/40 backdrop-blur-md flex items-center justify-end px-8 gap-6">
-  {% if request.user.is_authenticated %}
-  <span class="text-zinc-400 text-sm">{{ request.user.username }}</span>
-  <a href="/logout/" class="text-zinc-400 hover:text-white text-sm transition-colors">Salir</a>
-  {% else %}
-  <a href="/users/login" class="text-zinc-400 hover:text-white text-sm transition-colors">Iniciar sesión</a>
-  {% endif %}
-</header>
-
+{% block header %}{% endblock header %}
+{% block content %}
+<div class="selection:bg-primary selection:text-on-primary">
+{% include 'movies/partials/side.html' %}
 {# ── MAIN ── #}
-<main class="md:ml-64 pt-16 min-h-screen">
+<main class="lg:ml-64 min-h-screen pt-32 lg:pt-24 pb-28 lg:pb-0">
+  {% include 'movies/partials/header.html' %}
 
   {# ── BARRA DE BÚSQUEDA STICKY ── #}
   <section class="px-8 pt-10 pb-6 sticky top-16 z-30 bg-background/90 backdrop-blur-xl border-b border-outline-variant/10">
@@ -319,22 +281,5 @@
   </div>
 
 </main>
-
-{# ── NAV MÓVIL ── #}
-<nav class="md:hidden fixed bottom-0 left-0 right-0 h-16 bg-zinc-950/80 backdrop-blur-xl flex items-center justify-around px-4 z-50">
-  <a class="flex flex-col items-center gap-1 text-zinc-500" href="/movies/">
-    <span class="material-symbols-outlined">home</span>
-    <span class="text-[10px] font-medium">Inicio</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-primary" href="/movies/search/">
-    <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">search</span>
-    <span class="text-[10px] font-bold">Buscar</span>
-  </a>
-  <a class="flex flex-col items-center gap-1 text-zinc-500" href="{% if request.user.is_authenticated %}/profile/{% else %}/users/login{% endif %}">
-    <span class="material-symbols-outlined">person</span>
-    <span class="text-[10px] font-medium">Perfil</span>
-  </a>
-</nav>
-
-</body>
-</html>
+</div>
+{% endblock content %}
