@@ -5,22 +5,22 @@
     <p class="text-xs font-medium text-zinc-500 tracking-widest uppercase">The Canvas</p>
   </div>
   <nav class="flex flex-col gap-2">
-    <a class="flex items-center gap-4 px-4 py-3 text-white bg-blue-600/10 rounded-lg transition-all duration-300 scale-105 active:scale-95 text-sm font-medium" href="/movies/">
-      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span>
+    <a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300 active:scale-95 text-sm font-medium {% if request.path == '/movies/' %}text-white bg-blue-600/10 scale-105{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50{% endif %}" href="/movies/">
+      <span class="material-symbols-outlined" {% if request.path == '/movies/' %}style="font-variation-settings:'FILL' 1;"{% endif %}>home</span>
       Inicio
     </a>
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/movies/search/">
-      <span class="material-symbols-outlined">search</span>
+    <a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300 active:scale-95 text-sm font-medium {% if '/movies/search' in request.path %}text-white bg-blue-600/10 scale-105{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50{% endif %}" href="/movies/search/">
+      <span class="material-symbols-outlined" {% if '/movies/search' in request.path %}style="font-variation-settings:'FILL' 1;"{% endif %}>search</span>
       Buscar
     </a>
     {% if request.user.is_authenticated %}
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/users/profile">
-      <span class="material-symbols-outlined">person</span>
+    <a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300 active:scale-95 text-sm font-medium {% if '/users/profile' in request.path %}text-white bg-blue-600/10 scale-105{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50{% endif %}" href="/users/profile">
+      <span class="material-symbols-outlined" {% if '/users/profile' in request.path %}style="font-variation-settings:'FILL' 1;"{% endif %}>person</span>
       Perfil
     </a>
     {% else %}
-    <a class="flex items-center gap-4 px-4 py-3 text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50 transition-all duration-300 active:scale-95 text-sm font-medium" href="/users/login">
-      <span class="material-symbols-outlined">login</span>
+    <a class="flex items-center gap-4 px-4 py-3 rounded-lg transition-all duration-300 active:scale-95 text-sm font-medium {% if '/users/login' in request.path %}text-white bg-blue-600/10 scale-105{% else %}text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50{% endif %}" href="/users/login">
+      <span class="material-symbols-outlined" {% if '/users/login' in request.path %}style="font-variation-settings:'FILL' 1;"{% endif %}>login</span>
       Login
     </a>
     {% endif %}
@@ -30,22 +30,22 @@
 {# ── MOBILE BOTTOM NAV ── #}
 <nav class="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-zinc-950/95 backdrop-blur-xl border-t border-zinc-800/80 px-2 py-2">
   <div class="grid grid-cols-3 gap-2">
-    <a class="flex flex-col items-center justify-center py-2 rounded-lg text-white bg-blue-600/10 text-xs font-medium" href="/movies/">
-      <span class="material-symbols-outlined" style="font-variation-settings:'FILL' 1;">home</span>
+    <a class="flex flex-col items-center justify-center py-2 rounded-lg text-xs font-medium {% if request.path == '/movies/' %}text-white bg-blue-600/10{% else %}text-zinc-300 hover:bg-zinc-800/60{% endif %}" href="/movies/">
+      <span class="material-symbols-outlined" {% if request.path == '/movies/' %}style="font-variation-settings:'FILL' 1;"{% endif %}>home</span>
       Inicio
     </a>
-    <a class="flex flex-col items-center justify-center py-2 rounded-lg text-zinc-300 hover:bg-zinc-800/60 text-xs font-medium" href="/movies/search/">
-      <span class="material-symbols-outlined">search</span>
+    <a class="flex flex-col items-center justify-center py-2 rounded-lg text-xs font-medium {% if '/movies/search' in request.path %}text-white bg-blue-600/10{% else %}text-zinc-300 hover:bg-zinc-800/60{% endif %}" href="/movies/search/">
+      <span class="material-symbols-outlined" {% if '/movies/search' in request.path %}style="font-variation-settings:'FILL' 1;"{% endif %}>search</span>
       Buscar
     </a>
     {% if request.user.is_authenticated %}
-    <a class="flex flex-col items-center justify-center py-2 rounded-lg text-zinc-300 hover:bg-zinc-800/60 text-xs font-medium" href="/users/profile">
-      <span class="material-symbols-outlined">person</span>
+    <a class="flex flex-col items-center justify-center py-2 rounded-lg text-xs font-medium {% if '/users/profile' in request.path %}text-white bg-blue-600/10{% else %}text-zinc-300 hover:bg-zinc-800/60{% endif %}" href="/users/profile">
+      <span class="material-symbols-outlined" {% if '/users/profile' in request.path %}style="font-variation-settings:'FILL' 1;"{% endif %}>person</span>
       Perfil
     </a>
     {% else %}
-    <a class="flex flex-col items-center justify-center py-2 rounded-lg text-zinc-300 hover:bg-zinc-800/60 text-xs font-medium" href="/users/login">
-      <span class="material-symbols-outlined">login</span>
+    <a class="flex flex-col items-center justify-center py-2 rounded-lg text-xs font-medium {% if '/users/login' in request.path %}text-white bg-blue-600/10{% else %}text-zinc-300 hover:bg-zinc-800/60{% endif %}" href="/users/login">
+      <span class="material-symbols-outlined" {% if '/users/login' in request.path %}style="font-variation-settings:'FILL' 1;"{% endif %}>login</span>
       Login
     </a>
     {% endif %}
