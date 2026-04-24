@@ -254,14 +254,18 @@ def delete_review(request, review_id):
 def edit_review(request, review_id):
     review = MovieReview.objects.get(id=review_id)
     if request.method == 'POST':
+        next_page = request.POST.get('next', 'reviews')
         form = MovieReviewForm(request.POST)
         if form.is_valid():
             review.rating = form.cleaned_data['rating']
             review.title = form.cleaned_data['title']
             review.review = form.cleaned_data['review']
             review.save()
+            if next_page == 'profile':
+                return redirect('/users/profile')
             return redirect(f'/movies/movie_reviews/{review.movie.id}/')
     else:
+        next_page = request.GET.get('next', 'reviews')
         form = MovieReviewForm(initial={
             'rating': review.rating,
             'title': review.title,
@@ -270,7 +274,8 @@ def edit_review(request, review_id):
         return render(request, 'movies/review_form.html', {
             'form': form,
             'movie': review.movie,
-            'review': review
+            'review': review,
+            'next_page': next_page
         })
     
 # Vista propia para crear reseña desde la página de reseñas (distinta al modal de movie.html)

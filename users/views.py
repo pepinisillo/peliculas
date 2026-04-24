@@ -7,6 +7,7 @@ from users.models import Profile
 from movies.models import MovieReview
 from django.contrib import messages
 from django.contrib.messages import constants
+from django.db.models import Count, Q
 
 # Vista de login
 def login_view(request):
@@ -108,15 +109,17 @@ def profile_view(request):
     # Si el usuario está autenticado, se muestra el perfil
     profile, _ = Profile.objects.get_or_create(user=request.user)
     sort = request.GET.get('sort', 'recent')
-    reviews = MovieReview.objects.filter(user=request.user).select_related('movie')
-    review_fields = {f.name for f in MovieReview._meta.get_fields()}
-
+    reviews = (
+        MovieReview.objects
+        .filter(user=request.user)
+        .select_related('movie')
+        .annotate(
+            like_count=Count('likes', filter=Q(likes__vote='like')),
+            dislike_count=Count('likes', filter=Q(likes__vote='dislike')),
+        )
+    )
     if sort == 'popular':
-        # Mientras no se tienen los likes, se ordena por rating
-        if 'likes' in review_fields:
-            reviews = reviews.order_by('-likes', '-created_at')
-        else:
-            reviews = reviews.order_by('-rating', '-created_at')
+        reviews = reviews.order_by('-like_count', '-created_at')
     else:
         sort = 'recent'
         reviews = reviews.order_by('-created_at')

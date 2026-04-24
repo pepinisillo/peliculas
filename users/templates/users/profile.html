@@ -162,7 +162,11 @@
 <!-- Review Grid -->
 <div class="grid grid-cols-1 2xl:grid-cols-2 gap-6 xl:gap-8">
 {% for review in reviews %}
-<div class="group bg-surface-container rounded-xl overflow-hidden flex flex-col 2xl:flex-row oily-smooth-transition hover:scale-[1.01] hover:bg-surface-container-high relative">
+<a href="{% url 'edit_review' review.id %}?next=profile" class="group bg-surface-container rounded-xl overflow-hidden flex flex-col 2xl:flex-row oily-smooth-transition hover:scale-[1.01] hover:bg-surface-container-high hover:shadow-2xl hover:shadow-primary/15 relative">
+<span class="absolute top-3 right-3 inline-flex items-center gap-1 rounded-full border border-outline-variant/40 bg-surface/70 px-2 py-1 text-[11px] font-label text-on-surface-variant opacity-0 translate-y-1 group-hover:opacity-100 group-hover:translate-y-0 oily-smooth-transition z-10">
+  <span class="material-symbols-outlined text-sm">edit</span>
+  Editar
+</span>
 <div class="w-full 2xl:w-40 h-64 2xl:h-auto shrink-0 relative overflow-hidden">
 <img alt="Movie poster" class="w-full h-full object-cover" src="{% if review.movie.poster_path %}{% if 'http' in review.movie.poster_path %}{{ review.movie.poster_path }}{% else %}https://image.tmdb.org/t/p/w500{{ review.movie.poster_path }}{% endif %}{% else %}https://placehold.co/600x900/1f2937/ffffff?text=No+Poster{% endif %}"/>
 </div>
@@ -170,7 +174,10 @@
 <div>
 <div class="flex justify-between items-start mb-4 gap-3 md:gap-4">
 <h3 class="text-xl font-headline font-bold text-on-surface break-words">{{ review.movie.title }}</h3>
-<span class="text-primary font-bold text-sm">{{ review.rating }}/100</span>
+<span class="inline-flex items-center gap-1 text-primary font-bold text-sm">
+  <span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+  {{ review.rating }}/5
+</span>
 </div>
 <p class="text-sm text-on-surface mb-2 font-semibold break-words">{{ review.title }}</p>
 <p class="text-on-surface-variant font-body leading-relaxed italic break-words whitespace-pre-line">
@@ -181,11 +188,11 @@
 <div class="flex items-center gap-4 text-on-surface-variant">
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-base" data-icon="thumb_up">thumb_up</span>
-<span class="text-xs font-label">{{ review.likes|default:0 }}</span>
+<span class="text-xs font-label">{{ review.like_count|default:0 }}</span>
 </div>
 <div class="flex items-center gap-2">
 <span class="material-symbols-outlined text-base" data-icon="thumb_down">thumb_down</span>
-<span class="text-xs font-label">{{ review.dislikes|default:0 }}</span>
+<span class="text-xs font-label">{{ review.dislike_count|default:0 }}</span>
 </div>
 </div>
 <span class="text-[10px] uppercase tracking-widest font-label text-outline">
@@ -193,7 +200,7 @@
 </span>
 </div>
 </div>
-</div>
+</a>
 {% empty %}
 <div class="2xl:col-span-2 bg-surface-container rounded-xl p-10 text-center text-on-surface-variant">
   Aún no has publicado reseñas.
