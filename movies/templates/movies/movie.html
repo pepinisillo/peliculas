@@ -1,110 +1,122 @@
-{% extends "movies/base.html" %}
-
-{% block content %}
-<div class="min-h-screen bg-[#0e0e0f] pt-16 -mt-1">
-
-  {# ── HERO CON POSTER ── #}
-  <div class="relative w-full h-[500px] overflow-hidden">
-    <img
-      src="https://image.tmdb.org/t/p/original/{{ movie.poster_path }}"
-      alt="{{ movie.title }}"
-      class="w-full h-full object-cover object-top blur-sm scale-105 opacity-30"
-    />
-    <div class="absolute inset-0 bg-gradient-to-t from-[#0e0e0f] via-[#0e0e0f]/60 to-transparent"></div>
-
-    <div class="absolute bottom-0 left-0 right-0 px-8 pb-8 md:px-16 flex gap-8 items-end">
-      {# Poster #}
-      <div class="hidden md:block flex-none w-48 rounded-xl overflow-hidden shadow-2xl ring-1 ring-white/10">
-        <img
-          src="https://image.tmdb.org/t/p/w300/{{ movie.poster_path }}"
-          alt="{{ movie.title }}"
-          class="w-full h-full object-cover"
-        />
-      </div>
-
-      {# Info #}
-      <div class="flex-1 pb-2">
-        <div class="flex flex-wrap gap-2 mb-3">
-          {% for g in movie.genres.all %}
-          <span class="text-xs font-bold px-3 py-1 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">
-            {{ g }}
-          </span>
-          {% endfor %}
-        </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold font-headline tracking-tighter text-white mb-2">
-          {{ movie.title }}
-        </h1>
-        <p class="text-zinc-400 text-sm mb-4">{{ movie.release_date|date:"Y" }} · {{ movie.running_time }} min</p>
-
-        <div class="flex gap-3 flex-wrap">
-          {% if user.is_authenticated %}
-          <button
-            class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 rounded-full flex items-center gap-2 transition-all hover:scale-105 active:scale-95"
-            hx-get="/movies/movie_review/add/{{ movie.id }}"
-            hx-target="body"
-            hx-swap="beforeend">
-            <span class="material-symbols-outlined text-base">rate_review</span>
-            Agregar reseña
-          </button>
-          <a href="{% url 'toggle_favorite' movie.id %}"
-            class="border {% if movie.id in favorite_ids %}border-purple-500 bg-purple-500/20 text-purple-300{% else %}border-purple-500/30 text-purple-400{% endif %} hover:bg-purple-500/10 font-bold px-6 py-3 rounded-full flex items-center gap-2 transition-all hover:scale-105 active:scale-95">
-            <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' {% if movie.id in favorite_ids %}1{% else %}0{% endif %}">favorite</span>
-            {% if movie.id in favorite_ids %}En favoritas{% else %}Favorita{% endif %}
-          </a>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </div>
-
-  {# ── CONTENIDO ── #}
-  <div class="px-8 md:px-16 py-12 grid grid-cols-1 md:grid-cols-3 gap-12">
-
-    {# Columna izquierda #}
-    <div class="md:col-span-2 space-y-10">
-
-      {# Overview #}
-      <section>
-        <h2 class="text-xl font-bold text-white mb-3 flex items-center gap-2">
-          <span class="material-symbols-outlined text-blue-400">description</span>
-          Sinopsis
-        </h2>
-        <p class="text-zinc-400 leading-relaxed">{{ movie.overview }}</p>
-      </section>
-
-      {# Reseñas #}
-      <section>
-        <h2 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-          <span class="material-symbols-outlined text-purple-400">reviews</span>
-          Reseñas
-        </h2>
-        <div hx-trigger="listChanged from:body" hx-get="{% url 'movie_reviews' movie.id %}" hx-target="this">
-          {% include "movies/reviews.html" %}
-        </div>
-      </section>
-
-    </div>
-
-    {# Columna derecha #}
-    <div class="space-y-8">
-
-      {# Créditos #}
-      <section class="bg-zinc-900/50 rounded-xl p-6 border border-zinc-800">
-        <h2 class="text-sm font-bold text-zinc-400 uppercase tracking-widest mb-4">Reparto</h2>
-        <div class="flex flex-wrap gap-2">
-        {% for c in movie.moviecredit_set.all %}
-          <span class="text-xs bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full">{{ c.person }}</span>
-          {% endfor %}
-        </div>
-      </section>
-
-      {# Data source #}
-      <section class="bg-zinc-900/50 rounded-xl p-6 border border-zinc-800">
-        <p class="text-xs text-zinc-600 mb-1">Datos de</p>
-        <a href="https://www.tmdb.org" class="text-blue-500 text-sm hover:underline">tmdb.org</a>
-      </section>
-
-    </div>
-  </div>
-</div>
-{% endblock content %}
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+	<meta charset="utf-8"/>
+	<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+	<title>Cinematic - Movie Details</title>
+	<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+	<script id="tailwind-config">
+	tailwind.config = {
+		darkMode: "class",
+		theme: { extend: { "colors": { "tertiary": "#ffaaf4", "outline": "#767576", "on-primary": "#002c65", "error": "#ff716c", "secondary-container": "#7d01b1", "surface-container-low": "#131314", "on-surface-variant": "#adaaab", "outline-variant": "#484849", "surface": "#0e0e0f", "primary-container": "#6c9fff", "primary": "#85adff", "secondary": "#d277ff", "surface-container-lowest": "#000000", "surface-container-high": "#201f21", "surface-variant": "#262627", "background": "#0e0e0f", "surface-container": "#1a191b", "on-surface": "#ffffff" } } }
+	}
+	</script>
+	<style>
+	.material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+	.custom-scrollbar::-webkit-scrollbar { height: 4px; }
+	.custom-scrollbar::-webkit-scrollbar-track { background: #131314; }
+	.custom-scrollbar::-webkit-scrollbar-thumb { background: #484849; border-radius: 10px; }
+	.text-shadow-hero { text-shadow: 0 4px 12px rgba(0,0,0,0.8); }
+	</style>
+</head>
+<body class="bg-surface text-on-surface font-body">
+	{% include 'movies/partials/side.html' %}
+	{% include 'movies/partials/header.html' %}
+	<main class="ml-64 pt-0 min-h-screen">
+		<section class="relative min-h-[780px] w-full flex items-end">
+			<div class="absolute top-0 left-0 w-full h-[70vh] z-0">
+				<img class="w-full h-full object-cover" src="https://image.tmdb.org/t/p/original/{{movie.backdrops}}" alt="{{movie.title}}"/>
+				<div class="absolute inset-0 bg-gradient-to-t from-surface via-surface/40 to-transparent"></div>
+				<div class="absolute inset-0 bg-gradient-to-r from-surface/80 via-transparent to-transparent"></div>
+			</div>
+			<div class="relative z-10 px-12 pb-20 max-w-4xl">
+				<div class="flex items-center gap-4 mb-6">
+					{% for g in movie.genres.all %}
+					<span class="bg-primary/20 text-primary px-3 py-1 rounded text-xs font-bold uppercase tracking-widest border border-primary/30">{{g}}</span>
+					{% endfor %}
+					<div class="flex items-center text-yellow-400 ml-4">
+						<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+						<span class="font-bold ml-1">{{avg_rating}}</span>
+					</div>
+				</div>
+				<h1 class="font-headline font-extrabold text-7xl mb-4 tracking-tighter text-shadow-hero">{{movie.title}}</h1>
+				<div class="flex gap-4">
+					<a href="{% url 'toggle_favorite' movie.id %}" class="bg-surface-variant/40 backdrop-blur-md text-on-surface px-8 py-4 rounded-full font-bold flex items-center gap-2 border border-outline-variant/30 hover:bg-surface-variant/60 transition-colors active:scale-95">
+						<span class="material-symbols-outlined" style="font-variation-settings:'FILL' {% if movie.id in favorite_ids %}1{% else %}0{% endif %};">favorite</span>
+						{% if movie.id in favorite_ids %}En favoritas{% else %}Añadir a favoritos{% endif %}
+					</a>
+				</div>
+			</div>
+			<div class="absolute right-12 bottom-20 flex flex-col items-end text-on-surface-variant font-headline text-sm gap-2">
+				<div class="flex items-center gap-4">
+					<span class="flex flex-col items-end"><span class="text-zinc-500 uppercase text-[10px] tracking-widest mb-1">Release</span><span class="text-white font-bold">{{movie.release_date}}</span></span>
+					<span class="w-[1px] h-8 bg-outline-variant/30"></span>
+					<span class="flex flex-col items-end"><span class="text-zinc-500 uppercase text-[10px] tracking-widest mb-1">Runtime</span><span class="text-white font-bold">{{movie.running_time}} min</span></span>
+				</div>
+			</div>
+		</section>
+		<section class="px-12 py-24 grid grid-cols-12 gap-16">
+			<div class="col-span-8 space-y-24">
+				<div>
+					<h2 class="font-headline font-bold text-3xl mb-8 flex items-center gap-4"><span class="w-8 h-[2px] bg-primary rounded-full"></span>Synopsis</h2>
+					<div class="bg-surface-container-low p-10 rounded-xl leading-relaxed text-on-surface-variant text-lg">{{movie.overview}}</div>
+				</div>
+				<div>
+					<h2 class="font-headline font-bold text-3xl mb-8 flex items-center gap-4"><span class="w-8 h-[2px] bg-secondary rounded-full"></span>Cast &amp; Crew</h2>
+					<div class="flex gap-6 overflow-x-auto pb-6 custom-scrollbar">
+						{% for actor in actors %}
+						<a href="{% url 'actor_detail' actor.person.id %}">
+							<div class="min-w-[180px] group cursor-pointer">
+								<div class="aspect-[3/4] rounded-lg overflow-hidden mb-4 bg-surface-container-low transition-transform duration-500 group-hover:scale-[1.02]">
+									<img src="https://image.tmdb.org/t/p/w500{{ actor.person.profile_path }}" alt="{{ actor.person.name }}"/>
+								</div>
+								<h4 class="font-bold text-on-surface">{{ actor.person.name }}</h4>
+								<p class="text-sm text-on-surface-variant">{{ actor.person.known_for_department }}</p>
+							</div>
+						</a>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+			<div class="col-span-4 space-y-12">
+				<div class="bg-surface-container rounded-xl p-8 border border-outline-variant/10">
+					<div class="flex items-center justify-between mb-6">
+						<span class="text-on-surface-variant font-label text-sm uppercase tracking-widest">Global Score</span>
+						<span class="text-primary font-bold text-2xl">{{avg_rating}}</span>
+					</div>
+				</div>
+				<div>
+					<h2 class="font-headline font-bold text-2xl mb-6">Recent Reviews</h2>
+					<div class="space-y-6">
+						{% for review in reviews_preview %}
+						<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/5">
+							<div class="flex items-center gap-3 mb-4">
+								<div class="w-10 h-10 rounded-full overflow-hidden">
+									<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAxT7Fsx5bf97ejmR72CBofjuf9rS6eFG92Nv2YEYJ1bKQh-cUKraBlLkcSZbhHv4HkDsJ_1cWEJAIpQseGT81q2tLn8HPto8i7XUHifUfs3omOpYKLDlElgcuphTpZ0UXG22r_Qoq_WX9N7rd_MCYLjo0xPjmVM0bKIxwbsKk6N1zQLhJ7aIsKpnwjww1zw2Ci5sMPXChmLZRi-qNoJ9iShbyCD3hCG6w1cKjFnzX45VowIWX--laBSopZJ5P7fMnEM-QUSDwQiG7"/>
+								</div>
+								<div>
+									<h4 class="text-sm font-bold">{{review.user.username}}</h4>
+									<div class="flex items-center gap-1 text-yellow-500 text-sm">
+										<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
+										<span class="text-on-surface font-semibold">{{ review.rating }}/100</span>
+									</div>
+								</div>
+							</div>
+							<p class="text-sm text-on-surface-variant leading-relaxed italic">{{review.review}}</p>
+						</div>
+						{% endfor %}
+						<button onclick="window.location.href='{% url 'movie_reviews' movie.id %}'" class="w-full py-4 text-sm font-bold text-primary hover:bg-primary/10 transition-colors rounded-lg border border-primary/20">
+							Read All Reviews
+						</button>
+						<div class="pt-8 border-t border-outline-variant/10 space-y-4">
+							<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Director</span><span class="text-white text-sm font-medium">{{director.person.name}}</span></div>
+							<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Writer</span><span class="text-white text-sm font-medium">{{writer.person.name}}</span></div>
+							<div class="flex justify-between"><span class="text-on-surface-variant text-sm">Studio</span><span class="text-white text-sm font-medium">{{ movie.production_companies.first.name }}</span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+</body>
+</html>
