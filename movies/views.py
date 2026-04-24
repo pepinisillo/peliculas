@@ -179,15 +179,15 @@ def edit_review(request, review_id):
             review.title = form.cleaned_data['title']
             review.review = form.cleaned_data['review']
             review.save()
-            return HttpResponse(status=204, headers={'HX-Trigger': 'listChanged'})
+            return redirect(f'/movies/movie_reviews/{review.movie.id}/')
     else:
         form = MovieReviewForm(initial={
             'rating': review.rating,
             'title': review.title,
             'review': review.review
         })
-        return render(request, 'movies/movie_review_form.html', {
-            'movie_review_form': form,
+        return render(request, 'movies/review_form.html', {
+            'form': form,
             'movie': review.movie,
             'review': review
         })
