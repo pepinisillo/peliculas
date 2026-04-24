@@ -176,4 +176,27 @@ def edit_profile_view(request):
         'success': success,
     }
     return render(request, 'users/edit_profile.html', context=context)
+
+
+def toggle_follow_view(request, user_id):
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect(reverse('login'))
+    if request.method != 'POST':
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('index')))
+
+    target_user = User.objects.filter(id=user_id).first()
+    if not target_user:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('index')))
+    if target_user.id == request.user.id:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('index')))
+
+    my_profile, _ = Profile.objects.get_or_create(user=request.user)
+    target_profile, _ = Profile.objects.get_or_create(user=target_user)
+
+    if target_profile.followers.filter(id=my_profile.id).exists():
+        target_profile.followers.remove(my_profile)
+    else:
+        target_profile.followers.add(my_profile)
+
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', reverse('index')))
     

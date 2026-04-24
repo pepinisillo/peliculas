@@ -7,6 +7,7 @@ from django.db.models import Avg, Count
 from django.shortcuts import get_object_or_404
 from .models import Favorite, Movie, Genre
 from django.contrib.auth.models import User
+from users.models import Profile
 import random
 from django.shortcuts import redirect
 
@@ -111,6 +112,23 @@ def movie(request, movie_id):
     reviews_preview = MovieReview.objects.filter(
         movie=movie
     ).order_by('-id')[:3]
+
+    # Conteos y voto actual del usuario para mostrar controles en preview
+    for review in reviews_preview:
+        review.like_count = review.likes.filter(vote='like').count()
+        review.dislike_count = review.likes.filter(vote='dislike').count()
+        review.user_vote = None
+        review.show_follow = False
+        review.is_following = False
+        if request.user.is_authenticated:
+            vote = review.likes.filter(user=request.user).first()
+            if vote:
+                review.user_vote = vote.vote
+            if review.user_id != request.user.id:
+                my_profile, _ = Profile.objects.get_or_create(user=request.user)
+                target_profile, _ = Profile.objects.get_or_create(user=review.user)
+                review.show_follow = True
+                review.is_following = target_profile.followers.filter(id=my_profile.id).exists()
 
     context = { 'movie':movie, 
                'actors':actors, 

@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+{% load static %}
 <html class="dark" lang="en"><head>
 	<meta charset="utf-8"/>
 	<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -69,7 +70,7 @@
 				</div>
 			</div>
 		</section>
-		<section class="px-4 sm:px-6 lg:px-12 py-12 lg:py-24 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
+		<section class="px-4 sm:px-6 lg:px-12 -mt-4 lg:-mt-6 pt-0 pb-12 lg:pt-4 lg:pb-24 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16">
 			<div class="lg:col-span-8 space-y-12 lg:space-y-24">
 				<div>
 					<h2 class="font-headline font-bold text-2xl lg:text-3xl mb-6 lg:mb-8 flex items-center gap-4"><span class="w-8 h-[2px] bg-primary rounded-full"></span>Synopsis</h2>
@@ -103,13 +104,45 @@
 					<h2 class="font-headline font-bold text-xl lg:text-2xl mb-6">Recent Reviews</h2>
 					<div class="space-y-6">
 						{% for review in reviews_preview %}
-						<div class="bg-surface-container-lowest p-5 lg:p-6 rounded-xl border border-outline-variant/5">
+						<div class="relative bg-surface-container-lowest p-5 lg:p-6 rounded-xl border border-outline-variant/5">
+							<div class="absolute top-4 right-4 flex items-center gap-2">
+								<form method="POST" action="{% url 'toggle_like' review.id %}" data-preserve-scroll="true">
+									{% csrf_token %}
+									<input type="hidden" name="vote" value="like">
+									<button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors {% if review.user_vote == 'like' %}bg-primary/20 text-primary{% else %}text-primary hover:bg-primary/10{% endif %}">
+										<span class="material-symbols-outlined text-sm">thumb_up</span>
+										{{ review.like_count|default:0 }}
+									</button>
+								</form>
+								<form method="POST" action="{% url 'toggle_like' review.id %}" data-preserve-scroll="true">
+									{% csrf_token %}
+									<input type="hidden" name="vote" value="dislike">
+									<button type="submit" class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors {% if review.user_vote == 'dislike' %}bg-error/20 text-error{% else %}text-error hover:bg-error/10{% endif %}">
+										<span class="material-symbols-outlined text-sm">thumb_down</span>
+										{{ review.dislike_count|default:0 }}
+									</button>
+								</form>
+							</div>
 							<div class="flex items-center gap-3 mb-4">
 								<div class="w-10 h-10 rounded-full overflow-hidden">
-									<img class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAxT7Fsx5bf97ejmR72CBofjuf9rS6eFG92Nv2YEYJ1bKQh-cUKraBlLkcSZbhHv4HkDsJ_1cWEJAIpQseGT81q2tLn8HPto8i7XUHifUfs3omOpYKLDlElgcuphTpZ0UXG22r_Qoq_WX9N7rd_MCYLjo0xPjmVM0bKIxwbsKk6N1zQLhJ7aIsKpnwjww1zw2Ci5sMPXChmLZRi-qNoJ9iShbyCD3hCG6w1cKjFnzX45VowIWX--laBSopZJ5P7fMnEM-QUSDwQiG7"/>
+									<img
+										class="w-full h-full object-cover"
+										src="{% if review.user.profile.image %}{{ review.user.profile.image.url }}{% else %}{% static 'simple-user.png' %}{% endif %}"
+										alt="{{ review.user.username }} avatar"
+									/>
 								</div>
 								<div>
-									<h4 class="text-sm font-bold">{{review.user.username}}</h4>
+									<div class="flex items-center gap-2">
+										<h4 class="text-sm font-bold">{{review.user.username}}</h4>
+										{% if review.show_follow %}
+										<form method="POST" action="{% url 'toggle_follow' review.user.id %}" class="inline" data-preserve-scroll="true">
+											{% csrf_token %}
+											<button type="submit" class="text-[10px] px-2 py-0.5 rounded-full font-semibold transition-colors {% if review.is_following %}bg-primary/20 text-primary hover:bg-primary/30{% else %}bg-surface-container text-on-surface-variant hover:text-on-surface{% endif %}">
+												{% if review.is_following %}Following{% else %}Follow{% endif %}
+											</button>
+										</form>
+										{% endif %}
+									</div>
 									<div class="flex items-center gap-1 text-yellow-500 text-sm">
 										<span class="material-symbols-outlined text-base" style="font-variation-settings: 'FILL' 1;">star</span>
 										<span class="text-on-surface font-semibold">{{ review.rating }}/100</span>
@@ -133,5 +166,19 @@
 		</section>
 	</main>
 	{% include 'movies/base.html' %}
+	<script>
+		// Preserve scroll position after like/dislike POST redirects.
+		document.querySelectorAll('form[data-preserve-scroll="true"]').forEach((form) => {
+			form.addEventListener('submit', () => {
+				sessionStorage.setItem('movieScrollY', String(window.scrollY));
+			});
+		});
+
+		const savedScroll = sessionStorage.getItem('movieScrollY');
+		if (savedScroll !== null) {
+			window.scrollTo(0, parseInt(savedScroll, 10));
+			sessionStorage.removeItem('movieScrollY');
+		}
+	</script>
 </body>
 </html>
