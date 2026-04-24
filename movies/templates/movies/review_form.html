@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Nueva Reseña - {{ movie.title }}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+
+    <!-- Colores y tipografía del proyecto -->
+    <script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { "colors": { "surface": "#0e0e0f", "surface-container": "#1a191b", "surface-container-low": "#131314", "surface-container-lowest": "#000000", "on-surface": "#ffffff", "on-surface-variant": "#adaaab", "outline-variant": "#484849", "primary": "#85adff", "primary-container": "#6c9fff", "on-primary-container": "#00214f", "error": "#ff716c" } } }
+    }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+    {% include 'movies/partials/side.html' %}
+    {% include 'movies/partials/header.html' %}
+
+    <main class="ml-64 pt-16 min-h-screen px-12 py-12">
+
+        <!-- Encabezado con botón de regreso -->
+        <div class="mb-10">
+            <a href="{% url 'movie_reviews' movie.id %}" class="text-on-surface-variant text-sm flex items-center gap-1 mb-2 hover:text-white transition-colors w-fit">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
+                Volver a reseñas de {{ movie.title }}
+            </a>
+            <h1 class="font-headline font-extrabold text-4xl">
+                {% if review %}Editar reseña{% else %}Nueva reseña{% endif %}
+            </h1>
+            <p class="text-on-surface-variant mt-1">{{ movie.title }}</p>
+        </div>
+
+        <!-- Formulario -->
+        <div class="max-w-2xl">
+            <form method="POST" class="space-y-6">
+                {% csrf_token %}
+
+                <!-- Título de la reseña -->
+                <div>
+                    <label class="block text-sm font-semibold text-on-surface-variant mb-2">Título</label>
+                    <input type="text" name="title" required
+                        value="{{ form.title.value|default:'' }}"
+                        class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary transition-colors"
+                        placeholder="Dale un título a tu reseña">
+                    <!-- Error de validación -->
+                    {% if form.title.errors %}
+                    <p class="text-error text-xs mt-1">{{ form.title.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Calificación con estrellas interactivas -->
+                <div>
+                    <label class="block text-sm font-semibold text-on-surface-variant mb-2">Calificación</label>
+                    
+                    <!-- Input oculto que guarda el valor real del 1-100 que se manda al servidor -->
+                    <input type="hidden" name="rating" id="rating-input" value="{{ form.rating.value|default:'' }}">
+                    
+                    <!-- Estrellas clickeables -->
+                    <div class="flex gap-2 mb-2" id="stars-container">
+                        {% for i in "1234567890" %}
+                        <span class="material-symbols-outlined text-4xl cursor-pointer text-outline-variant transition-colors star"
+                            data-value="{{ forloop.counter }}0">
+                            star
+                        </span>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Muestra el número seleccionado -->
+                    <p class="text-on-surface-variant text-sm" id="rating-label">Sin calificación</p>
+
+                    {% if form.rating.errors %}
+                    <p class="text-error text-xs mt-1">{{ form.rating.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Texto de la reseña -->
+                <div>
+                    <label class="block text-sm font-semibold text-on-surface-variant mb-2">Reseña</label>
+                    <textarea name="review" rows="6" required minlength="20"
+                        class="w-full bg-surface-container-lowest border border-outline-variant/30 rounded-lg px-4 py-3 text-on-surface placeholder:text-on-surface-variant focus:outline-none focus:border-primary transition-colors resize-none"
+                        placeholder="Escribe tu reseña aquí...">{{ form.review.value|default:'' }}</textarea>
+                    {% if form.review.errors %}
+                    <p class="text-error text-xs mt-1">{{ form.review.errors|join:", " }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="flex gap-4 pt-2">
+                    <button type="submit"
+                        class="flex items-center gap-2 bg-primary/20 text-primary px-8 py-3 rounded-full font-bold hover:bg-primary/30 transition-colors">
+                        <span class="material-symbols-outlined text-base">send</span>
+                        {% if review %}Guardar cambios{% else %}Publicar reseña{% endif %}
+                    </button>
+                    <a href="{% url 'movie_reviews' movie.id %}"
+                        class="flex items-center gap-2 text-on-surface-variant px-8 py-3 rounded-full font-bold hover:text-white transition-colors border border-outline-variant/30">
+                        Cancelar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </main>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const stars = document.querySelectorAll('.star');
+    const ratingInput = document.getElementById('rating-input');
+    const ratingLabel = document.getElementById('rating-label');
+
+    function paintStars(count) {
+        stars.forEach((star, index) => {
+            if (index < count) {
+                star.style.fontVariationSettings = "'FILL' 1";
+                star.classList.add('text-primary');
+                star.classList.remove('text-outline-variant');
+            } else {
+                star.style.fontVariationSettings = "'FILL' 0";
+                star.classList.remove('text-primary');
+                star.classList.add('text-outline-variant');
+            }
+        });
+    }
+
+    stars.forEach((star, index) => {
+        star.addEventListener('mouseover', () => paintStars(index + 1));
+        star.addEventListener('mouseleave', () => {
+            const current = ratingInput.value ? Math.ceil(parseInt(ratingInput.value) / 10) : 0;
+            paintStars(current);
+        });
+        star.addEventListener('click', () => {
+            const value = star.getAttribute('data-value');
+            ratingInput.value = value;
+            ratingLabel.textContent = `${value}/100`;
+            paintStars(index + 1);
+        });
+    });
+
+    const initialValue = ratingInput.value;
+    if (initialValue) {
+        paintStars(Math.ceil(parseInt(initialValue) / 10));
+        ratingLabel.textContent = `${initialValue}/100`;
+    }
+});
+</script>
+</body>
+</body>
+</html>

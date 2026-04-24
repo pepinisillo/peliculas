@@ -1,47 +1,206 @@
-{% load static %}
+<!DOCTYPE html>
+<html class="dark" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Reseñas - {{ movie.title }}</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Inter:wght@400;500;600&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
 
-{% for review in movie.moviereview_set.all %} 
+    <!-- Colores y tipografía del proyecto -->
+    <script id="tailwind-config">
+    tailwind.config = {
+        darkMode: "class",
+        theme: { extend: { "colors": { "surface": "#0e0e0f", "surface-container": "#1a191b", "surface-container-low": "#131314", "surface-container-lowest": "#000000", "on-surface": "#ffffff", "on-surface-variant": "#adaaab", "outline-variant": "#484849", "primary": "#85adff", "primary-container": "#6c9fff", "on-primary-container": "#00214f", "error": "#ff716c" } } }
+    }
+    </script>
+</head>
+<body class="bg-surface text-on-surface">
+    {% include 'movies/partials/side.html' %}
+    {% include 'movies/partials/header.html' %}
 
-<article class="flex max-w-xl flex-col items-start justify-between 	pt-4 pb-6">
-          <div class="flex items-center gap-x-4 text-xs">
-            <span class="relative z-10 rounded-full 
-            {% if review.rating < 60 %}
-            bg-red-50 
-            {% else %}
-            bg-green-50
-            {% endif %}
-            px-3 py-1.5 
-            font-semibold text-base	 text-gray-900 ">{{review.rating}}</span>
-          </div>
-          <div class="group relative">
-            <h3 class="mt-2 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-              <a href="#">
-                <span class="absolute inset-0"></span>
-                {{review.title}}
-              </a>
-            </h3>
-            
-            <p class="mt-1 line-clamp-3 text-sm/6 text-gray-600">
-            {{review.review}}
-            </p>
-          
-          </div>
-          <div class="relative mt-4 flex items-center gap-x-4">
-            <img src="{% static 'movies/knightley.jpg' %}" alt="" class="size-12 rounded-full bg-gray-50">
-            <div class="text-sm/6">
-              <p class="font-semibold text-gray-900">
-                <a href="#">
-                  <span class="absolute inset-0"></span>
-                  {{review.user}}
+    <main class="ml-64 pt-16 min-h-screen px-12 py-12">
+
+        <!-- Encabezado con botón de regreso y botón para escribir reseña -->
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <a href="{% url 'pelis' movie.id %}" class="text-on-surface-variant text-sm flex items-center gap-1 mb-2 hover:text-white transition-colors w-fit">
+                    <span class="material-symbols-outlined text-base">arrow_back</span>
+                    Volver a {{ movie.title }}
                 </a>
-              </p>
-              <p class="text-gray-600">Usuario desde: {{review.user.date_joined|date:"M Y"}}</p>
+                <h1 class="font-headline font-extrabold text-4xl">Reseñas</h1>
+                <p class="text-on-surface-variant mt-1">{{ movie.title }}</p>
             </div>
-          </div>
-</article> 
 
-{% empty %}
+            <!-- Botón para ir al formulario de nueva reseña -->
+            <a href="{% url 'create_review' movie.id %}"
+              class="flex items-center gap-2 bg-primary/20 text-primary px-6 py-3 rounded-full font-bold hover:bg-primary/30 transition-colors">
+                <span class="material-symbols-outlined text-base">edit</span>
+                Escribir reseña
+            </a>
+        </div>
 
-   <p class="text-gray-600">No hay reseñas todavía</p>
+        <!-- Tabs para cambiar entre todas las reseñas y las del usuario -->
+        <div class="flex gap-1 mb-8 border-b border-outline-variant/20">
+            <button onclick="switchTab('all')" id="tab-all"
+                class="px-6 py-3 text-sm font-bold border-b-2 border-primary text-primary transition-colors">
+                Reseñas
+            </button>
+            <button onclick="switchTab('mine')" id="tab-mine"
+                class="px-6 py-3 text-sm font-bold border-b-2 border-transparent text-on-surface-variant hover:text-white transition-colors">
+                Tus reseñas
+            </button>
+        </div>
 
-{% endfor %} 
+        <!-- Panel: Todas las reseñas -->
+        <div id="panel-all" class="max-w-3xl space-y-6">
+            {% for review in reviews %}
+            <article class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+
+                <!-- Rating con color según puntaje y título -->
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="rounded-full px-4 py-1.5 font-bold text-sm
+                        {% if review.rating < 60 %}bg-error/20 text-error{% else %}bg-primary/20 text-primary{% endif %}">
+                        {{ review.rating }}/100
+                    </span>
+                    <h3 class="font-headline font-bold text-lg">{{ review.title }}</h3>
+                </div>
+
+                <!-- Texto de la reseña -->
+                <p class="text-on-surface-variant leading-relaxed mb-6">{{ review.review }}</p>
+
+                <!-- Info del usuario y botones de voto -->
+                <div class="flex items-center justify-between">
+                    <!-- Avatar con inicial del usuario -->
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary font-bold">
+                            {{ review.user.username|first|upper }}
+                        </div>
+                        <div>
+                            <p class="font-semibold text-sm">{{ review.user }}</p>
+                            <p class="text-on-surface-variant text-xs">Usuario desde: {{ review.user.date_joined|date:"M Y" }}</p>
+                        </div>
+                    </div>
+
+                    <!-- Botones like/dislike, cada uno es un form independiente -->
+                    <div class="flex items-center gap-3">
+                        <form method="POST" action="{% url 'toggle_like' review.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="vote" value="like">
+                            <button type="submit" class="flex items-center gap-1 text-sm text-primary hover:text-primary-container transition-colors">
+                                <span class="material-symbols-outlined text-base">thumb_up</span>
+                                {{ review.like_count }}
+                            </button>
+                        </form>
+                        <form method="POST" action="{% url 'toggle_like' review.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="vote" value="dislike">
+                            <button type="submit" class="flex items-center gap-1 text-sm text-error hover:opacity-80 transition-colors">
+                                <span class="material-symbols-outlined text-base">thumb_down</span>
+                                {{ review.dislike_count }}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+            {% empty %}
+            <p class="text-on-surface-variant">No hay reseñas todavía.</p>
+            {% endfor %}
+        </div>
+
+        <!-- Panel: Tus reseñas (solo las del usuario logueado) -->
+        <div id="panel-mine" class="max-w-3xl space-y-6 hidden">
+            {% for review in reviews %}
+            {% if review.user == request.user %}
+            <article class="bg-surface-container-lowest rounded-xl p-8 border border-outline-variant/10">
+
+                <!-- Rating y título -->
+                <div class="flex items-center gap-4 mb-4">
+                    <span class="rounded-full px-4 py-1.5 font-bold text-sm
+                        {% if review.rating < 60 %}bg-error/20 text-error{% else %}bg-primary/20 text-primary{% endif %}">
+                        {{ review.rating }}/100
+                    </span>
+                    <h3 class="font-headline font-bold text-lg">{{ review.title }}</h3>
+                </div>
+
+                <!-- Texto -->
+                <p class="text-on-surface-variant leading-relaxed mb-6">{{ review.review }}</p>
+
+                <!-- Botones de gestión: editar y eliminar -->
+                <div class="flex items-center gap-3 mt-4">
+                    <!-- Editar redirige al formulario de edición -->
+                    <a href="{% url 'edit_review' review.id %}"
+                      class="flex items-center gap-1 text-sm text-primary hover:text-primary-container transition-colors">
+                        <span class="material-symbols-outlined text-base">edit</span>
+                        Editar
+                    </a>
+
+                    <!-- Botón que abre el modal de confirmación -->
+                  <button onclick="openDeleteModal({{ review.id }})"
+                      class="flex items-center gap-1 text-sm text-error hover:opacity-80 transition-colors">
+                      <span class="material-symbols-outlined text-base">delete</span>
+                      Eliminar
+                  </button>
+                </div>
+            </article>
+            {% endif %}
+            {% empty %}
+            <p class="text-on-surface-variant">No has escrito reseñas todavía.</p>
+            {% endfor %}
+        </div>
+
+    </main>
+
+    <!-- JavaScript para cambiar entre tabs -->
+    <script>
+        function switchTab(tab) {
+            // Oculta ambos paneles
+            document.getElementById('panel-all').classList.add('hidden');
+            document.getElementById('panel-mine').classList.add('hidden');
+
+            // Quita el estilo activo de ambos tabs
+            document.getElementById('tab-all').classList.remove('border-primary', 'text-primary');
+            document.getElementById('tab-all').classList.add('border-transparent', 'text-on-surface-variant');
+            document.getElementById('tab-mine').classList.remove('border-primary', 'text-primary');
+            document.getElementById('tab-mine').classList.add('border-transparent', 'text-on-surface-variant');
+
+            // Muestra el panel y activa el tab seleccionado
+            document.getElementById('panel-' + tab).classList.remove('hidden');
+            document.getElementById('tab-' + tab).classList.add('border-primary', 'text-primary');
+            document.getElementById('tab-' + tab).classList.remove('border-transparent', 'text-on-surface-variant');
+        }
+        // Abre el modal y asigna la URL de eliminación al form
+        function openDeleteModal(reviewId) {
+            document.getElementById('delete-form').action = '/movies/delete_review/' + reviewId + '/';
+            document.getElementById('delete-modal').classList.remove('hidden');
+        }
+
+        // Cierra el modal sin hacer nada
+        function closeDeleteModal() {
+            document.getElementById('delete-modal').classList.add('hidden');
+        }
+    </script>
+<!-- Modal de confirmación de eliminación -->
+<div id="delete-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+    <div class="bg-surface-container rounded-2xl p-8 max-w-sm w-full mx-4 border border-outline-variant/20 shadow-xl">
+        <h3 class="font-headline font-bold text-lg mb-2">¿Eliminar reseña?</h3>
+        <p class="text-on-surface-variant text-sm mb-8">Esta acción no se puede deshacer.</p>
+        <div class="flex gap-3 justify-end">
+            <!-- Botón cancelar -->
+            <button onclick="closeDeleteModal()"
+                class="px-6 py-2.5 rounded-full text-sm font-bold text-on-surface-variant bg-surface-container-low hover:bg-surface-container transition-colors">
+                No
+            </button>
+            <!-- Botón confirmar eliminar -->
+            <form id="delete-form" method="POST">
+                {% csrf_token %}
+                <button type="submit"
+                    class="px-6 py-2.5 rounded-full text-sm font-bold bg-primary/20 text-primary hover:bg-primary/30 transition-colors">
+                    Sí, eliminar
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
